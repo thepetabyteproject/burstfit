@@ -2,10 +2,11 @@ import numpy as np
 from scipy import special
 from burstfit.utils.astro import dedisperse, finer_dispersion_correction
 
+
 def gauss(x, S, mu, sigma):
     if (np.array([S, mu, sigma]) < 0).sum() > 0:
         return np.zeros(len(x))
-    return (S/(np.sqrt(2*np.pi)*sigma)) * np.exp(
+    return (S / (np.sqrt(2 * np.pi) * sigma)) * np.exp(
         -(1 / 2) * ((x - mu) / sigma) ** 2
     )
 
@@ -24,15 +25,15 @@ def pulse_model(t, S, mu, sigma, tau):
         m0 = D == 0
         ln_C[m0] = 0
         p = A * D * B * np.exp(ln_C)
-#     assert np.abs(np.trapz(p) - S) < 0.10 * S
-#     except AssertionError:
-#         print('assertion error')
-#         print(S, mu, sigma, tau)
+    #     assert np.abs(np.trapz(p) - S) < 0.10 * S
+    #     except AssertionError:
+    #         print('assertion error')
+    #         print(S, mu, sigma, tau)
     return p
 
 
 def spectra_model(nu, nu_0, nu_sig):
-    return (1/(np.sqrt(2*np.pi)*nu_sig)) * np.exp(
+    return (1 / (np.sqrt(2 * np.pi) * nu_sig)) * np.exp(
         -(1 / 2) * ((nu - nu_0) / nu_sig) ** 2
     )
 
@@ -54,7 +55,7 @@ def sgram_model(
     chans = np.arange(nf)
     times = np.arange(nt)
     spectra_from_fit = spectra_model(chans, nu_0, nu_sig)
-#     pulse_from_fit = pulse21(times, S_t, t_mu, t_sigma, tau)
+    #     pulse_from_fit = pulse21(times, S_t, t_mu, t_sigma, tau)
 
     model = np.zeros(shape=(nf, nt))
     for i, freq in enumerate(freqs):
@@ -63,12 +64,12 @@ def sgram_model(
         model[i, :] += p
 
     model_dm = dm - dispersed_at_dm
-    
+
     dedispersed_model, delay_bins, delay_time = dedisperse(
         model, model_dm, tsamp, freqs
     )
-    
-#     dedispersed_model_corrected = dedispersed_model
+
+    #     dedispersed_model_corrected = dedispersed_model
     dedispersed_model_corrected = finer_dispersion_correction(
         dedispersed_model, delay_time, delay_bins, tsamp
     )

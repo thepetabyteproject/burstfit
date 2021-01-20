@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def dedisperse(data, dm, tsamp, freqs):
     nf, nt = data.shape
     assert nf == len(freqs)
@@ -14,6 +15,7 @@ def dedisperse(data, dm, tsamp, freqs):
             ]
         )
     return dedispersed, delay_bins, delay_time
+
 
 def finer_dispersion_correction(dedispersed_model, delay_time, delay_bins, tsamp):
     delay_remaining = delay_time / tsamp - delay_bins

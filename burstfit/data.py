@@ -3,11 +3,13 @@
 import numpy as np
 from your.candidate import Candidate
 import logging
+
 logger = logging.getLogger(__name__)
 
+
 class BurstData(Candidate):
-    """
-    """
+    """"""
+
     def __init__(
         self,
         fp=None,

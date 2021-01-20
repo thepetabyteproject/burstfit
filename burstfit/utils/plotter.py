@@ -1,14 +1,17 @@
 import pylab as plt
 import matplotlib
+
 matplotlib.use("Agg")
 
-def plot_1d_fit(xdata, ydata, function, popt, xlabel=None, ylabel=None, 
-             title=None, param_names=[]):
+
+def plot_1d_fit(
+    xdata, ydata, function, popt, xlabel=None, ylabel=None, title=None, param_names=[]
+):
     if len(param_names):
         if len(param_names) == len(popt):
-            label = ''
+            label = ""
             for i, param in enumerate(param_names):
-                label += param + ' = ' + str(popt[i]) + '\n'
+                label += param + " = " + str(popt[i]) + "\n"
         else:
             label = f"fit: {popt}"
     else:

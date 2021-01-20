@@ -5,7 +5,9 @@ from burstfit.utils.plotter import plot_1d_fit, plot_2d_fit
 from burstfit.utils.models import sgram_model
 from scipy.optimize import curve_fit
 import logging
+
 logger = logging.getLogger(__name__)
+
 
 class BurstFit:
     def __init__(
