@@ -56,6 +56,7 @@ class BurstFit:
         assert self.tsamp, "tsamp not set"
 
     def precalc(self):
+        logging.debug(f"Running precalculations for component: {self.comp_num}")
         self.nf, self.nt = self.sgram.shape
         assert self.comp_num > 0
         if self.comp_num == 1:
@@ -69,7 +70,9 @@ class BurstFit:
         self.spectra = self.residual[
             :, self.i0 - self.width // 4 : self.i0 + self.width // 4
         ].mean(-1)
-        self.spectra = self.spectra / np.trapz(self.spectra)
+        if self.comp_num == 1:
+            logging.debug(f"Component number is 1. Normalising spectra to unit area.")
+            self.spectra = self.spectra / np.trapz(self.spectra)
         self.profile_param_names = ["S_t", "t_mu", "t_sigma", "tau"]
         self.spectra_param_names = ["nu_0", "nu_sig"]
         self.param_names = self.spectra_param_names + self.profile_param_names + ["DM"]
@@ -84,6 +87,7 @@ class BurstFit:
         )
 
     def initial_profilefit(self, plot=False, bounds=[]):
+        logging.info(f"Running initial profile fit for component: {self.comp_num}")
         xdata = np.arange(self.nt)
         ydata = self.ts
         if not np.any(bounds):
@@ -101,8 +105,12 @@ class BurstFit:
             bounds=bounds,
         )
         err = np.sqrt(np.diag(pcov))
-        assert np.isinf(err).sum() == 0, "Something wrong with the profile fit"
+        assert np.isinf(err).sum() == 0, "Fit errors are not finite. Terminating."
         self.profile_params[self.comp_num] = {"popt": list(popt), "perr": err}
+
+        logging.info(f"Converged parameters (profile fit) are:")
+        for i, p in enumerate(self.profile_params[self.comp_num]["popt"]):
+            logging.info(f"{self.profile_param_names[i]}: {p} +- {err[i]}")
 
         if plot:
             plot_1d_fit(
@@ -116,19 +124,27 @@ class BurstFit:
                 param_names=self.profile_param_names,
             )
 
-    def initial_spectrafit(self, plot=False):
+    def initial_spectrafit(self, plot=False, bounds=[]):
+        logging.info(f"Running spectra profile fit for component: {self.comp_num}")
         xdata = np.arange(self.nf)
         ydata = self.spectra
+        if not np.any(bounds):
+            bounds = ([xdata.min(), 0], [xdata.max(), xdata.max()])
+        logging.debug(f"Bounds for spectra fit are: {bounds}")
         popt, pcov = curve_fit(
             self.spectra_model,
             xdata,
             ydata,
-            bounds=([xdata.min(), 0], [xdata.max(), xdata.max()]),
+            bounds=bounds,
         )
         err = np.sqrt(np.diag(pcov))
-        assert np.isinf(err).sum() == 0, "Something wrong with the spectra fit"
-
+        assert np.isinf(err).sum() == 0, "Fit errors are not finite. Terminating."
         self.spectra_params[self.comp_num] = {"popt": list(popt), "perr": err}
+
+        logging.info(f"Converged parameters (spectra fit) are:")
+        for i, p in enumerate(self.spectra_params[self.comp_num]["popt"]):
+            logging.info(f"{self.spectra_param_names[i]}: {p} +- {err[i]}")
+
         if plot:
             plot_1d_fit(
                 xdata,
@@ -141,7 +157,8 @@ class BurstFit:
                 param_names=self.spectra_param_names,
             )
 
-    def sgram_fit(self, plot=False):
+    def sgram_fit(self, plot=False, bounds=[-np.inf, np.inf]):
+        logging.info(f"Running sgram profile fit for component: {self.comp_num}")
         p0 = (
             self.spectra_params[self.comp_num]["popt"]
             + self.profile_params[self.comp_num]["popt"]
@@ -152,13 +169,26 @@ class BurstFit:
             xdata=self.metadata,
             ydata=self.residual.ravel(),
             p0=p0,
+            bounds=bounds,
         )
         err = np.sqrt(np.diag(pcov))
-        assert np.isinf(err).sum() == 0, "Something wrong with the sgram fit"
+        if np.isinf(err).sum() > 0:
+            logging.warning(
+                "Fit errors are not finite. Retrying with p0+-(0.2*p0) bounds"
+            )
+            bounds = (np.array(p0) * 0.8, np.array(p0) * 1.2)
+            popt, pcov = curve_fit(
+                self.sgram_model,
+                xdata=self.metadata,
+                ydata=self.residual.ravel(),
+                p0=p0,
+                bounds=bounds,
+            )
+            err = np.sqrt(np.diag(pcov))
+            assert np.isinf(err).sum() == 0, "Errors are still not finite. Terminating."
 
         self.sgram_params[self.comp_num] = {"popt": list(popt), "perr": err}
         logging.info(f"Converged parameters are:")
-
         for i, p in enumerate(self.sgram_params[self.comp_num]["popt"]):
             logging.info(f"{self.param_names[i]}: {p} +- {err[i]}")
 
@@ -173,6 +203,7 @@ class BurstFit:
         self.residual = self.sgram - self.make_model()
 
     def fitcycle(self, plot):
+        logging.info(f"Fitting component {self.comp_num}.")
         self.validate()
         self.precalc()
         self.initial_profilefit(plot=plot)
@@ -183,25 +214,33 @@ class BurstFit:
         self.precalc()
         test_res = self.run_tests()
         if test_res:
-            raise "On pulse region looks like noise. Check candidate parameters"
+            logging.warning(
+                "On pulse region looks like noise. Check candidate parameters"
+            )
 
         while self.ncomponents < max_ncomp:
-            logging.info(f"Fitting component {self.comp_num}.")
             self.fitcycle(plot)
             test_res = self.run_tests()
             if test_res:
                 logging.info("On pulse residual looks like noise. Terminating fitting.")
+
                 break
             self.comp_num += 1
 
+    #     def save_res(self):
+
+    #     def save_state(self):
+
     def run_tests(self):
+        logging.info(f"Running statistical tests on the residual.")
         on_pulse = self.residual[:, self.i0 - self.width : self.i0 + self.width]
         off_pulse_left = self.sgram[:, 0 : 2 * self.width]
         off_pulse_right = self.sgram[:, -2 * self.width :]
         logging.info("Running off pulse - off pulse test")
         off_off = tests(off_pulse_left, off_pulse_right)
 
-        assert off_off == 1, "Off pulse regions are not similar"
+        if off_off == 0:
+            logging.warning(f"Off pulse regions are not similar")
 
         logging.info("Running on pulse - off pulse (L) test")
         ofl_on = tests(off_pulse_left, on_pulse)
@@ -216,6 +255,7 @@ class BurstFit:
         return np.any([ofl_on, ofr_on])
 
     def make_model(self):
+        logging.info(f"Making model.")
         assert len(self.sgram_params) == self.ncomponents
         logging.info(f"Found {self.ncomponents} components.")
 
