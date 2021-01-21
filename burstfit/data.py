@@ -53,7 +53,7 @@ class BurstData(Candidate):
             off_pulse_data = self.dedispersed[
                 :, : self.i0 - int(2 * time_window // self.tsamp)
             ]
-            self.sgram, self.clip_frac = self.normalise_data(self.sgram, off_pulse_data)
+            self.sgram, self.clip_fac = self.normalise_data(self.sgram, off_pulse_data)
         return self
 
     def nstart(self):
@@ -72,15 +72,15 @@ class BurstData(Candidate):
                 )
         return self
 
-    def normalise_data(self, on_pulse_data, off_pulse_data, return_clip_frac=True):
+    def normalise_data(self, on_pulse_data, off_pulse_data, return_clip_fac=True):
         off_pulse_mean = np.mean(off_pulse_data)
         off_pulse_std = np.std(off_pulse_data)
         logging.info(f"Off pulse mean and std are: {off_pulse_mean, off_pulse_std}")
         on_pulse_data = on_pulse_data - off_pulse_mean
         on_pulse_data = on_pulse_data / off_pulse_std
-        if return_clip_frac:
-            clip_frac = ((2 ** self.nbits - 1) - off_pulse_mean) / off_pulse_std
-        return on_pulse_data, clip_frac
+        if return_clip_fac:
+            clip_fac = ((2 ** self.nbits - 1) - off_pulse_mean) / off_pulse_std
+        return on_pulse_data, clip_fac
 
     def crop_dedispersed_data(self, time_window):
         time_around_burst = int(time_window // self.tsamp // 2)
