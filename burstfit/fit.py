@@ -4,8 +4,11 @@ import numpy as np
 from burstfit.utils.plotter import plot_1d_fit, plot_2d_fit
 from burstfit.utils.models import sgram_model
 from burstfit.utils.math import tests
+from burstfit.utils.misc import MyEncoder
 from scipy.optimize import curve_fit
 import logging
+import json
+import pickle
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +26,7 @@ class BurstFit:
         fch1=None,
         tsamp=None,
         clip_fac=None,
+        outname=None,
     ):
         self.profile_model = profile_model
         self.spectra_model = spectra_model
@@ -39,6 +43,7 @@ class BurstFit:
         self.sgram_params = {}
         self.clip_fac = clip_fac
         self.residual = None
+        self.outname = outname
 
     @property
     def ncomponents(self):
@@ -227,9 +232,25 @@ class BurstFit:
                 break
             self.comp_num += 1
 
-    #     def save_res(self):
+    def save_params(self):
+        if not self.outname:
+            outname = "fit_parameters.json"
+        else:
+            outname = self.outname + ".json"
 
-    #     def save_state(self):
+        with open(outname, "w") as fp:
+            p = self.sgram_params
+            p["param_names"] = self.param_names
+            json.dump(p, fp, cls=MyEncoder, indent=4)
+
+    def save_class(self):
+        if not self.outname:
+            outname = "burstfit_class.pkl"
+        else:
+            outname = self.outname + ".pkl"
+
+        with open(outname, "wb") as fp:
+            pickle.dump(self, fp)
 
     def run_tests(self):
         logging.info(f"Running statistical tests on the residual.")
