@@ -55,7 +55,6 @@ def sgram_model(
     chans = np.arange(nf)
     times = np.arange(nt)
     spectra_from_fit = spectra_model(chans, nu_0, nu_sig)
-    #     pulse_from_fit = pulse21(times, S_t, t_mu, t_sigma, tau)
 
     model = np.zeros(shape=(nf, nt))
     for i, freq in enumerate(freqs):
