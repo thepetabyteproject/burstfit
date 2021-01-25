@@ -56,13 +56,15 @@ class BurstData(Candidate):
             ]
             self.sgram, self.clip_fac = self.normalise_data(self.sgram, off_pulse_data)
         return self
-
+    
+    @property
     def nstart(self):
-        nt, nf = self.data.shape
+        nt, nf = self.sgram.shape
         return self.tcand // self.tsamp - (nt // 2)
 
     def mask_channels(self, mask_chans=[]):
         logging.debug(f"Masking channels")
+        self.mask = mask_chans
         for m in mask_chans:
             if isinstance(m, tuple):
                 assert len(m) == 2
