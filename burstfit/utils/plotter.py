@@ -35,8 +35,8 @@ def plot_1d_fit(
     return plt.show()
 
 
-def plot_2d_fit(metadata, sgram, function, popt, param_names=[]):
-    model = function(metadata, *popt).reshape(metadata[1], metadata[0])
+def plot_2d_fit(sgram, function, popt, param_names=[]):
+    model = function([0], *popt)
     diff = sgram - model
     fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=False)
     axes[0].imshow(sgram, aspect="auto")
