@@ -56,7 +56,7 @@ class BurstData(Candidate):
             ]
             self.sgram, self.clip_fac = self.normalise_data(self.sgram, off_pulse_data)
         return self
-    
+
     @property
     def nstart(self):
         nt, nf = self.sgram.shape
