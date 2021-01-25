@@ -1,6 +1,9 @@
 import numpy as np
 from scipy import special
 from burstfit.utils.astro import dedisperse, finer_dispersion_correction
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def gauss(x, S, mu, sigma):
@@ -11,7 +14,7 @@ def gauss(x, S, mu, sigma):
     )
 
 
-def pulse_model(t, S, mu, sigma, tau):
+def pulse_fn(t, S, mu, sigma, tau):
     # https://arxiv.org/pdf/1404.6593.pdf, equation 4
     if (np.array([S, mu, sigma, tau]) < 0).sum() > 0:
         return np.zeros(len(t))
@@ -32,20 +35,24 @@ def pulse_model(t, S, mu, sigma, tau):
     return p
 
 
-def spectra_model(nu, nu_0, nu_sig):
+def spectra_fn(nu, nu_0, nu_sig):
     return (1 / (np.sqrt(2 * np.pi) * nu_sig)) * np.exp(
         -(1 / 2) * ((nu - nu_0) / nu_sig) ** 2
     )
 
 
-def sgram_model(
+def sgram_fn(
     metadata,
-    nu_0,
-    nu_sig,
-    S_t,
-    t_mu,
-    t_sigma,
-    tau,
+    pulse_fn,
+    spectra_fn,
+    spectra_params,
+    pulse_params,
+#     nu_0,
+#     nu_sig,
+#     S_t,
+#     t_mu,
+#     t_sigma,
+#     tau,
     dm,
 ):
     nt, nf, dispersed_at_dm, tsamp, fstart, foff, clip_fac = metadata
@@ -54,15 +61,23 @@ def sgram_model(
     freqs = fstart + foff * np.linspace(0, nf - 1, nf)
     chans = np.arange(nf)
     times = np.arange(nt)
-    spectra_from_fit = spectra_model(chans, nu_0, nu_sig)
+    spectra_from_fit = spectra_fn(chans, **spectra_params) #nu_0, nu_sig)
 
     model = np.zeros(shape=(nf, nt))
-    for i, freq in enumerate(freqs):
-        tau_f = tau * (freq / freqs[0]) ** (-4)
-        p = pulse_model(times, S_t, t_mu, t_sigma, tau_f)
-        model[i, :] += p
+    if 'tau' in pulse_params.keys():
+        tau = pulse_params['tau']
+        p_params = pulse_params
+        for i, freq in enumerate(freqs):
+            tau_f = tau * (freq / freqs[0]) ** (-4)
+            p_params['tau'] = tau_f
+            p = pulse_fn(times, **p_params)
+            model[i, :] += p
+    else:
+        for i, freq in enumerate(freqs):
+            p = pulse_fn(times, **pulse_params)
+            model[i, :] += p
 
-    model_dm = dm - dispersed_at_dm
+    model_dm = dispersed_at_dm - dm
 
     dedispersed_model, delay_bins, delay_time = dedisperse(
         model, model_dm, tsamp, freqs
@@ -75,7 +90,7 @@ def sgram_model(
     model_final = dedispersed_model_corrected * spectra_from_fit[:, None]
     if clip_fac != 0:
         model_final = np.clip(model_final, 0, clip_fac)
-    return model_final.ravel()
+    return model_final #model_final.ravel()
 
 
 def model_all_components(params, *popts):
