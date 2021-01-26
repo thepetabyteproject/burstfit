@@ -27,23 +27,6 @@ class Model:
     def nparams(self):
         return len(self.param_names)
 
-    def get_physical_params(self, mapping, params=None, errors=None):
-        if params:
-            self.params = params
-        if errors:
-            self.errors = errors
-
-        physical_dict = {}
-        for key in mapping:
-            physical_dict[key] = fma(*mapping[key])
-        return physical_dict
-
-    def fma(self, key, m, a):
-        if self.errors:
-            return self.params[key] * m + a, self.errors[key] * m + a
-        else:
-            return self.params[key] * m + a
-
 
 class SgramModel:
     def __init__(

@@ -32,3 +32,7 @@ def tests(off_pulse, on_pulse_res, pth=0.05):
         return 1
     else:
         return 0
+
+
+def fma(param, m, a):
+    return param * m + a

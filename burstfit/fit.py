@@ -3,7 +3,7 @@
 import numpy as np
 from burstfit.utils.plotter import plot_1d_fit, plot_2d_fit
 from burstfit.utils.functions import sgram_fn
-from burstfit.utils.math import tests
+from burstfit.utils.math import tests, fma
 from burstfit.utils.misc import MyEncoder
 from scipy.optimize import curve_fit
 import logging
@@ -242,26 +242,6 @@ class BurstFit:
         if self.comp_num == max_ncomp:
             logging.info("Max number of components reached. Terminating fitting.")
 
-    def save_params(self):
-        if not self.outname:
-            outname = "fit_parameters.json"
-        else:
-            outname = self.outname + ".json"
-
-        with open(outname, "w") as fp:
-            p = self.sgram_params
-            p["param_names"] = self.param_names
-            json.dump(p, fp, cls=MyEncoder, indent=4)
-
-    def save_class(self):
-        if not self.outname:
-            outname = "burstfit_class.pkl"
-        else:
-            outname = self.outname + ".pkl"
-
-        with open(outname, "wb") as fp:
-            pickle.dump(self, fp)
-
     @property
     def run_tests(self):
         logging.info(f"Running statistical tests on the residual.")
@@ -298,3 +278,23 @@ class BurstFit:
             self.sgram_model.forfit = False
             model += self.sgram_model.evaluate([0], *popt)
         return model
+
+    def get_physical_params(self, mapping, params=None, errors=None):
+        if not params:
+            params = self.sgram_params[self.comp_num]["popt"]
+
+        if not errors:
+            errors = self.sgram_params[self.comp_num]["perr"]
+
+        assert len(mapping) == len(params)
+        assert len(mapping) == len(errors)
+
+        physical_dict = {}
+        physical_errs = {}
+        for key in mapping:
+            k, m, a = mapping[key]
+            param = params[self.param_names.index(k)]
+            physical_dict[key] = fma(param, m, a)
+            err = errors[self.param_names.index(k)]
+            physical_errs[key] = fma(err, m, 0)
+        return physical_dict, physical_errs
