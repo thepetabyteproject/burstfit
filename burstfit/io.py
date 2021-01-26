@@ -1,14 +1,26 @@
 import json
-from burstfit.utils.misc import MyEncoder
+import logging
+
+import numpy as np
+
 from burstfit.model import Model, SgramModel
 from burstfit.utils.functions import pulse_fn, spectra_fn, sgram_fn
-import numpy as np
-import logging
+from burstfit.utils.misc import MyEncoder
 
 logger = logging.getLogger(__name__)
 
 
 class BurstIO:
+    """
+    I/O class to save the fitting results and read results to reproduce model.
+
+    Args:
+        BurstFit: Instance of burstfit class with fitting parameters
+        BurstData: Instance of burstdata class with burst data
+        dictionary: dictionary with fitting results
+        jsonfile: JSON file with the fitting results
+    """
+
     def __init__(self, BurstFit=None, BurstData=None, dictionary=None, jsonfile=None):
         self.burstfit = BurstFit
         self.burstdata = BurstData
@@ -17,6 +29,11 @@ class BurstIO:
 
     @property
     def set_attributes_to_save(self):
+        """
+
+        Returns:
+
+        """
         self.fileheader = vars(self.burstdata.your_header)
         if not isinstance(self.fileheader["dtype"], str):
             self.fileheader["dtype"] = self.fileheader["dtype"].__name__
@@ -40,6 +57,14 @@ class BurstIO:
         return self
 
     def save_results(self, outname=None):
+        """
+
+        Args:
+            outname:
+
+        Returns:
+
+        """
         self.set_attributes_to_save
         out = {}
         nots = [
@@ -66,6 +91,14 @@ class BurstIO:
         return out
 
     def read_json_and_precalc(self, file=None):
+        """
+
+        Args:
+            file:
+
+        Returns:
+
+        """
         if file:
             self.jsonfile = file
         if not self.jsonfile:
@@ -87,6 +120,11 @@ class BurstIO:
         )
 
     def set_classes_from_dict(self):
+        """
+
+        Returns:
+
+        """
         if self.dictionary["pulse_function"] == "pulse_fn":
             pulseModel = Model(pulse_fn)
         else:
@@ -103,6 +141,11 @@ class BurstIO:
             raise ValueError(f"self.dictionary['sgram_function'] not supported.")
 
     def model(self):
+        """
+
+        Returns:
+
+        """
         logging.info(f"Making model.")
         assert len(self.sgram_params) == self.ncomponents
         logging.info(f"Found {self.ncomponents} components.")

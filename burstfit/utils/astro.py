@@ -2,6 +2,21 @@ import numpy as np
 
 
 def dedisperse(data, dm, tsamp, freqs):
+    """
+    Function to dedisperse the data
+
+    Args:
+        data: Frequency-time array to dedisperse
+        dm: Dispersion Measure to dedisperse at
+        tsamp: Sampling time in seconds
+        freqs: Frequencies array (MHz)
+
+    Returns:
+        dedispersed: Dedispersed array
+        delay_bins: Delay in number of bins
+        delay_time: Delay times (s)
+
+    """
     nf, nt = data.shape
     assert nf == len(freqs)
     delay_time = 4148808.0 * dm * (1 / (freqs[0]) ** 2 - 1 / (freqs) ** 2) / 1000
@@ -10,7 +25,7 @@ def dedisperse(data, dm, tsamp, freqs):
     for ii in range(nf):
         dedispersed[ii, :] = np.concatenate(
             [
-                data[ii, -delay_bins[ii] :],
+                data[ii, -delay_bins[ii]:],
                 data[ii, : -delay_bins[ii]],
             ]
         )
@@ -18,6 +33,19 @@ def dedisperse(data, dm, tsamp, freqs):
 
 
 def finer_dispersion_correction(dedispersed_model, delay_time, delay_bins, tsamp):
+    """
+    Function to correct for dispersion within a time sample.
+
+    Args:
+        dedispersed_model: Dedispersed FT array
+        delay_time: Delay times in seconds
+        delay_bins: Delays in number of bins
+        tsamp: Sampling time (s)
+
+    Returns:
+        dedispersed_model_corrected: Dedispersed and corrected array
+
+    """
     delay_remaining = delay_time / tsamp - delay_bins
     dedispersed_model_corrected = np.zeros(dedispersed_model.shape)
     for i in range(dedispersed_model_corrected.shape[0]):

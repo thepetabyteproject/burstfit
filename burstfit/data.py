@@ -1,26 +1,37 @@
 #!/usr/bin/env python3
 
+import logging
+
 import numpy as np
 from your.candidate import Candidate
-import logging
 
 logger = logging.getLogger(__name__)
 
 
 class BurstData(Candidate):
-    """"""
+    """
+    Class to handle burst data
+
+     Args:
+        fp Union[str, list]: String or a list of files. It can either filterbank or psrfits files.
+        dm (float): Dispersion Measure of the candidate
+        tcand (float): start time of the candidate in seconds at the highest frequency channel
+        width (int): pulse width of the candidate in samples
+        label (int): 1 for pulsars/FRBs, 0 for RFI
+        snr (float): Signal to Noise Ratio
+        min_samp (int): Minimum number of time samples
+    """
 
     def __init__(
-        self,
-        fp=None,
-        dm=None,
-        tcand=0,
-        width=0,
-        snr=0,
-        min_samp=256,
-        device=0,
-        kill_mask=None,
+            self,
+            fp=None,
+            dm=None,
+            tcand=0,
+            width=0,
+            snr=0,
+            min_samp=256,
     ):
+
         Candidate.__init__(
             self,
             fp=fp,
@@ -35,6 +46,17 @@ class BurstData(Candidate):
         )
 
     def prepare_data(self, mask_chans=[], time_window=200e-3, normalise=True):
+        """
+        Prepares data for burst fitting
+
+        Args:
+            mask_chans: list with tuples (start_freq, end_freq) and channel numbers to mask
+            time_window: time window (s) around the burst to use for burst fitting
+            normalise: To normalise the mean and std of the data using an off pulse region
+
+        Returns:
+
+        """
         logging.info("Preparing data for burst fitting.")
         self.get_chunk()
         nt, nf = self.data.shape
@@ -52,28 +74,42 @@ class BurstData(Candidate):
 
         if normalise:
             off_pulse_data = self.dedispersed[
-                :, : self.i0 - int(2 * time_window // self.tsamp)
-            ]
+                             :, : self.i0 - int(2 * time_window // self.tsamp)
+                             ]
             self.sgram, self.clip_fac = self.normalise_data(self.sgram, off_pulse_data)
         return self
 
     @property
     def nstart(self):
+        """
+
+        Returns: start sample number of the spectrogram
+
+        """
         nt, nf = self.sgram.shape
         return self.tcand // self.tsamp - (nt // 2)
 
     def mask_channels(self, mask_chans=[]):
+        """
+        Function to mask some frequency channels
+
+        Args:
+            mask_chans: list with tuples (start_freq, end_freq) and channel numbers to mask
+
+        Returns:
+
+        """
         logging.debug(f"Masking channels")
         self.mask = mask_chans
         for m in mask_chans:
             if isinstance(m, tuple):
                 assert len(m) == 2
-                self.dedispersed.mask[:, m[0] : m[1]] = True
+                self.dedispersed.mask[:, m[0]: m[1]] = True
             elif isinstance(m, int):
                 self.dedispersed.mask[:, m] = True
             elif isinstance(m, list):
                 assert len(m) == 2
-                self.dedispersed.mask[:, m[0] : m[1]] = True
+                self.dedispersed.mask[:, m[0]: m[1]] = True
             else:
                 raise AttributeError(
                     "mask_chans can only contain tuple/list (start_chan:end_chan) and/or ints"
@@ -81,6 +117,17 @@ class BurstData(Candidate):
         return self
 
     def normalise_data(self, on_pulse_data, off_pulse_data, return_clip_fac=True):
+        """
+        Function to normalise data
+
+        Args:
+            on_pulse_data: Data to normalise
+            off_pulse_data: Data to use to estimate mean and std
+            return_clip_fac: To return the clipping factor, decided using nbits of data
+
+        Returns:
+
+        """
         logging.info(f"Normalising data using off pulse mean and std.")
         off_pulse_mean = np.mean(off_pulse_data)
         off_pulse_std = np.std(off_pulse_data)
@@ -90,11 +137,23 @@ class BurstData(Candidate):
         if return_clip_fac:
             clip_fac = ((2 ** self.nbits - 1) - off_pulse_mean) / off_pulse_std
             logging.debug(f"Clip factor is {clip_fac}")
-        return on_pulse_data, clip_fac
+            return on_pulse_data, clip_fac
+        else:
+            return on_pulse_data
 
     def crop_dedispersed_data(self, time_window):
+        """
+
+        To get a cutout of data from only around the burst
+
+        Args:
+            time_window: time length to use on both sides of burst for the cutout
+
+        Returns:
+
+        """
         logging.info(f"Cropping data with time_window: {time_window}s.")
         time_around_burst = int(time_window // self.tsamp // 2)
         return self.dedispersed[
-            self.i0 - time_around_burst : self.i0 + time_around_burst, :
-        ].T
+               self.i0 - time_around_burst: self.i0 + time_around_burst, :
+               ].T

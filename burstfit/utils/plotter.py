@@ -1,11 +1,11 @@
-import pylab as plt
 import matplotlib
+import pylab as plt
 
 matplotlib.use("Agg")
 
 
 def plot_1d_fit(
-    xdata, ydata, function, popt, xlabel=None, ylabel=None, title=None, param_names=[]
+        xdata, ydata, function, popt, xlabel=None, ylabel=None, title=None, param_names=[]
 ):
     if len(param_names):
         if len(param_names) == len(popt):
