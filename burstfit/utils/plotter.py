@@ -5,7 +5,7 @@ matplotlib.use("Agg")
 
 
 def plot_1d_fit(
-        xdata, ydata, function, popt, xlabel=None, ylabel=None, title=None, param_names=[]
+    xdata, ydata, function, popt, xlabel=None, ylabel=None, title=None, param_names=[]
 ):
     if len(param_names):
         if len(param_names) == len(popt):
@@ -37,6 +37,8 @@ def plot_1d_fit(
 
 def plot_2d_fit(sgram, function, popt, param_names=[]):
     model = function([0], *popt)
+    if len(model.shape) == 1:
+        model = model.reshape(sgram.shape())
     diff = sgram - model
     fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=False)
     axes[0].imshow(sgram, aspect="auto")
