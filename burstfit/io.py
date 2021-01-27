@@ -40,6 +40,7 @@ class BurstIO:
         self.nstart = self.burstdata.nstart
         self.tcand = self.burstdata.tcand
         self.mask = self.burstdata.mask
+        self.id = self.burstdata.id
 
         for k in self.burstfit.__dict__.keys():
             if ("sgram" == k) or ("residual" in k) or ("ts" in k) or ("spectra" == k):
@@ -84,7 +85,10 @@ class BurstIO:
         for k in keys_to_use:
             out[k] = getattr(self, k)
         if not outname:
-            outname = self.outname + ".json"
+            if self.outname:
+                outname = self.outname + ".json"
+            else:
+                outname = self.id + ".json"
 
         with open(outname, "w") as fp:
             json.dump(out, fp, cls=MyEncoder, indent=4)

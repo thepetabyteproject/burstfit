@@ -127,12 +127,19 @@ class BurstFit:
     @property
     def make_spectra(self):
         try:
+            logger.info('Making spectra using profile fit parameters.')
             mu_idx = np.where(np.array(self.profile_param_names) == "mu")[0]
             sig_idx = np.where(np.array(self.profile_param_names) == "sigma")[0]
             assert len(mu_idx) == 1, "mu not found in profile parameter names"
             assert len(sig_idx) == 1, "sigma not found in profile parameter names"
-            self.i0 = int(self.profile_params[self.comp_num]["popt"][mu_idx[0]])
-            width = int(2.355 * self.profile_params[self.comp_num]["popt"][sig_idx[0]])
+            self.i0 = self.profile_params[self.comp_num]["popt"][mu_idx[0]]
+            width = 2.355 * self.profile_params[self.comp_num]["popt"][sig_idx[0]]
+            if 'tau' in self.profile_param_names:
+                tau_idx = np.where(np.array(self.profile_param_names) == "tau")[0]
+                assert len(tau_idx) == 1, "tau not found in profile parameter names"
+                width += self.profile_params[self.comp_num]["popt"][tau_idx[0]]
+            width = int(width)
+            self.i0 = int(self.i0)
         except (KeyError, AssertionError) as e:
             logger.warning(f"{e}")
             width = self.width
@@ -388,7 +395,7 @@ class BurstFit:
 
         self.residual = self.sgram - self.model
 
-    def fit_components(self, plot=True, max_ncomp=5, sgram_bounds=[-np.inf, np.inf]):
+    def fitall(self, plot=True, max_ncomp=5, sgram_bounds=[-np.inf, np.inf]):
         """
 
         Args:
@@ -427,7 +434,7 @@ class BurstFit:
                 f"Final number of components {self.ncomponents} > 1. "
                 "Fitting all components together."
             )
-            self.fit_all_components()
+            self.fit_all_components(plot)
             test_res = self.run_tests
             if test_res:
                 logging.info("On pulse residual looks like noise. ")
@@ -478,7 +485,7 @@ class BurstFit:
         logging.info(f"Making model.")
         if "all" in self.sgram_params.keys():
             model = self.model_from_params(
-                [0], self.sgram_params["all"]["popt"]
+                [0], *self.sgram_params["all"]["popt"]
             ).reshape(self.nf, self.nt)
         else:
             assert len(self.sgram_params) == self.ncomponents
@@ -491,18 +498,17 @@ class BurstFit:
                 model += self.sgram_model.evaluate([0], *popt)
         return model
 
-    def model_from_params(self, x, params=None):
+    def model_from_params(self, x, *params):
         """
 
         Returns:
 
         """
-        logging.info(f"Making model.")
+#         logging.debug(f"Making model.")
         assert len(params) % len(self.param_names) == 0
         ncomp = int(len(params) / len(self.param_names))
         nparams = int(len(self.param_names))
-        logging.info(f"Found {ncomp} components.")
-
+#         logging.debug(f"Found {ncomp} components.")
         model = np.zeros(shape=(self.nf, self.nt))
         for i in range(1, ncomp + 1):
             popt = params[(i - 1) * nparams : i * nparams]
