@@ -127,7 +127,7 @@ class BurstFit:
     @property
     def make_spectra(self):
         try:
-            logger.info('Making spectra using profile fit parameters.')
+            logger.info("Making spectra using profile fit parameters.")
             mu_idx = np.where(np.array(self.profile_param_names) == "mu")[0]
             sig_idx = np.where(np.array(self.profile_param_names) == "sigma")[0]
             assert len(mu_idx) == 1, "mu not found in profile parameter names"
@@ -135,7 +135,7 @@ class BurstFit:
             self.i0 = self.profile_params[self.comp_num]["popt"][mu_idx[0]]
             width = 2.355 * self.profile_params[self.comp_num]["popt"][sig_idx[0]]
             tau_width = 0
-            if 'tau' in self.profile_param_names:
+            if "tau" in self.profile_param_names:
                 tau_idx = np.where(np.array(self.profile_param_names) == "tau")[0]
                 assert len(tau_idx) == 1, "tau not found in profile parameter names"
                 tau_width += self.profile_params[self.comp_num]["popt"][tau_idx[0]]
@@ -172,7 +172,7 @@ class BurstFit:
         if self.comp_num == 1:
             logging.debug(f"Component number is 1. Normalising spectra to unit area.")
             self.spectra = self.spectra / np.trapz(self.spectra)
-    
+
     def fitcycle(self, plot, sgram_bounds=[-np.inf, np.inf]):
         """
 
@@ -366,9 +366,6 @@ class BurstFit:
 
         """
         logging.info(f"Fitting {self.ncomponents} components together.")
-        #         self.validate()
-        #         self.precalc()
-
         p0 = []
         for k in self.sgram_params.keys():
             p0 += self.sgram_params[k]["popt"]
@@ -509,11 +506,9 @@ class BurstFit:
         Returns:
 
         """
-#         logging.debug(f"Making model.")
         assert len(params) % len(self.param_names) == 0
         ncomp = int(len(params) / len(self.param_names))
         nparams = int(len(self.param_names))
-#         logging.debug(f"Found {ncomp} components.")
         model = np.zeros(shape=(self.nf, self.nt))
         for i in range(1, ncomp + 1):
             popt = params[(i - 1) * nparams : i * nparams]

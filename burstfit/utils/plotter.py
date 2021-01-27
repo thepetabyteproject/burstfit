@@ -58,6 +58,7 @@ def plot_2d_fit(sgram, function, popt, title=None, param_names=[]):
     plt.tight_layout()
     return fig
 
+
 def plot_me(datar, xlabel=None, ylabel=None, title=None):
     with plt.style.context(["notebook"]):
         if len(datar.shape) == 1:
