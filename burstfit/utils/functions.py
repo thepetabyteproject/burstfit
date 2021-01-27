@@ -78,12 +78,12 @@ def spectra_fn(nu, nu_0, nu_sig):
 
 
 def sgram_fn(
-        metadata,
-        pulse_function,
-        spectra_function,
-        spectra_params,
-        pulse_params,
-        dm,
+    metadata,
+    pulse_function,
+    spectra_function,
+    spectra_params,
+    pulse_params,
+    dm,
 ):
     """
     Spectrogram function
@@ -134,6 +134,7 @@ def sgram_fn(
     if clip_fac != 0:
         model_final = np.clip(model_final, 0, clip_fac)
     return model_final  # model_final.ravel()
+
 
 # def model_all_components(params, *popts):
 #    """

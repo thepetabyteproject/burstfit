@@ -25,7 +25,7 @@ def dedisperse(data, dm, tsamp, freqs):
     for ii in range(nf):
         dedispersed[ii, :] = np.concatenate(
             [
-                data[ii, -delay_bins[ii]:],
+                data[ii, -delay_bins[ii] :],
                 data[ii, : -delay_bins[ii]],
             ]
         )

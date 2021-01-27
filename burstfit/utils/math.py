@@ -25,7 +25,7 @@ def f_test(x, y):
     return f, p
 
 
-def tests(off_pulse, on_pulse_res, pth=0.05):
+def tests(off_pulse, on_pulse_res, pth=0.05, ntest=1):
     """
     Run statistical tests to compare the two inputs
 
@@ -33,6 +33,7 @@ def tests(off_pulse, on_pulse_res, pth=0.05):
         off_pulse:
         on_pulse_res:
         pth: threshold on p value to consider the distributions similar
+        ntest: minimum number of tests to pass
 
     Returns:
 
@@ -49,7 +50,7 @@ def tests(off_pulse, on_pulse_res, pth=0.05):
     )
 
     m = np.array([pv_ttest, pv_kruskal, pv_ks, pv_ftest]) > pth
-    if m.sum() > 0:
+    if m.sum() >= ntest:
         return 1
     else:
         return 0
