@@ -160,7 +160,10 @@ class BurstFit:
         else:
             start = self.i0 - 1
             end = self.i0 + 1
-
+        if start < 0:
+            start = 0
+        if end > self.nt:
+            end = self.nt
         logging.debug(f"Generating spectra from sample {start} to {end}")
         self.spectra = self.residual[:, start:end].mean(-1)
 
