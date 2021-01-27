@@ -134,10 +134,11 @@ class BurstFit:
             assert len(sig_idx) == 1, "sigma not found in profile parameter names"
             self.i0 = self.profile_params[self.comp_num]["popt"][mu_idx[0]]
             width = 2.355 * self.profile_params[self.comp_num]["popt"][sig_idx[0]]
+            tau_width = 0
             if 'tau' in self.profile_param_names:
                 tau_idx = np.where(np.array(self.profile_param_names) == "tau")[0]
                 assert len(tau_idx) == 1, "tau not found in profile parameter names"
-                width += self.profile_params[self.comp_num]["popt"][tau_idx[0]]
+                tau_width += self.profile_params[self.comp_num]["popt"][tau_idx[0]]
             width = int(width)
             self.i0 = int(self.i0)
         except (KeyError, AssertionError) as e:
@@ -164,12 +165,30 @@ class BurstFit:
             start = 0
         if end > self.nt:
             end = self.nt
+        end += int(tau_width)
         logging.debug(f"Generating spectra from sample {start} to {end}")
         self.spectra = self.residual[:, start:end].mean(-1)
 
         if self.comp_num == 1:
             logging.debug(f"Component number is 1. Normalising spectra to unit area.")
             self.spectra = self.spectra / np.trapz(self.spectra)
+    
+    def fitcycle(self, plot, sgram_bounds=[-np.inf, np.inf]):
+        """
+
+        Args:
+            plot:
+
+        Returns:
+
+        """
+        logging.info(f"Fitting component {self.comp_num}.")
+        self.validate
+        self.precalc
+        self.initial_profilefit(plot=plot)
+        self.make_spectra
+        self.initial_spectrafit(plot=plot)
+        self.sgram_fit(plot=plot, bounds=sgram_bounds)
 
     def initial_profilefit(self, plot=False, bounds=[]):
         """
@@ -336,23 +355,6 @@ class BurstFit:
             )
 
         self.residual = self.sgram - self.model
-
-    def fitcycle(self, plot, sgram_bounds=[-np.inf, np.inf]):
-        """
-
-        Args:
-            plot:
-
-        Returns:
-
-        """
-        logging.info(f"Fitting component {self.comp_num}.")
-        self.validate
-        self.precalc
-        self.initial_profilefit(plot=plot)
-        self.make_spectra
-        self.initial_spectrafit(plot=plot)
-        self.sgram_fit(plot=plot, bounds=sgram_bounds)
 
     def fit_all_components(self, plot):
         """
