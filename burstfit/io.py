@@ -34,6 +34,8 @@ class BurstIO:
         Returns:
 
         """
+        logger.info("Setting attributes to be saved.")
+        logger.info("Reading attributes from BurstData object.")
         self.fileheader = vars(self.burstdata.your_header)
         if not isinstance(self.fileheader["dtype"], str):
             self.fileheader["dtype"] = self.fileheader["dtype"].__name__
@@ -42,6 +44,7 @@ class BurstIO:
         self.mask = self.burstdata.mask
         self.id = self.burstdata.id
 
+        logger.info("Reading attributes from BurstFit object.")
         for k in self.burstfit.__dict__.keys():
             if ("sgram" == k) or ("residual" in k) or ("ts" in k) or ("spectra" == k):
                 continue
@@ -55,6 +58,7 @@ class BurstIO:
                 setattr(self, k, getattr(self.burstfit, k))
         self.ncomponents = self.burstfit.ncomponents
         self.tsamp = self.burstfit.tsamp
+        logger.info("Copied necessary attributes")
         return self
 
     def save_results(self, outname=None):
@@ -82,6 +86,7 @@ class BurstIO:
             if k not in nots:
                 keys_to_use.append(k)
 
+        logger.info(f"Preparing dictionary to be saved.")
         for k in keys_to_use:
             out[k] = getattr(self, k)
         if not outname:
@@ -90,6 +95,7 @@ class BurstIO:
             else:
                 outname = self.id + ".json"
 
+        logger.info(f"Writing JSON file: {outname}.")
         with open(outname, "w") as fp:
             json.dump(out, fp, cls=MyEncoder, indent=4)
         return out
@@ -107,10 +113,14 @@ class BurstIO:
             self.jsonfile = file
         if not self.jsonfile:
             raise AttributeError(f"self.jsonfile not set.")
+        logger.info(f"Reading JSON: {self.jsonfile}")
         with open(self.jsonfile, "r") as fp:
             self.dictionary = json.load(fp)
 
+        logger.info(f"Setting models (pulse, spectra and spectrogram).")
         self.set_classes_from_dict()
+
+        logger.info(f"Setting I/O class attributes.")
         for k in self.dictionary.keys():
             setattr(self, k, self.dictionary[k])
         self.sgramModel.metadata = (
@@ -122,6 +132,7 @@ class BurstIO:
             self.foff,
             self.clip_fac,
         )
+        logger.info(f"BurstIO class is ready with necessary attributes.")
 
     def set_classes_from_dict(self):
         """
