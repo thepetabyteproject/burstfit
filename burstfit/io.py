@@ -123,6 +123,12 @@ class BurstIO:
         logger.info(f"Setting I/O class attributes.")
         for k in self.dictionary.keys():
             setattr(self, k, self.dictionary[k])
+            
+        self.set_metadata
+        logger.info(f"BurstIO class is ready with necessary attributes.")
+
+    @property
+    def set_metadata(self):
         self.sgramModel.metadata = (
             self.nt,
             self.nf,
@@ -132,7 +138,6 @@ class BurstIO:
             self.foff,
             self.clip_fac,
         )
-        logger.info(f"BurstIO class is ready with necessary attributes.")
 
     def set_classes_from_dict(self):
         """
@@ -154,7 +159,8 @@ class BurstIO:
             self.sgramModel = SgramModel(pulseModel, spectraModel, sgram_fn)
         else:
             raise ValueError(f"self.dictionary['sgram_function'] not supported.")
-
+    
+    @property
     def model(self):
         """
 
