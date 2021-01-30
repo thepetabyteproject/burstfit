@@ -169,9 +169,8 @@ class BurstFit:
         logging.debug(f"Generating spectra from sample {start} to {end}")
         self.spectra = self.residual[:, start:end].mean(-1)
 
-        if self.comp_num == 1:
-            logging.debug(f"Component number is 1. Normalising spectra to unit area.")
-            self.spectra = self.spectra / np.trapz(self.spectra)
+        logging.debug(f"Normalising spectra to unit area.")
+        self.spectra = self.spectra / np.trapz(self.spectra)
 
     def fitcycle(self, plot, sgram_bounds=[-np.inf, np.inf]):
         """
