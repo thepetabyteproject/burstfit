@@ -83,7 +83,7 @@ def sgram_fn(
     spectra_function,
     spectra_params,
     pulse_params,
-    dm,
+    other_params,
 ):
     """
     Spectrogram function
@@ -94,25 +94,28 @@ def sgram_fn(
         spectra_function: Function to model spectra
         spectra_params: Dictionary with spectra parameters
         pulse_params: Dictionary with pulse parameters
-        dm:
+        other_params:
 
     Returns:
 
     """
     nt, nf, dispersed_at_dm, tsamp, fstart, foff, clip_fac = metadata
+#     dm, tau_idx = other_params
+    [dm] = other_params
+    tau_idx = 4
     nt = int(nt)
     nf = int(nf)
     freqs = fstart + foff * np.linspace(0, nf - 1, nf)
     chans = np.arange(nf)
     times = np.arange(nt)
     spectra_from_fit = spectra_function(chans, **spectra_params)  # nu_0, nu_sig)
-
+    
     model = np.zeros(shape=(nf, nt))
     if "tau" in pulse_params.keys():
         tau = pulse_params["tau"]
         p_params = pulse_params
         for i, freq in enumerate(freqs):
-            tau_f = tau * (freq / freqs[0]) ** (-4)
+            tau_f = tau * (freq / freqs[0]) ** (-1*tau_idx)
             p_params["tau"] = tau_f
             p = pulse_function(times, **p_params)
             model[i, :] += p
