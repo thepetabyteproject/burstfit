@@ -136,9 +136,9 @@ class BurstFit:
             width = 2.355 * self.profile_params[self.comp_num]["popt"][sig_idx[0]]
             tau_width = 0
             if "tau" in self.profile_param_names:
-                tau_idx = np.where(np.array(self.profile_param_names) == "tau")[0]
-                assert len(tau_idx) == 1, "tau not found in profile parameter names"
-                tau_width += self.profile_params[self.comp_num]["popt"][tau_idx[0]]
+                t_idx = np.where(np.array(self.profile_param_names) == "tau")[0]
+                assert len(t_idx) == 1, "tau not found in profile parameter names"
+                tau_width += self.profile_params[self.comp_num]["popt"][t_idx[0]]
             width = int(width)
             self.i0 = int(self.i0)
         except (KeyError, AssertionError) as e:
@@ -206,8 +206,11 @@ class BurstFit:
         if not np.any(bounds):
             if self.sgram_model.pulse_model.nparams == 4:
                 s_bound = 4 * np.trapz(self.ts)
-                if s_bound < 0:
-                    s_bound = 10 * np.max(self.ts)
+                if s_bound <= 0 
+                    if np.max(self.ts) > 0:
+                        s_bound = 10 * np.max(self.ts)
+                    else:
+                        s_bound = 1
                 lim = np.min([4 * self.width, self.nt // 2])
                 bounds = (
                     [0, self.i0 - lim, 0, 0],
@@ -301,8 +304,10 @@ class BurstFit:
         p0 = (
             self.spectra_params[self.comp_num]["popt"]
             + self.profile_params[self.comp_num]["popt"]
-            + [self.dm]
+            + [self.dm]#, 4]
         )
+
+        logging.info(f"initial estimate for parameters: {p0}")
         try:
             popt, pcov = curve_fit(
                 self.sgram_model.evaluate,
@@ -312,7 +317,7 @@ class BurstFit:
                 bounds=bounds,
             )
         except RuntimeError as e:
-            retry_frac = 0.5
+            retry_frac = 0.9
             logging.warning(f"{e}")
             logging.warning(f"Retrying with p0+-({retry_frac}*p0) bounds")
             bounds = (np.array(p0) * (1 - retry_frac), np.array(p0) * (1 + retry_frac))
