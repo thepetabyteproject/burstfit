@@ -206,7 +206,7 @@ class BurstFit:
         if not np.any(bounds):
             if self.sgram_model.pulse_model.nparams == 4:
                 s_bound = 4 * np.trapz(self.ts)
-                if s_bound <= 0 
+                if s_bound <= 0:
                     if np.max(self.ts) > 0:
                         s_bound = 10 * np.max(self.ts)
                     else:
@@ -320,7 +320,9 @@ class BurstFit:
             retry_frac = 0.9
             logging.warning(f"{e}")
             logging.warning(f"Retrying with p0+-({retry_frac}*p0) bounds")
-            bounds = (np.array(p0) * (1 - retry_frac), np.array(p0) * (1 + retry_frac))
+            p0_1 = np.array(p0) * (1 - retry_frac)
+            p0_2 = np.array(p0) * (1 + retry_frac)
+            bounds = (np.min([p0_1, p0_2], axis=0), np.max([p0_1, p0_2], axis=0))
             popt, pcov = curve_fit(
                 self.sgram_model.evaluate,
                 xdata=[0],
@@ -335,7 +337,9 @@ class BurstFit:
             logging.warning(
                 f"Fit errors are not finite. Retrying with p0+-({retry_frac}*p0) bounds"
             )
-            bounds = (np.array(p0) * (1 - retry_frac), np.array(p0) * (1 + retry_frac))
+            p0_1 = np.array(p0) * (1 - retry_frac)
+            p0_2 = np.array(p0) * (1 + retry_frac)
+            bounds = (np.min([p0_1, p0_2], axis=0), np.max([p0_1, p0_2], axis=0))
             popt, pcov = curve_fit(
                 self.sgram_model.evaluate,
                 xdata=[0],
