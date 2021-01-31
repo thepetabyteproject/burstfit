@@ -17,19 +17,18 @@ class BurstData(Candidate):
         dm (float): Dispersion Measure of the candidate
         tcand (float): start time of the candidate in seconds at the highest frequency channel
         width (int): pulse width of the candidate in samples
-        label (int): 1 for pulsars/FRBs, 0 for RFI
         snr (float): Signal to Noise Ratio
         min_samp (int): Minimum number of time samples
     """
 
     def __init__(
-        self,
-        fp=None,
-        dm=None,
-        tcand=0,
-        width=0,
-        snr=0,
-        min_samp=256,
+            self,
+            fp=None,
+            dm=None,
+            tcand=0,
+            width=0,
+            snr=0,
+            min_samp=256,
     ):
 
         Candidate.__init__(
@@ -44,6 +43,12 @@ class BurstData(Candidate):
             device=0,
             kill_mask=None,
         )
+        self.dispersed_at_dm = None
+        self.i0 = None
+        self.tsamp = None
+        self.clip_fac = None
+        self.sgram = None
+        self.mask = None
 
     def prepare_data(self, mask_chans=[], time_window=200e-3, normalise=True):
         """
@@ -57,7 +62,7 @@ class BurstData(Candidate):
         Returns:
 
         """
-        logging.info("Preparing data for burst fitting.")
+        logger.info("Preparing data for burst fitting.")
         self.get_chunk()
         nt, nf = self.data.shape
         self.i0 = nt // 2
@@ -74,8 +79,8 @@ class BurstData(Candidate):
 
         if normalise:
             off_pulse_data = self.dedispersed[
-                :, : self.i0 - int(2 * time_window // self.tsamp)
-            ]
+                             :, : self.i0 - int(2 * time_window // self.tsamp)
+                             ]
             self.sgram, self.clip_fac = self.normalise_data(self.sgram, off_pulse_data)
         return self
 
@@ -99,17 +104,17 @@ class BurstData(Candidate):
         Returns:
 
         """
-        logging.debug(f"Masking channels")
+        logger.debug(f"Masking channels")
         self.mask = mask_chans
         for m in mask_chans:
             if isinstance(m, tuple):
                 assert len(m) == 2
-                self.dedispersed.mask[:, m[0] : m[1]] = True
+                self.dedispersed.mask[:, m[0]: m[1]] = True
             elif isinstance(m, int):
                 self.dedispersed.mask[:, m] = True
             elif isinstance(m, list):
                 assert len(m) == 2
-                self.dedispersed.mask[:, m[0] : m[1]] = True
+                self.dedispersed.mask[:, m[0]: m[1]] = True
             else:
                 raise AttributeError(
                     "mask_chans can only contain tuple/list (start_chan:end_chan) and/or ints"
@@ -128,15 +133,15 @@ class BurstData(Candidate):
         Returns:
 
         """
-        logging.info(f"Normalising data using off pulse mean and std.")
+        logger.info(f"Normalising data using off pulse mean and std.")
         off_pulse_mean = np.mean(off_pulse_data)
         off_pulse_std = np.std(off_pulse_data)
-        logging.info(f"Off pulse mean and std are: {off_pulse_mean, off_pulse_std}")
+        logger.info(f"Off pulse mean and std are: {off_pulse_mean, off_pulse_std}")
         on_pulse_data = on_pulse_data - off_pulse_mean
         on_pulse_data = on_pulse_data / off_pulse_std
         if return_clip_fac:
             clip_fac = ((2 ** self.nbits - 1) - off_pulse_mean) / off_pulse_std
-            logging.debug(f"Clip factor is {clip_fac}")
+            logger.debug(f"Clip factor is {clip_fac}")
             return on_pulse_data, clip_fac
         else:
             return on_pulse_data
@@ -152,8 +157,8 @@ class BurstData(Candidate):
         Returns:
 
         """
-        logging.info(f"Cropping data with time_window: {time_window}s.")
+        logger.info(f"Cropping data with time_window: {time_window}s.")
         time_around_burst = int(time_window // self.tsamp // 2)
         return self.dedispersed[
-            self.i0 - time_around_burst : self.i0 + time_around_burst, :
-        ].T
+               self.i0 - time_around_burst: self.i0 + time_around_burst, :
+               ].T

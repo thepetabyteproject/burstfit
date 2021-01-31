@@ -16,28 +16,28 @@ class BurstFit:
     BurstFit class to perform spectro-temporal modeling on the burst data
 
     Args:
-        sgram_model:
-        sgram:
-        width:
-        dm:
-        foff:
-        fch1:
-        tsamp:
-        clip_fac:
-        outname:
+        sgram_model: Spectrogram Model class object
+        sgram: 2D array of spectrogram
+        width: width of the candidate
+        dm: DM of the candidate
+        foff: frequency resolution of the data
+        fch1: Frequency of first channel (MHz))
+        tsamp: Sampling interval (seconds)
+        clip_fac: Clip factor based on nbits of data
+        outname: Outname for the outputs
     """
 
     def __init__(
-        self,
-        sgram_model=None,
-        sgram=None,
-        width=None,
-        dm=None,
-        foff=None,
-        fch1=None,
-        tsamp=None,
-        clip_fac=None,
-        outname=None,
+            self,
+            sgram_model=None,
+            sgram=None,
+            width=None,
+            dm=None,
+            foff=None,
+            fch1=None,
+            tsamp=None,
+            clip_fac=None,
+            outname=None,
     ):
         self.sgram_model = sgram_model
         self.sgram = sgram
@@ -77,9 +77,9 @@ class BurstFit:
             n = len(keys)
         return n
 
-    @property
     def validate(self):
         """
+        Validate the class attributes
 
         Returns:
 
@@ -92,14 +92,14 @@ class BurstFit:
         assert self.fch1, "fch1 not set"
         assert self.tsamp, "tsamp not set"
 
-    @property
     def precalc(self):
         """
+        Perform precalculations for fitting
 
         Returns:
 
         """
-        logging.debug(f"Running precalculations for component: {self.comp_num}")
+        logger.debug(f"Running precalculations for component: {self.comp_num}")
         self.nf, self.nt = self.sgram.shape
         assert self.comp_num > 0
         if self.comp_num == 1:
@@ -124,8 +124,14 @@ class BurstFit:
         self.sgram_model.metadata = self.metadata
         self.sgram_model.forfit = True
 
-    @property
     def make_spectra(self):
+        """
+        Make the spectra by using the profile fitting parameters.
+
+        Returns:
+
+        """
+        tau_width = 0
         try:
             logger.info("Making spectra using profile fit parameters.")
             mu_idx = np.where(np.array(self.profile_param_names) == "mu")[0]
@@ -134,7 +140,6 @@ class BurstFit:
             assert len(sig_idx) == 1, "sigma not found in profile parameter names"
             self.i0 = self.profile_params[self.comp_num]["popt"][mu_idx[0]]
             width = 2.355 * self.profile_params[self.comp_num]["popt"][sig_idx[0]]
-            tau_width = 0
             if "tau" in self.profile_param_names:
                 t_idx = np.where(np.array(self.profile_param_names) == "tau")[0]
                 assert len(t_idx) == 1, "tau not found in profile parameter names"
@@ -166,40 +171,43 @@ class BurstFit:
         if end > self.nt:
             end = self.nt
         end += int(tau_width)
-        logging.debug(f"Generating spectra from sample {start} to {end}")
+        logger.debug(f"Generating spectra from sample {start} to {end}")
         self.spectra = self.residual[:, start:end].mean(-1)
 
-        logging.debug(f"Normalising spectra to unit area.")
+        logger.debug(f"Normalising spectra to unit area.")
         self.spectra = self.spectra / np.trapz(self.spectra)
 
     def fitcycle(self, plot, sgram_bounds=[-np.inf, np.inf]):
         """
+        Run the fitting cycle to fit one component
 
         Args:
-            plot:
+            plot: To plot
+            sgram_bounds: Bounds for spectrogram fitting
 
         Returns:
 
         """
-        logging.info(f"Fitting component {self.comp_num}.")
-        self.validate
-        self.precalc
+        logger.info(f"Fitting component {self.comp_num}.")
+        self.validate()
+        self.precalc()
         self.initial_profilefit(plot=plot)
-        self.make_spectra
+        self.make_spectra()
         self.initial_spectrafit(plot=plot)
         self.sgram_fit(plot=plot, bounds=sgram_bounds)
 
     def initial_profilefit(self, plot=False, bounds=[]):
         """
+        Perform initial profile fit on the pulse.
 
         Args:
-            plot:
-            bounds:
+            plot: To plot the fit result.
+            bounds: Bounds for fitting.
 
         Returns:
 
         """
-        logging.info(f"Running initial profile fit for component: {self.comp_num}")
+        logger.info(f"Running initial profile fit for component: {self.comp_num}")
         xdata = np.arange(self.nt)
         ydata = self.ts
         if not np.any(bounds):
@@ -217,7 +225,7 @@ class BurstFit:
                 )
             else:
                 bounds = [-np.inf, np.inf]
-        logging.debug(f"Bounds for profile fit are: {bounds}")
+        logger.debug(f"Bounds for profile fit are: {bounds}")
         popt, pcov = curve_fit(
             self.sgram_model.pulse_model.function,
             xdata,
@@ -228,9 +236,9 @@ class BurstFit:
         assert np.isinf(err).sum() == 0, "Fit errors are not finite. Terminating."
         self.profile_params[self.comp_num] = {"popt": list(popt), "perr": err}
 
-        logging.info(f"Converged parameters (profile fit) are:")
+        logger.info(f"Converged parameters (profile fit) are:")
         for i, p in enumerate(self.profile_params[self.comp_num]["popt"]):
-            logging.info(f"{self.profile_param_names[i]}: {p} +- {err[i]}")
+            logger.info(f"{self.profile_param_names[i]}: {p} +- {err[i]}")
 
         if plot:
             plot_1d_fit(
@@ -246,15 +254,16 @@ class BurstFit:
 
     def initial_spectrafit(self, plot=False, bounds=[]):
         """
+        Perform initial spectra fit on the spectra.
 
         Args:
-            plot:
-            bounds:
+            plot: To plot the fitting results.
+            bounds: Bounds for fitting.
 
         Returns:
 
         """
-        logging.info(f"Running spectra profile fit for component: {self.comp_num}")
+        logger.info(f"Running spectra profile fit for component: {self.comp_num}")
         xdata = np.arange(self.nf)
         ydata = self.spectra
         if not np.any(bounds):
@@ -262,7 +271,7 @@ class BurstFit:
                 bounds = ([xdata.min(), 0], [xdata.max(), xdata.max()])
             else:
                 bounds = [-np.inf, np.inf]
-        logging.debug(f"Bounds for spectra fit are: {bounds}")
+        logger.debug(f"Bounds for spectra fit are: {bounds}")
         popt, pcov = curve_fit(
             self.sgram_model.spectra_model.function,
             xdata,
@@ -273,9 +282,9 @@ class BurstFit:
         assert np.isinf(err).sum() == 0, "Fit errors are not finite. Terminating."
         self.spectra_params[self.comp_num] = {"popt": list(popt), "perr": err}
 
-        logging.info(f"Converged parameters (spectra fit) are:")
+        logger.info(f"Converged parameters (spectra fit) are:")
         for i, p in enumerate(self.spectra_params[self.comp_num]["popt"]):
-            logging.info(f"{self.spectra_param_names[i]}: {p} +- {err[i]}")
+            logger.info(f"{self.spectra_param_names[i]}: {p} +- {err[i]}")
 
         if plot:
             plot_1d_fit(
@@ -291,22 +300,23 @@ class BurstFit:
 
     def sgram_fit(self, plot=False, bounds=[-np.inf, np.inf]):
         """
+        Perform fit on the spectrogram and updates the residual.
 
         Args:
-            plot:
-            bounds:
+            plot: To plot the fitting results.
+            bounds: Bounds on the spectrogram fit.
 
         Returns:
 
         """
-        logging.info(f"Running sgram profile fit for component: {self.comp_num}")
+        logger.info(f"Running sgram profile fit for component: {self.comp_num}")
         p0 = (
-            self.spectra_params[self.comp_num]["popt"]
-            + self.profile_params[self.comp_num]["popt"]
-            + [self.dm]  # , 4]
+                self.spectra_params[self.comp_num]["popt"]
+                + self.profile_params[self.comp_num]["popt"]
+                + [self.dm]  # , 4]
         )
 
-        logging.info(f"initial estimate for parameters: {p0}")
+        logger.info(f"initial estimate for parameters: {p0}")
         try:
             popt, pcov = curve_fit(
                 self.sgram_model.evaluate,
@@ -317,8 +327,8 @@ class BurstFit:
             )
         except RuntimeError as e:
             retry_frac = 0.9
-            logging.warning(f"{e}")
-            logging.warning(f"Retrying with p0+-({retry_frac}*p0) bounds")
+            logger.warning(f"{e}")
+            logger.warning(f"Retrying with p0+-({retry_frac}*p0) bounds")
             p0_1 = np.array(p0) * (1 - retry_frac)
             p0_2 = np.array(p0) * (1 + retry_frac)
             bounds = (np.min([p0_1, p0_2], axis=0), np.max([p0_1, p0_2], axis=0))
@@ -333,7 +343,7 @@ class BurstFit:
         err = np.sqrt(np.diag(pcov))
         retry_frac = 0.2
         if np.isinf(err).sum() > 0:
-            logging.warning(
+            logger.warning(
                 f"Fit errors are not finite. Retrying with p0+-({retry_frac}*p0) bounds"
             )
             p0_1 = np.array(p0) * (1 - retry_frac)
@@ -350,9 +360,9 @@ class BurstFit:
             assert np.isinf(err).sum() == 0, "Errors are still not finite. Terminating."
 
         self.sgram_params[self.comp_num] = {"popt": list(popt), "perr": err}
-        logging.info(f"Converged parameters are:")
+        logger.info(f"Converged parameters are:")
         for i, p in enumerate(self.sgram_params[self.comp_num]["popt"]):
-            logging.info(f"{self.param_names[i]}: {p} +- {err[i]}")
+            logger.info(f"{self.param_names[i]}: {p} +- {err[i]}")
 
         self.sgram_model.forfit = False
         if plot:
@@ -366,14 +376,15 @@ class BurstFit:
 
     def fit_all_components(self, plot):
         """
+        Fit all components together (used if num_comp > 1)
 
         Args:
-            plot:
+            plot: To plot the fitting results.
 
         Returns:
 
         """
-        logging.info(f"Fitting {self.ncomponents} components together.")
+        logger.info(f"Fitting {self.ncomponents} components together.")
         p0 = []
         for k in self.sgram_params.keys():
             p0 += self.sgram_params[k]["popt"]
@@ -389,12 +400,12 @@ class BurstFit:
 
         self.sgram_params["all"] = {"popt": list(popt), "perr": err}
         nparams = len(self.param_names)
-        logging.info(f"Converged parameters are:")
+        logger.info(f"Converged parameters are:")
         for i in range(self.ncomponents):
-            logging.info(f"Component {i}")
-            params = self.sgram_params["all"]["popt"][i * nparams : (i + 1) * nparams]
+            logger.info(f"Component {i}")
+            params = self.sgram_params["all"]["popt"][i * nparams: (i + 1) * nparams]
             for j, p in enumerate(params):
-                logging.info(f"{self.param_names[j]}: {p} +- {err[j]}")
+                logger.info(f"{self.param_names[j]}: {p} +- {err[j]}")
 
         if plot:
             plot_2d_fit(
@@ -407,18 +418,20 @@ class BurstFit:
 
     def fitall(self, plot=True, max_ncomp=5, sgram_bounds=[-np.inf, np.inf]):
         """
+        Perform spectro-temporal fitting on the spectrogram for all the components.
 
         Args:
-            plot:
-            max_ncomp:
+            plot: to plot the fitting results.
+            max_ncomp: maximum number of components to fit.
+            sgram_bounds: bounds on spectrogram fit.
 
         Returns:
 
         """
-        self.precalc
+        self.precalc()
         test_res = self.run_tests
         if test_res:
-            logging.warning(
+            logger.warning(
                 "On pulse region looks like noise. Check candidate parameters"
             )
 
@@ -426,7 +439,7 @@ class BurstFit:
             self.fitcycle(plot, sgram_bounds)
             test_res = self.run_tests
             if test_res:
-                logging.info(
+                logger.info(
                     "On pulse residual looks like noise. "
                     "Terminating individual component fitting."
                 )
@@ -434,22 +447,22 @@ class BurstFit:
             self.comp_num += 1
 
             if self.comp_num == max_ncomp:
-                logging.info(
+                logger.info(
                     "Max number of components reached. "
                     "Terminating individual component fitting."
                 )
 
         if self.ncomponents > 1:
-            logging.info(
+            logger.info(
                 f"Final number of components {self.ncomponents} > 1. "
                 "Fitting all components together."
             )
             self.fit_all_components(plot)
             test_res = self.run_tests
             if test_res:
-                logging.info("On pulse residual looks like noise. ")
+                logger.info("On pulse residual looks like noise. ")
             else:
-                logging.warning(
+                logger.warning(
                     "On pulse residual doesnot look like noise."
                     "Check the fitting results carefully."
                 )
@@ -457,52 +470,56 @@ class BurstFit:
             popt = self.sgram_params[1]["popt"]
             err = self.sgram_params[1]["perr"]
             self.sgram_params["all"] = {"popt": popt, "perr": err}
-            logging.info(f"Final number of components = 1. Terminating fitting.")
+            logger.info(f"Final number of components = 1. Terminating fitting.")
 
     @property
     def run_tests(self):
         """
+        Run statistical tests to compare ON pulse residual with OFF pulse spectrogram distributions.
 
         Returns:
+            True if either of the left or right OFF pulse regions are similar to the residual ON pulse region.
 
         """
-        logging.info(f"Running statistical tests on the residual.")
-        on_pulse = self.residual[:, self.i0 - self.width : self.i0 + self.width]
-        off_pulse_left = self.sgram[:, 0 : 2 * self.width]
-        off_pulse_right = self.sgram[:, -2 * self.width :]
-        logging.info("Running off pulse - off pulse test")
+        logger.info(f"Running statistical tests on the residual.")
+        on_pulse = self.residual[:, self.i0 - self.width: self.i0 + self.width]
+        off_pulse_left = self.sgram[:, 0: 2 * self.width]
+        off_pulse_right = self.sgram[:, -2 * self.width:]
+        logger.info("Running off pulse - off pulse test")
         off_off = tests(off_pulse_left, off_pulse_right, ntest=2)
 
         if off_off == 0:
-            logging.warning(f"Off pulse regions are not similar")
+            logger.warning(f"Off pulse regions are not similar")
 
-        logging.info("Running on pulse - off pulse (L) test")
+        logger.info("Running on pulse - off pulse (L) test")
         ofl_on = tests(off_pulse_left, on_pulse, ntest=2)
         if ofl_on == 1:
-            logging.info("On pulse residual is similar to left off pulse region.")
+            logger.info("On pulse residual is similar to left off pulse region.")
 
-        logging.info("Running on pulse - off pulse (R) test")
+        logger.info("Running on pulse - off pulse (R) test")
         ofr_on = tests(off_pulse_right, on_pulse, ntest=2)
         if ofr_on == 1:
-            logging.info("On pulse residual is similar to right off pulse region.")
+            logger.info("On pulse residual is similar to right off pulse region.")
 
         return np.any([ofl_on, ofr_on])
 
     @property
     def model(self):
         """
+        Function to make the model.
 
         Returns:
+            2D array of spectrogram model.
 
         """
-        logging.info(f"Making model.")
+        logger.info(f"Making model.")
         if "all" in self.sgram_params.keys():
             model = self.model_from_params(
                 [0], *self.sgram_params["all"]["popt"]
             ).reshape(self.nf, self.nt)
         else:
             assert len(self.sgram_params) == self.ncomponents
-            logging.info(f"Found {self.ncomponents} components.")
+            logger.info(f"Found {self.ncomponents} components.")
 
             model = np.zeros(shape=(self.nf, self.nt))
             for i in range(1, self.ncomponents + 1):
@@ -513,8 +530,10 @@ class BurstFit:
 
     def model_from_params(self, x, *params):
         """
+        Function to make the model using spectrogram parameters.
 
         Returns:
+            Flattened array of spectrogram model.
 
         """
         assert len(params) % len(self.param_names) == 0
@@ -522,20 +541,23 @@ class BurstFit:
         nparams = int(len(self.param_names))
         model = np.zeros(shape=(self.nf, self.nt))
         for i in range(1, ncomp + 1):
-            popt = params[(i - 1) * nparams : i * nparams]
+            popt = params[(i - 1) * nparams: i * nparams]
             self.sgram_model.forfit = False
             model += self.sgram_model.evaluate([0], *popt)
         return model.ravel()
 
     def get_physical_params(self, mapping, params=None, errors=None):
         """
+        Convert parameters to physical units using the input mapping.
 
         Args:
-            mapping:
-            params:
-            errors:
+            mapping: Mapping to convert the parameters to physical units.
+            params: parameters to be converted.
+            errors: errors to be converted.
 
         Returns:
+            physical_dict: Dictionary of physical parameters.
+            physical_errs: Dictionary with errors converted to physical units.
 
         """
         if not params:
