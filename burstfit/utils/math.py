@@ -30,8 +30,8 @@ def tests(off_pulse, on_pulse_res, pth=0.05, ntest=1):
     Run statistical tests to compare the two inputs
 
     Args:
-        off_pulse:
-        on_pulse_res:
+        off_pulse: input array to compare
+        on_pulse_res: input array to compare
         pth: threshold on p value to consider the distributions similar
         ntest: minimum number of tests to pass
 
@@ -60,9 +60,9 @@ def fma(param, m, a):
     """
 
     Args:
-        param:
-        m:
-        a:
+        param: parameter value
+        m: number to multiply to param
+        a: number to add
 
     Returns:
 

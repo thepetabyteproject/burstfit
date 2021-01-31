@@ -65,9 +65,9 @@ def spectra_fn(nu, nu_0, nu_sig):
     Gaussian spectra function
 
     Args:
-        nu:
-        nu_0:
-        nu_sig:
+        nu: input array
+        nu_0: center of the spectra gaussian
+        nu_sig: sigma of spectra gaussian
 
     Returns:
 
@@ -94,7 +94,7 @@ def sgram_fn(
         spectra_function: Function to model spectra
         spectra_params: Dictionary with spectra parameters
         pulse_params: Dictionary with pulse parameters
-        other_params:
+        other_params: list of other params needed for this function (eg: [dm])
 
     Returns:
 
@@ -136,25 +136,4 @@ def sgram_fn(
     model_final = dedispersed_model_corrected * spectra_from_fit[:, None]
     if clip_fac != 0:
         model_final = np.clip(model_final, 0, clip_fac)
-    return model_final  # model_final.ravel()
-
-
-# def model_all_components(params, *popts):
-#    """
-#
-#    Args:
-#        params:
-#        *popts:
-#
-#    Returns:
-#
-#    """
-#    nt, nf, dispersed_at_dm, tsamp, fstart, foff = params
-#    nt = int(nt)
-#    nf = int(nf)
-#    m = np.zeros(shape=(nf, nt))
-#    popts = list(popts)
-#    for i in range(len(popts) // 7):
-#        popt = popts[(i) * 7 : (i + 1) * 7]
-#        m += model_sgram(xdata_params, *popt).reshape(nf, nt)
-#    return m.ravel()
+    return model_final
