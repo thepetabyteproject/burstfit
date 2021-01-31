@@ -433,11 +433,11 @@ class BurstFit:
                 break
             self.comp_num += 1
 
-        if self.comp_num == max_ncomp:
-            logging.info(
-                "Max number of components reached. "
-                "Terminating individual component fitting."
-            )
+            if self.comp_num == max_ncomp:
+                logging.info(
+                    "Max number of components reached. "
+                    "Terminating individual component fitting."
+                )
 
         if self.ncomponents > 1:
             logging.info(
@@ -454,6 +454,9 @@ class BurstFit:
                     "Check the fitting results carefully."
                 )
         else:
+            popt = self.sgram_params[1]['popt']
+            err = self.sgram_params[1]['perr']
+            self.sgram_params["all"] = {"popt": popt, "perr": err}
             logging.info(f"Final number of components = 1. Terminating fitting.")
 
     @property
