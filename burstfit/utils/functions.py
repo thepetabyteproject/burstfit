@@ -78,12 +78,12 @@ def spectra_fn(nu, nu_0, nu_sig):
 
 
 def sgram_fn(
-    metadata,
-    pulse_function,
-    spectra_function,
-    spectra_params,
-    pulse_params,
-    other_params,
+        metadata,
+        pulse_function,
+        spectra_function,
+        spectra_params,
+        pulse_params,
+        other_params,
 ):
     """
     Spectrogram function
