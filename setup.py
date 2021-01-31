@@ -3,6 +3,9 @@ import re
 
 from setuptools import setup, find_packages
 
+with open("requirements.txt") as f:
+    required = f.read().splitlines()
+
 with open("README.md", "r") as f:
     long_description = f.read()
 
@@ -19,7 +22,7 @@ setup(
     author="Kshitij Aggarwal, Devansh Agarwal",
     scripts=glob.glob("bin/*"),
     #     tests_require=["pytest", "pytest-cov"],
-    #     install_requires=required,
+    install_requires=required,
     long_description=long_description,
     long_description_content_type="text/markdown",
     author_email="ka0064@mix.wvu.edu, da0017@mix.wvu.edu",
