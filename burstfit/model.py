@@ -90,11 +90,13 @@ class SgramModel:
         self.forfit = True
         if not param_names:
             self.param_names = (
-                self.spectra_model.param_names + self.pulse_model.param_names + ["DM"]#, "tau_idx"]
+                self.spectra_model.param_names
+                + self.pulse_model.param_names
+                + ["DM"]  # , "tau_idx"]
             )
         else:
             self.param_names = param_names
-            
+
     @property
     def nparams(self):
         """
@@ -121,7 +123,7 @@ class SgramModel:
         assert len(params) == len(self.param_names)
         spectra_params = self.spectra_model.get_param_dict(*params[0:ns])
         pulse_params = self.pulse_model.get_param_dict(*params[ns : ns + np])
-        other_params = params[ns + np:]
+        other_params = params[ns + np :]
         model = self.sgram_function(
             self.metadata,
             self.pulse_model.function,

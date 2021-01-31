@@ -303,7 +303,7 @@ class BurstFit:
         p0 = (
             self.spectra_params[self.comp_num]["popt"]
             + self.profile_params[self.comp_num]["popt"]
-            + [self.dm]#, 4]
+            + [self.dm]  # , 4]
         )
 
         logging.info(f"initial estimate for parameters: {p0}")
@@ -454,8 +454,8 @@ class BurstFit:
                     "Check the fitting results carefully."
                 )
         else:
-            popt = self.sgram_params[1]['popt']
-            err = self.sgram_params[1]['perr']
+            popt = self.sgram_params[1]["popt"]
+            err = self.sgram_params[1]["perr"]
             self.sgram_params["all"] = {"popt": popt, "perr": err}
             logging.info(f"Final number of components = 1. Terminating fitting.")
 

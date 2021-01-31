@@ -100,7 +100,7 @@ def sgram_fn(
 
     """
     nt, nf, dispersed_at_dm, tsamp, fstart, foff, clip_fac = metadata
-#     dm, tau_idx = other_params
+    #     dm, tau_idx = other_params
     [dm] = other_params
     tau_idx = 4
     nt = int(nt)
@@ -109,13 +109,13 @@ def sgram_fn(
     chans = np.arange(nf)
     times = np.arange(nt)
     spectra_from_fit = spectra_function(chans, **spectra_params)  # nu_0, nu_sig)
-    
+
     model = np.zeros(shape=(nf, nt))
     if "tau" in pulse_params.keys():
         tau = pulse_params["tau"]
         p_params = pulse_params
         for i, freq in enumerate(freqs):
-            tau_f = tau * (freq / freqs[0]) ** (-1*tau_idx)
+            tau_f = tau * (freq / freqs[0]) ** (-1 * tau_idx)
             p_params["tau"] = tau_f
             p = pulse_function(times, **p_params)
             model[i, :] += p
