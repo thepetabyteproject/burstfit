@@ -15,21 +15,33 @@ class BurstIO:
     I/O class to save the fitting results and read results to reproduce model.
 
     Args:
-        BurstFit: Instance of burstfit class with fitting parameters
-        BurstData: Instance of burstdata class with burst data
+        burstfit_obj: Instance of burstfit class with fitting parameters
+        burstdata_obj: Instance of burstdata class with burst data
         dictionary: dictionary with fitting results
         jsonfile: JSON file with the fitting results
     """
 
-    def __init__(self, BurstFit=None, BurstData=None, dictionary=None, jsonfile=None):
-        self.burstfit = BurstFit
-        self.burstdata = BurstData
+    def __init__(self, burstfit_obj=None, burstdata_obj=None, dictionary=None, jsonfile=None):
+        self.burstfit = burstfit_obj
+        self.burstdata = burstdata_obj
         self.jsonfile = jsonfile
         self.dictionary = dictionary
+        self.fileheader = None
+        self.nstart = None
+        self.tcand = None
+        self.mask = None
+        self.id = None
+        self.sgram_function = None
+        self.sgramModel = None
+        self.pulse_function = None
+        self.spectra_function = None
+        self.ncomponents = None
+        self.tsamp = None
+        self.outname = None
 
-    @property
     def set_attributes_to_save(self):
         """
+        Sets required attributes to be saved
 
         Returns:
 
@@ -64,13 +76,15 @@ class BurstIO:
     def save_results(self, outname=None):
         """
 
+        Saves results of parameter fitting
+
         Args:
-            outname:
+            outname: name of the output json file
 
         Returns:
 
         """
-        self.set_attributes_to_save
+        self.set_attributes_to_save()
         out = {}
         nots = [
             "burstfit",
@@ -102,9 +116,10 @@ class BurstIO:
 
     def read_json_and_precalc(self, file=None):
         """
+        Read the result json file and calculate required parameters.
 
         Args:
-            file:
+            file: results file to read
 
         Returns:
 
@@ -124,11 +139,16 @@ class BurstIO:
         for k in self.dictionary.keys():
             setattr(self, k, self.dictionary[k])
 
-        self.set_metadata
+        self.set_metadata()
         logger.info(f"BurstIO class is ready with necessary attributes.")
 
-    @property
     def set_metadata(self):
+        """
+        Sets the metadata tuple
+
+        Returns:
+
+        """
         self.sgramModel.metadata = (
             self.nt,
             self.nf,
@@ -141,6 +161,7 @@ class BurstIO:
 
     def set_classes_from_dict(self):
         """
+        Sets models and required classes
 
         Returns:
 
@@ -163,8 +184,10 @@ class BurstIO:
     @property
     def model(self):
         """
+        Function to make the model
 
         Returns:
+            2D array of model
 
         """
         logging.info(f"Making model.")
