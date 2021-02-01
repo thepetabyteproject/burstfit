@@ -35,6 +35,6 @@ def test_model_dict(model):
 
 def test_sgram_model():
     sgrammodel = SgramModel(
-        pulse_model=pulse_fn, spectra_model=spectra_fn, sgram_function=sgram_fn
+        pulse_model=pulse_fn, spectra_model=spectra_fn, sgram_fn=sgram_fn
     )
     assert sgrammodel.nparams == 7
