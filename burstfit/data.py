@@ -45,7 +45,6 @@ class BurstData(Candidate):
         )
         self.dispersed_at_dm = None
         self.i0 = None
-        self.tsamp = None
         self.clip_fac = None
         self.sgram = None
         self.mask = None
