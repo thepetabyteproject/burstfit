@@ -21,7 +21,7 @@ setup(
     url="https://github.com/thepetabyteproject/burstfit",
     author="Kshitij Aggarwal, Devansh Agarwal",
     scripts=glob.glob("bin/*"),
-    #     tests_require=["pytest", "pytest-cov"],
+    tests_require=["pytest", "pytest-cov"],
     install_requires=required,
     long_description=long_description,
     long_description_content_type="text/markdown",
