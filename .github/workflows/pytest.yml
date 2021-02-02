@@ -40,4 +40,4 @@ jobs:
     - name: Run pytest and Generate coverage report
       run: |
         pip install pytest pytest-cov
-        python -m pytest --cov=your --cov-report=xml
+        python -m pytest --cov=burstfit --cov-report=xml
