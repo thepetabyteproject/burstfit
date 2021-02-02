@@ -61,7 +61,7 @@ def test_profile_fit(bf):
     bf.precalc()
     bf.initial_profilefit()
     assert list(bf.profile_params.keys()) == [1]
-    assert pytest.approx(bf.profile_params[1]["popt"][0], abs=0.1) == 511.1
+    assert pytest.approx(bf.profile_params[1]["popt"][0], abs=0.1) == 512.8
 
 
 def test_make_spectra_w_profile_params(bf):
