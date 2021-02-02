@@ -177,11 +177,13 @@ class BurstFit:
         logger.debug(f"Normalising spectra to unit area.")
         self.spectra = self.spectra / np.trapz(self.spectra)
 
-    def fitcycle(self, plot, sgram_bounds=[-np.inf, np.inf]):
+    def fitcycle(self, plot=False, profile_bounds=[], spectra_bounds=[], sgram_bounds=[-np.inf, np.inf]):
         """
         Run the fitting cycle to fit one component
 
         Args:
+            profile_bounds: Bounds for initial profile fit
+            spectra_bounds: Bounds for initial spectra fit
             plot: To plot
             sgram_bounds: Bounds for spectrogram fitting
 
@@ -191,9 +193,9 @@ class BurstFit:
         logger.info(f"Fitting component {self.comp_num}.")
         self.validate()
         self.precalc()
-        self.initial_profilefit(plot=plot)
+        self.initial_profilefit(plot=plot, bounds=profile_bounds)
         self.make_spectra()
-        self.initial_spectrafit(plot=plot)
+        self.initial_spectrafit(plot=plot, bounds=spectra_bounds)
         self.sgram_fit(plot=plot, bounds=sgram_bounds)
 
     def initial_profilefit(self, plot=False, bounds=[]):
@@ -416,11 +418,13 @@ class BurstFit:
 
         self.residual = self.sgram - self.model
 
-    def fitall(self, plot=True, max_ncomp=5, sgram_bounds=[-np.inf, np.inf]):
+    def fitall(self, plot=True, max_ncomp=5, profile_bounds=[], spectra_bounds=[], sgram_bounds=[-np.inf, np.inf]):
         """
         Perform spectro-temporal fitting on the spectrogram for all the components.
 
         Args:
+            spectra_bounds: Bounds for initial profile fit
+            profile_bounds: Bounds for initial spectra fit
             plot: to plot the fitting results.
             max_ncomp: maximum number of components to fit.
             sgram_bounds: bounds on spectrogram fit.
@@ -436,7 +440,11 @@ class BurstFit:
             )
 
         while self.ncomponents < max_ncomp:
-            self.fitcycle(plot, sgram_bounds)
+            if np.any(profile_bounds):
+                logger.warning(f'Input profile bounds detected. Using them for component {self.comp_num}')
+            if np.any(spectra_bounds):
+                logger.warning(f'Input spectra bounds detected. Using them for component {self.comp_num}')
+            self.fitcycle(plot=plot, profile_bounds=profile_bounds, spectra_bounds=spectra_bounds, sgram_bounds=sgram_bounds)
             test_res = self.run_tests
             if test_res:
                 logger.info(
