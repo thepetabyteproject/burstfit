@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from burstfit.model import *
-from burstfit.utils.functions import pulse_fn, spectra_fn, sgram_fn, gauss
+from burstfit.utils.functions import pulse_fn, gauss_norm, sgram_fn, gauss
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -35,6 +35,6 @@ def test_model_dict(model):
 
 def test_sgram_model():
     pm = Model(pulse_fn)
-    sm = Model(spectra_fn)
+    sm = Model(gauss_norm)
     sgmodel = SgramModel(pm, sm, sgram_fn)
     assert sgmodel.nparams == 7

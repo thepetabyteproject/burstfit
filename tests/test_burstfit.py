@@ -5,7 +5,7 @@ import numpy as np
 from burstfit.data import BurstData
 from burstfit.fit import BurstFit
 from burstfit.model import Model, SgramModel
-from burstfit.utils.functions import pulse_fn, spectra_fn, sgram_fn
+from burstfit.utils.functions import pulse_fn, gauss_norm, sgram_fn
 
 _install_dir = os.path.abspath(os.path.dirname(__file__))
 import pytest
@@ -29,7 +29,7 @@ def bd():
 @pytest.fixture(scope="function", autouse=True)
 def bf(bd):
     pm = Model(pulse_fn)
-    sm = Model(spectra_fn)
+    sm = Model(gauss_norm)
     sgmodel = SgramModel(pm, sm, sgram_fn)
     bf = BurstFit(
         sgram_model=sgmodel,

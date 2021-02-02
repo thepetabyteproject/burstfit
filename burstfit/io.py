@@ -4,7 +4,7 @@ import logging
 import numpy as np
 
 from burstfit.model import Model, SgramModel
-from burstfit.utils.functions import pulse_fn, spectra_fn, sgram_fn
+from burstfit.utils.functions import pulse_fn, gauss_norm, gauss_norm2, gauss_norm3, sgram_fn
 from burstfit.utils.misc import MyEncoder
 
 logger = logging.getLogger(__name__)
@@ -171,17 +171,21 @@ class BurstIO:
         if self.dictionary["pulse_function"] == "pulse_fn":
             pulseModel = Model(pulse_fn)
         else:
-            raise ValueError(f"self.dictionary['pulse_function'] not supported.")
+            raise ValueError(f"{self.dictionary['pulse_function']} not supported.")
 
-        if self.dictionary["spectra_function"] == "spectra_fn":
-            spectraModel = Model(spectra_fn)
+        if self.dictionary["spectra_function"] == "gauss_norm":
+            spectraModel = Model(gauss_norm)
+        elif self.dictionary["spectra_function"] == "gauss_norm2":
+            spectraModel = Model(gauss_norm2)
+        elif self.dictionary["spectra_function"] == "gauss_norm3":
+            spectraModel = Model(gauss_norm3)
         else:
-            raise ValueError(f"self.dictionary['spectra_function'] not supported.")
+            raise ValueError(f"{self.dictionary['spectra_function']} not supported.")
 
         if self.dictionary["sgram_function"] == "sgram_fn":
             self.sgramModel = SgramModel(pulseModel, spectraModel, sgram_fn)
         else:
-            raise ValueError(f"self.dictionary['sgram_function'] not supported.")
+            raise ValueError(f"{self.dictionary['sgram_function']} not supported.")
 
     @property
     def model(self):

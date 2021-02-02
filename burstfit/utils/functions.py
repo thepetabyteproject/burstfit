@@ -28,6 +28,63 @@ def gauss(x, S, mu, sigma):
     )
 
 
+def gauss_norm(x, mu, sig):
+    """
+    Gaussian function of unit area
+
+    Args:
+        x: input array
+        mu: center of the gaussian
+        sig: sigma of gaussian
+
+    Returns:
+
+    """
+    return (1 / (np.sqrt(2 * np.pi) * sig)) * np.exp(
+        -(1 / 2) * ((x - mu) / sig) ** 2
+    )
+
+
+def gauss_norm2(x, mu1, sig1, mu2, sig2, amp1):
+    """
+    Two gaussian functions of unit total area
+
+    Args:
+        x: input array
+        mu1: mean of gaussian1
+        sig1: sigma of gaussian1
+        mu2: mean of gaussian2
+        sig2: sigma of gaussian2
+        amp1: amplitude of gaussian1
+
+    Returns:
+
+    """
+    return amp1 * gauss_norm(x, mu1, sig1) + (1 - amp1) * gauss_norm(x, mu2, sig2)
+
+
+def gauss_norm3(x, mu1, sig1, mu2, sig2, mu3, sig3, amp1, amp2):
+    """
+    Three gaussian functions of unit total area
+
+    Args:
+        x: input array
+        mu1: mean of gaussian1
+        sig1: sigma of gaussian1
+        mu2: mean of gaussian2
+        sig2: sigma of gaussian2
+        mu3: mean of gaussian3
+        sig3: sigma of gaussian3
+        amp1: amplitude of gaussian1
+        amp2: amplitude of gaussian2
+
+    Returns:
+
+    """
+    return amp1 * gauss_norm(x, mu1, sig1) + amp2 * gauss_norm(x, mu2, sig2) + (1 - amp1 - amp2) * gauss_norm(x, mu3,
+                                                                                                              sig3)
+
+
 def pulse_fn(t, S, mu, sigma, tau):
     """
 
@@ -57,24 +114,6 @@ def pulse_fn(t, S, mu, sigma, tau):
         ln_C[m0] = 0
         p = A * D * B * np.exp(ln_C)
     return p
-
-
-def spectra_fn(nu, nu_0, nu_sig):
-    """
-
-    Gaussian spectra function
-
-    Args:
-        nu: input array
-        nu_0: center of the spectra gaussian
-        nu_sig: sigma of spectra gaussian
-
-    Returns:
-
-    """
-    return (1 / (np.sqrt(2 * np.pi) * nu_sig)) * np.exp(
-        -(1 / 2) * ((nu - nu_0) / nu_sig) ** 2
-    )
 
 
 def sgram_fn(
