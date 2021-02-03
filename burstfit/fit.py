@@ -177,7 +177,13 @@ class BurstFit:
         logger.debug(f"Normalising spectra to unit area.")
         self.spectra = self.spectra / np.trapz(self.spectra)
 
-    def fitcycle(self, plot=False, profile_bounds=[], spectra_bounds=[], sgram_bounds=[-np.inf, np.inf]):
+    def fitcycle(
+            self,
+            plot=False,
+            profile_bounds=[],
+            spectra_bounds=[],
+            sgram_bounds=[-np.inf, np.inf],
+    ):
         """
         Run the fitting cycle to fit one component
 
@@ -418,7 +424,14 @@ class BurstFit:
 
         self.residual = self.sgram - self.model
 
-    def fitall(self, plot=True, max_ncomp=5, profile_bounds=[], spectra_bounds=[], sgram_bounds=[-np.inf, np.inf]):
+    def fitall(
+            self,
+            plot=True,
+            max_ncomp=5,
+            profile_bounds=[],
+            spectra_bounds=[],
+            sgram_bounds=[-np.inf, np.inf],
+    ):
         """
         Perform spectro-temporal fitting on the spectrogram for all the components.
 
@@ -441,10 +454,19 @@ class BurstFit:
 
         while self.ncomponents < max_ncomp:
             if np.any(profile_bounds):
-                logger.warning(f'Input profile bounds detected. Using them for component {self.comp_num}')
+                logger.warning(
+                    f"Input profile bounds detected. Using them for component {self.comp_num}"
+                )
             if np.any(spectra_bounds):
-                logger.warning(f'Input spectra bounds detected. Using them for component {self.comp_num}')
-            self.fitcycle(plot=plot, profile_bounds=profile_bounds, spectra_bounds=spectra_bounds, sgram_bounds=sgram_bounds)
+                logger.warning(
+                    f"Input spectra bounds detected. Using them for component {self.comp_num}"
+                )
+            self.fitcycle(
+                plot=plot,
+                profile_bounds=profile_bounds,
+                spectra_bounds=spectra_bounds,
+                sgram_bounds=sgram_bounds,
+            )
             test_res = self.run_tests
             if test_res:
                 logger.info(

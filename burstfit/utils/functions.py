@@ -40,9 +40,7 @@ def gauss_norm(x, mu, sig):
     Returns:
 
     """
-    return (1 / (np.sqrt(2 * np.pi) * sig)) * np.exp(
-        -(1 / 2) * ((x - mu) / sig) ** 2
-    )
+    return (1 / (np.sqrt(2 * np.pi) * sig)) * np.exp(-(1 / 2) * ((x - mu) / sig) ** 2)
 
 
 def gauss_norm2(x, mu1, sig1, mu2, sig2, amp1):
@@ -81,8 +79,11 @@ def gauss_norm3(x, mu1, sig1, mu2, sig2, mu3, sig3, amp1, amp2):
     Returns:
 
     """
-    return amp1 * gauss_norm(x, mu1, sig1) + amp2 * gauss_norm(x, mu2, sig2) + (1 - amp1 - amp2) * gauss_norm(x, mu3,
-                                                                                                              sig3)
+    return (
+            amp1 * gauss_norm(x, mu1, sig1)
+            + amp2 * gauss_norm(x, mu2, sig2)
+            + (1 - amp1 - amp2) * gauss_norm(x, mu3, sig3)
+    )
 
 
 def pulse_fn(t, S, mu, sigma, tau):

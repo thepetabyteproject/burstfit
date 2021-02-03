@@ -4,7 +4,13 @@ import logging
 import numpy as np
 
 from burstfit.model import Model, SgramModel
-from burstfit.utils.functions import pulse_fn, gauss_norm, gauss_norm2, gauss_norm3, sgram_fn
+from burstfit.utils.functions import (
+    pulse_fn,
+    gauss_norm,
+    gauss_norm2,
+    gauss_norm3,
+    sgram_fn,
+)
 from burstfit.utils.misc import MyEncoder
 
 logger = logging.getLogger(__name__)
