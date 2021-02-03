@@ -49,6 +49,7 @@ def bf_fitted(bf):
     bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]))
     return bf
 
+
 def test_validate(bf):
     bf.validate()
 
@@ -70,6 +71,7 @@ def test_profile_fit(bf):
     assert pytest.approx(bf.profile_params[1]["popt"][0], abs=0.1) == 512.8
     assert bf.profile_params[1]["popt"][3] < 1
     assert bf.profile_params[1]["popt"][2] < 1
+
 
 def test_make_spectra_w_profile_params(bf):
     bf.precalc()
@@ -93,15 +95,20 @@ def test_initial_spectra_fit(bf):
     assert pytest.approx(bf.spectra_params[1]["popt"][0], abs=1) == 87
     assert pytest.approx(bf.spectra_params[1]["popt"][2], abs=1) == 284
 
+
 def test_fitall(bf):
     bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]))
     assert bf.ncomponents == 1
-    assert bf.sgram_params[1]['popt'] == bf.sgram_params['all']['popt']
-    assert pytest.approx(bf.sgram_params[1]['popt'][0], rel=1) == 74
-    assert pytest.approx(bf.sgram_params[1]['popt'][2], rel=1) == 281
-    assert pytest.approx(bf.sgram_params[1]['popt'][5], rel=10) == 560
-    assert pytest.approx(bf.sgram_params[1]['popt'][-1], rel=1) == 474
+    assert bf.sgram_params[1]["popt"] == bf.sgram_params["all"]["popt"]
+    assert pytest.approx(bf.sgram_params[1]["popt"][0], rel=1) == 74
+    assert pytest.approx(bf.sgram_params[1]["popt"][2], rel=1) == 281
+    assert pytest.approx(bf.sgram_params[1]["popt"][5], rel=10) == 560
+    assert pytest.approx(bf.sgram_params[1]["popt"][-1], rel=1) == 474
 
+
+def test_red_chisq(bf_fitted):
+    red_chi_sq = bf_fitted.calc_redchisq()
+    assert pytest.approx(red_chi_sq, rel=0.1) == 1
 
 def test_model(bf_fitted):
     m = bf_fitted.model
@@ -110,6 +117,6 @@ def test_model(bf_fitted):
 
 
 def test_model_from_params(bf_fitted):
-    m = bf_fitted.model_from_params([0], *bf_fitted.sgram_params[1]['popt'])
+    m = bf_fitted.model_from_params([0], *bf_fitted.sgram_params[1]["popt"])
     m = m.reshape((bf_fitted.nf, bf_fitted.nt))
     assert 79 == pytest.approx(np.argmax(m.sum(0)), rel=1)

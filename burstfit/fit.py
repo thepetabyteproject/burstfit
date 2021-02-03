@@ -62,6 +62,7 @@ class BurstFit:
         self.spectra_param_names = None
         self.param_names = None
         self.metadata = None
+        self.reduced_chi_sq = None
 
     @property
     def ncomponents(self):
@@ -474,6 +475,7 @@ class BurstFit:
                     "Terminating individual component fitting."
                 )
                 break
+            self.reduced_chi_sq = self.calc_redchisq()
             self.comp_num += 1
 
             if self.comp_num == max_ncomp:
@@ -501,6 +503,7 @@ class BurstFit:
             err = self.sgram_params[1]["perr"]
             self.sgram_params["all"] = {"popt": popt, "perr": err}
             logger.info(f"Final number of components = 1. Terminating fitting.")
+        self.reduced_chi_sq = self.calc_redchisq()
 
     @property
     def run_tests(self):
@@ -532,6 +535,14 @@ class BurstFit:
             logger.info("On pulse residual is similar to right off pulse region.")
 
         return np.any([ofl_on, ofr_on])
+
+    def calc_redchisq(self):
+        logger.debug("Estimating reduced chi square value of the fit.")
+        std = np.std(self.sgram[:, : 2 * self.width])
+        chi_squared = np.sum(((self.sgram - self.model) / std) ** 2)
+        reduced_chi_squared = chi_squared / (self.sgram.size - len(self.param_names))
+        logger.info(f"Reduced chi-square value of fit is: {reduced_chi_squared}")
+        return reduced_chi_squared
 
     @property
     def model(self):
