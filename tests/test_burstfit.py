@@ -5,7 +5,7 @@ import numpy as np
 from burstfit.data import BurstData
 from burstfit.fit import BurstFit
 from burstfit.model import Model, SgramModel
-from burstfit.utils.functions import pulse_fn, gauss_norm, sgram_fn
+from burstfit.utils.functions import pulse_fn, gauss_norm2, sgram_fn
 
 _install_dir = os.path.abspath(os.path.dirname(__file__))
 import pytest
@@ -29,7 +29,7 @@ def bd():
 @pytest.fixture(scope="function", autouse=True)
 def bf(bd):
     pm = Model(pulse_fn)
-    sm = Model(gauss_norm)
+    sm = Model(gauss_norm2)
     sgmodel = SgramModel(pm, sm, sgram_fn)
     bf = BurstFit(
         sgram_model=sgmodel,
@@ -44,6 +44,11 @@ def bf(bd):
     return bf
 
 
+@pytest.fixture(scope="function", autouse=True)
+def bf_fitted(bf):
+    bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]))
+    return bf
+
 def test_validate(bf):
     bf.validate()
 
@@ -53,8 +58,9 @@ def test_precalc(bf, bd):
     assert bf.nf == 336
     assert bf.nt == 156
     assert bf.profile_param_names == ["S", "mu", "sigma", "tau"]
-    assert bf.spectra_param_names == ["nu_0", "nu_sig"]
+    assert bf.spectra_param_names == ["mu1", "sig1", "mu2", "sig2", "amp1"]
     assert bf.metadata[2] == bd.dm
+    assert pytest.approx(np.argmax(bf.ts), rel=1) == 79
 
 
 def test_profile_fit(bf):
@@ -62,7 +68,8 @@ def test_profile_fit(bf):
     bf.initial_profilefit()
     assert list(bf.profile_params.keys()) == [1]
     assert pytest.approx(bf.profile_params[1]["popt"][0], abs=0.1) == 512.8
-
+    assert bf.profile_params[1]["popt"][3] < 1
+    assert bf.profile_params[1]["popt"][2] < 1
 
 def test_make_spectra_w_profile_params(bf):
     bf.precalc()
@@ -81,17 +88,28 @@ def test_initial_spectra_fit(bf):
     bf.precalc()
     bf.initial_profilefit()
     bf.make_spectra()
-    bf.initial_spectrafit()
+    bf.initial_spectrafit(bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]))
     assert list(bf.spectra_params.keys()) == [1]
-    assert pytest.approx(bf.spectra_params[1]["popt"][0], abs=1) == 299
-
+    assert pytest.approx(bf.spectra_params[1]["popt"][0], abs=1) == 87
+    assert pytest.approx(bf.spectra_params[1]["popt"][2], abs=1) == 284
 
 def test_fitall(bf):
-    bf.fitall()
+    bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]))
     assert bf.ncomponents == 1
+    assert bf.sgram_params[1]['popt'] == bf.sgram_params['all']['popt']
+    assert pytest.approx(bf.sgram_params[1]['popt'][0], rel=1) == 74
+    assert pytest.approx(bf.sgram_params[1]['popt'][2], rel=1) == 281
+    assert pytest.approx(bf.sgram_params[1]['popt'][5], rel=10) == 560
+    assert pytest.approx(bf.sgram_params[1]['popt'][-1], rel=1) == 474
 
 
-def test_model(bf):
-    bf.fitall()
-    m = bf.model
+def test_model(bf_fitted):
+    m = bf_fitted.model
     assert m.shape == (336, 156)
+    assert 79 == pytest.approx(np.argmax(m.sum(0)), rel=1)
+
+
+def test_model_from_params(bf_fitted):
+    m = bf_fitted.model_from_params([0], *bf_fitted.sgram_params[1]['popt'])
+    m = m.reshape((bf_fitted.nf, bf_fitted.nt))
+    assert 79 == pytest.approx(np.argmax(m.sum(0)), rel=1)
