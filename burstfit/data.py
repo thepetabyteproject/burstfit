@@ -41,7 +41,7 @@ class BurstData(Candidate):
             snr=snr,
             min_samp=min_samp,
             device=0,
-            kill_mask=None,
+            kill_mask=np.array([False]),
         )
         self.dispersed_at_dm = None
         self.i0 = None
