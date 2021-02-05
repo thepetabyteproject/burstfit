@@ -99,7 +99,7 @@ def test_initial_spectra_fit(bf):
 def test_fitall(bf):
     bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False)
     assert bf.ncomponents == 1
-    assert bf.sgram_params[1]["popt"] == bf.sgram_params["all"]["popt"]
+    assert bf.sgram_params[1]["popt"] == bf.sgram_params["all"][1]["popt"]
     assert pytest.approx(bf.sgram_params[1]["popt"][0], rel=1) == 74
     assert pytest.approx(bf.sgram_params[1]["popt"][2], rel=1) == 281
     assert pytest.approx(bf.sgram_params[1]["popt"][5], rel=10) == 560

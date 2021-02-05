@@ -5,7 +5,7 @@ import logging
 import numpy as np
 from scipy.optimize import curve_fit
 
-from burstfit.utils.math import tests, fma
+from burstfit.utils.math import tests, transform_parameters
 from burstfit.utils.plotter import plot_1d_fit, plot_2d_fit
 
 logger = logging.getLogger(__name__)
@@ -408,20 +408,25 @@ class BurstFit:
         err = np.sqrt(np.diag(pcov))
         assert np.isinf(err).sum() == 0, "Errors are not finite. Terminating."
 
-        self.sgram_params["all"] = {"popt": list(popt), "perr": err}
-        nparams = len(self.param_names)
-        logger.info(f"Converged parameters are:")
+        self.sgram_params['all'] = {}
         for i in range(self.ncomponents):
+            po = popt[i * self.sgram_model.nparams:(i + 1) * self.sgram_model.nparams]
+            pe = err[i * self.sgram_model.nparams:(i + 1) * self.sgram_model.nparams]
+            self.sgram_params['all'][i + 1] = {"popt": list(po), "perr": pe}
+
+        logger.info(f"Converged parameters are:")
+        for i in range(1, self.ncomponents + 1):
             logger.info(f"Component {i}")
-            params = self.sgram_params["all"]["popt"][i * nparams: (i + 1) * nparams]
+            params = self.sgram_params['all'][i]['popt']
+            errors = self.sgram_params['all'][i]['perr']
             for j, p in enumerate(params):
-                logger.info(f"{self.param_names[j]}: {p} +- {err[j]}")
+                logger.info(f"{self.param_names[j]}: {p} +- {errors[j]}")
 
         if plot:
             plot_2d_fit(
                 self.sgram,
                 self.model_from_params,
-                self.sgram_params["all"]["popt"],
+                popt
             )
 
         self.residual = self.sgram - self.model
@@ -502,7 +507,8 @@ class BurstFit:
         else:
             popt = self.sgram_params[1]["popt"]
             err = self.sgram_params[1]["perr"]
-            self.sgram_params["all"] = {"popt": popt, "perr": err}
+            self.sgram_params["all"] = {}
+            self.sgram_params["all"][1] = {"popt": popt, "perr": err}
             logger.info(f"Final number of components = 1. Terminating fitting.")
         self.reduced_chi_sq = self.calc_redchisq()
 
@@ -556,18 +562,18 @@ class BurstFit:
         """
         logger.info(f"Making model.")
         if "all" in self.sgram_params.keys():
-            model = self.model_from_params(
-                [0], *self.sgram_params["all"]["popt"]
-            ).reshape(self.nf, self.nt)
+            dict = self.sgram_params['all']
         else:
-            assert len(self.sgram_params) == self.ncomponents
-            logger.info(f"Found {self.ncomponents} components.")
+            dict = self.sgram_params
 
-            model = np.zeros(shape=(self.nf, self.nt))
-            for i in range(1, self.ncomponents + 1):
-                popt = self.sgram_params[i]["popt"]
-                self.sgram_model.forfit = False
-                model += self.sgram_model.evaluate([0], *popt)
+        assert len(dict) == self.ncomponents
+        logger.info(f"Found {self.ncomponents} components.")
+
+        model = np.zeros(shape=(self.nf, self.nt))
+        for i in range(1, self.ncomponents + 1):
+            popt = dict[i]["popt"]
+            self.sgram_model.forfit = False
+            model += self.sgram_model.evaluate([0], *popt)
         return model
 
     def model_from_params(self, x, *params):
@@ -588,58 +594,26 @@ class BurstFit:
             model += self.sgram_model.evaluate([0], *popt)
         return model.ravel()
 
-    def get_physical_params(self, mapping, params=None, errors=None, comp_num=None):
+    def get_physical_parameters(self, my_mapping):
         """
-        Convert parameters to physical units using the input mapping.
+        Function to use the my_mapping function and convert fitted parameters to physical units
 
         Args:
-            mapping: Mapping to convert the parameters to physical units.
-            params: parameters to be converted.
-            errors: errors to be converted.
-            comp_num: component number to convert
+            my_mapping: function to map parameter dictionary to a mapping dictionary for parameters
 
         Returns:
-            physical_dict: Dictionary of physical parameters.
-            physical_errs: Dictionary with errors converted to physical units.
 
         """
-        if not comp_num:
-            comp_num = self.comp_num
-
-        if not params:
-            params = self.sgram_params[comp_num]["popt"]
-
-        if not errors:
-            errors = self.sgram_params[comp_num]["perr"]
-
-        physical_dict = {}
-        physical_errs = {}
-
-        if comp_num == 'all' and self.ncomponents > 1:
-            assert len(mapping) * self.ncomponents == len(params)
-            assert len(mapping) * self.ncomponents == len(errors)
-            for i in range(self.ncomponents):
-                for key in mapping:
-                    k, m, a = mapping[key]
-                    idx = i * self.ncomponents + self.param_names.index(k)
-                    param = params[idx]
-                    physical_dict[f"{i}_{key}"] = fma(param, m, a)
-                    err = errors[idx]
-                    physical_errs[f"{i}_{key}"] = fma(err, np.abs(m), 0)
-        else:
-            assert len(mapping) == len(params)
-            assert len(mapping) == len(errors)
-            for key in mapping:
-                k, m, a = mapping[key]
-                param = params[self.param_names.index(k)]
-                physical_dict[key] = fma(param, m, a)
-                err = errors[self.param_names.index(k)]
-                physical_errs[key] = fma(err, np.abs(m), 0)
-
-        if comp_num in self.physical_params.keys():
-            logger.warning(f"key: {comp_num} found in physical_params. Overwriting it.")
-
-        self.physical_params[comp_num] = {}
-        self.physical_params[comp_num]['popt'] = physical_dict
-        self.physical_params[comp_num]['perr'] = physical_errs
-        return physical_dict, physical_errs
+        for comp in self.sgram_params.keys():
+            logger.info(f'Converting parameters of component: {comp}')
+            if comp == 'all':
+                self.physical_params[comp] = {}
+                for i in range(1, self.ncomponents + 1):
+                    params = self.sgram_params[comp][i]
+                    mapping = my_mapping(params, self)
+                    self.physical_params[comp][i] = transform_parameters(params, mapping, self.param_names)
+            else:
+                params = self.sgram_params[comp]
+                mapping = my_mapping(params, self)
+                self.physical_params[comp] = transform_parameters(params, mapping, self.param_names)
+        return self.physical_params
