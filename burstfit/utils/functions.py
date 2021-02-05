@@ -155,7 +155,7 @@ def sgram_fn(
         tau = pulse_params["tau"]
         p_params = pulse_params
         for i, freq in enumerate(freqs):
-            tau_f = tau * (freq / freqs[0]) ** (-1 * tau_idx)
+            tau_f = tau * (freq / fstart) ** (-1 * tau_idx)  # tau is defined at fstart
             p_params["tau"] = tau_f
             p = pulse_function(times, **p_params)
             model[i, :] += p
