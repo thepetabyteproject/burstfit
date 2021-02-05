@@ -1,6 +1,6 @@
 import numpy as np
 
-from burstfit.utils.math import f_test, fma
+from burstfit.utils.math import f_test, fmae
 from burstfit.utils.math import tests as te
 
 
@@ -26,6 +26,7 @@ def test_stat_tests():
     assert res == 0
 
 
-def test_fma():
-    r = fma(2, 2, 1)
+def test_fmae():
+    r, e = fmae(2, 2, 1, 0, 0, 0)
     assert r == 5
+    assert e == 0
