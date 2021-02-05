@@ -42,29 +42,31 @@ def bf(bd):
         tsamp=bd.tsamp,
         clip_fac=bd.clip_fac,
     )
-    bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]))
+    bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False)
     return bf
 
 
 def compare_res_dict(ref, d):
     for k in ref.keys():
-        if 'fileheader' in k:
+        if "fileheader" in k:
             for kk in ref[k].keys():
-                if 'file' not in kk:
+                if "file" not in kk:
                     if isinstance(ref[k][kk], float):
-                        assert pytest.approx(ref[k][kk], rel=1e-5 * ref[k][kk]) == d[k][kk]
+                        assert (
+                                pytest.approx(ref[k][kk], rel=1e-5 * ref[k][kk]) == d[k][kk]
+                        )
                     else:
                         assert ref[k][kk] == d[k][kk]
 
-        elif '_params' in k:
-            ref_d = ref[k]['1'].copy()
-            d_d = d[k]['1'].copy()
+        elif "_params" in k:
+            ref_d = ref[k]["1"].copy()
+            d_d = d[k]["1"].copy()
             # for kk in ref_d.keys():
-            kk = 'popt'
+            kk = "popt"
             ref_d[kk] = np.array(ref_d[kk])
             d_d[kk] = np.array(d_d[kk])
             for i, r in enumerate(ref_d[kk]):
-                tol = np.max([1e-4, ref_d['perr'][i]])
+                tol = np.max([1e-4, ref_d["perr"][i]])
                 assert pytest.approx(r, rel=tol) == d_d[kk][i]
         else:
             assert ref[k] == d[k]
@@ -78,9 +80,18 @@ def test_set_attributes(bf, bd):
     bio = BurstIO(bf, bd)
     bio.set_attributes_to_save()
     assert bio.ncomponents == 1
-    assert bio.sgram_function == 'sgram_fn'
-    assert bio.pulse_function == 'pulse_fn'
-    assert bio.spectra_function == 'gauss_norm2'
+    assert bio.sgram_function == "sgram_fn"
+    assert bio.pulse_function == "pulse_fn"
+    assert bio.spectra_function == "gauss_norm2"
+
+
+def test_read_json_and_precalc(bf):
+    ref_json = os.path.join(_install_dir, "data/28.json")
+    bio = BurstIO(jsonfile=ref_json)
+
+    bio.read_json_and_precalc()
+    assert bio.sgramModel.metadata == bf.metadata
+    assert bio.sgramModel.param_names == bf.param_names
 
 # def test_save_results(bf, bd):
 #     bio = BurstIO(bf, bd)

@@ -46,7 +46,7 @@ def bf(bd):
 
 @pytest.fixture(scope="function", autouse=True)
 def bf_fitted(bf):
-    bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]))
+    bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False)
     return bf
 
 
@@ -66,7 +66,7 @@ def test_precalc(bf, bd):
 
 def test_profile_fit(bf):
     bf.precalc()
-    bf.initial_profilefit()
+    bf.initial_profilefit(plot=False)
     assert list(bf.profile_params.keys()) == [1]
     assert pytest.approx(bf.profile_params[1]["popt"][0], abs=0.1) == 512.8
     assert bf.profile_params[1]["popt"][3] < 1
@@ -75,7 +75,7 @@ def test_profile_fit(bf):
 
 def test_make_spectra_w_profile_params(bf):
     bf.precalc()
-    bf.initial_profilefit()
+    bf.initial_profilefit(plot=False)
     bf.make_spectra()
     assert pytest.approx(np.trapz(bf.spectra), abs=0.1) == 1
 
@@ -88,16 +88,16 @@ def test_make_spectra_wo_profile_params(bf):
 
 def test_initial_spectra_fit(bf):
     bf.precalc()
-    bf.initial_profilefit()
+    bf.initial_profilefit(plot=False)
     bf.make_spectra()
-    bf.initial_spectrafit(bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]))
+    bf.initial_spectrafit(bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False)
     assert list(bf.spectra_params.keys()) == [1]
     assert pytest.approx(bf.spectra_params[1]["popt"][0], abs=1) == 87
     assert pytest.approx(bf.spectra_params[1]["popt"][2], abs=1) == 284
 
 
 def test_fitall(bf):
-    bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]))
+    bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False)
     assert bf.ncomponents == 1
     assert bf.sgram_params[1]["popt"] == bf.sgram_params["all"]["popt"]
     assert pytest.approx(bf.sgram_params[1]["popt"][0], rel=1) == 74
