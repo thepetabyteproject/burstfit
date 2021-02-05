@@ -17,10 +17,12 @@ class Model:
 
     def __init__(self, function, param_names=None, params=None):
         self.function = function
+        c = self.function.__code__
+        self.function_input_names = list(c.co_varnames[1: c.co_argcount])
         if not param_names:
-            c = self.function.__code__
-            param_names = list(c.co_varnames[1: c.co_argcount])
-        self.param_names = param_names
+            self.param_names = self.function_input_names
+        else:
+            self.param_names = param_names
         self.params = params
 
     def evaluate(self, x, *params):
@@ -36,7 +38,7 @@ class Model:
         """
         return self.function(x, *params)
 
-    def get_param_dict(self, *params):
+    def get_param_dict(self, *params, keys="params"):
         """
         Convert input param list to a dictionary with param_names
 
@@ -48,9 +50,15 @@ class Model:
         """
         f = {}
         for i, p in enumerate(params):
-            f[self.param_names[i]] = p
-        self.params = f
-        return self.params
+            if keys == "params":
+                f[self.param_names[i]] = p
+            elif keys == "function":
+                f[self.function_input_names[i]] = p
+            else:
+                raise ValueError("Invalid keys value. keys can only be params or function.")
+        # self.params = f
+        # return self.params
+        return f
 
     @property
     def nparams(self):
@@ -59,7 +67,7 @@ class Model:
         Returns: number of parameters
 
         """
-        return len(self.param_names)
+        return len(self.function_input_names)
 
 
 class SgramModel:
@@ -121,8 +129,8 @@ class SgramModel:
         ns = self.spectra_model.nparams
         np = self.pulse_model.nparams
         assert len(params) == len(self.param_names)
-        spectra_params = self.spectra_model.get_param_dict(*params[0:ns])
-        pulse_params = self.pulse_model.get_param_dict(*params[ns: ns + np])
+        spectra_params = self.spectra_model.get_param_dict(*params[0:ns], keys="function")
+        pulse_params = self.pulse_model.get_param_dict(*params[ns: ns + np], keys="function")
         other_params = params[ns + np:]
         model = self.sgram_function(
             self.metadata,
