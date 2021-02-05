@@ -80,9 +80,9 @@ def gauss_norm3(x, mu1, sig1, mu2, sig2, mu3, sig3, amp1, amp2):
 
     """
     return (
-            amp1 * gauss_norm(x, mu1, sig1)
-            + amp2 * gauss_norm(x, mu2, sig2)
-            + (1 - amp1 - amp2) * gauss_norm(x, mu3, sig3)
+        amp1 * gauss_norm(x, mu1, sig1)
+        + amp2 * gauss_norm(x, mu2, sig2)
+        + (1 - amp1 - amp2) * gauss_norm(x, mu3, sig3)
     )
 
 
@@ -118,12 +118,12 @@ def pulse_fn(t, S, mu, sigma, tau):
 
 
 def sgram_fn(
-        metadata,
-        pulse_function,
-        spectra_function,
-        spectra_params,
-        pulse_params,
-        other_params,
+    metadata,
+    pulse_function,
+    spectra_function,
+    spectra_params,
+    pulse_params,
+    other_params,
 ):
     """
     Spectrogram function

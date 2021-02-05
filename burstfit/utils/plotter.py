@@ -5,17 +5,17 @@ matplotlib.use("Agg")
 
 
 def plot_1d_fit(
-        xdata,
-        ydata,
-        function,
-        popt,
-        xlabel=None,
-        ylabel=None,
-        title=None,
-        param_names=[],
-        show=True,
-        save=False,
-        outname="1d_fit_res",
+    xdata,
+    ydata,
+    function,
+    popt,
+    xlabel=None,
+    ylabel=None,
+    title=None,
+    param_names=[],
+    show=True,
+    save=False,
+    outname="1d_fit_res",
 ):
     """
     Plot the results of 1D fits
@@ -66,7 +66,7 @@ def plot_1d_fit(
 
 
 def plot_2d_fit(
-        sgram, function, popt, title=None, show=True, save=False, outname="2d_fit_res"
+    sgram, function, popt, title=None, show=True, save=False, outname="2d_fit_res"
 ):
     """
     Plot the result of spectrogram fit

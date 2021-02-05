@@ -28,7 +28,7 @@ class BurstIO:
     """
 
     def __init__(
-            self, burstfit_obj=None, burstdata_obj=None, dictionary=None, jsonfile=None
+        self, burstfit_obj=None, burstdata_obj=None, dictionary=None, jsonfile=None
     ):
         self.burstfit = burstfit_obj
         self.burstdata = burstdata_obj

@@ -90,7 +90,9 @@ def test_initial_spectra_fit(bf):
     bf.precalc()
     bf.initial_profilefit(plot=False)
     bf.make_spectra()
-    bf.initial_spectrafit(bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False)
+    bf.initial_spectrafit(
+        bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False
+    )
     assert list(bf.spectra_params.keys()) == [1]
     assert pytest.approx(bf.spectra_params[1]["popt"][0], abs=1) == 87
     assert pytest.approx(bf.spectra_params[1]["popt"][2], abs=1) == 284
@@ -109,6 +111,7 @@ def test_fitall(bf):
 def test_red_chisq(bf_fitted):
     red_chi_sq = bf_fitted.calc_redchisq()
     assert pytest.approx(red_chi_sq, rel=0.1) == 1
+
 
 def test_model(bf_fitted):
     m = bf_fitted.model

@@ -18,7 +18,7 @@ class Model:
     def __init__(self, function, param_names=None, params=None):
         self.function = function
         c = self.function.__code__
-        self.function_input_names = list(c.co_varnames[1: c.co_argcount])
+        self.function_input_names = list(c.co_varnames[1 : c.co_argcount])
         if not param_names:
             self.param_names = self.function_input_names
         else:
@@ -55,7 +55,9 @@ class Model:
             elif keys == "function":
                 f[self.function_input_names[i]] = p
             else:
-                raise ValueError("Invalid keys value. keys can only be params or function.")
+                raise ValueError(
+                    "Invalid keys value. keys can only be params or function."
+                )
         # self.params = f
         # return self.params
         return f
@@ -84,12 +86,12 @@ class SgramModel:
     """
 
     def __init__(
-            self,
-            pulse_model=None,
-            spectra_model=None,
-            sgram_fn=None,
-            metadata=None,
-            param_names=None,
+        self,
+        pulse_model=None,
+        spectra_model=None,
+        sgram_fn=None,
+        metadata=None,
+        param_names=None,
     ):
         self.pulse_model = pulse_model
         self.spectra_model = spectra_model
@@ -98,9 +100,9 @@ class SgramModel:
         self.forfit = True
         if not param_names:
             self.param_names = (
-                    self.spectra_model.param_names
-                    + self.pulse_model.param_names
-                    + ["DM"]  # , "tau_idx"]
+                self.spectra_model.param_names
+                + self.pulse_model.param_names
+                + ["DM"]  # , "tau_idx"]
             )
         else:
             self.param_names = param_names
@@ -129,9 +131,13 @@ class SgramModel:
         ns = self.spectra_model.nparams
         np = self.pulse_model.nparams
         assert len(params) == len(self.param_names)
-        spectra_params = self.spectra_model.get_param_dict(*params[0:ns], keys="function")
-        pulse_params = self.pulse_model.get_param_dict(*params[ns: ns + np], keys="function")
-        other_params = params[ns + np:]
+        spectra_params = self.spectra_model.get_param_dict(
+            *params[0:ns], keys="function"
+        )
+        pulse_params = self.pulse_model.get_param_dict(
+            *params[ns : ns + np], keys="function"
+        )
+        other_params = params[ns + np :]
         model = self.sgram_function(
             self.metadata,
             self.pulse_model.function,

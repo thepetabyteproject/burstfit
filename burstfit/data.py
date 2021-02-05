@@ -22,13 +22,13 @@ class BurstData(Candidate):
     """
 
     def __init__(
-            self,
-            fp=None,
-            dm=None,
-            tcand=0,
-            width=0,
-            snr=0,
-            min_samp=256,
+        self,
+        fp=None,
+        dm=None,
+        tcand=0,
+        width=0,
+        snr=0,
+        min_samp=256,
     ):
 
         Candidate.__init__(
@@ -78,8 +78,8 @@ class BurstData(Candidate):
 
         if normalise:
             off_pulse_data = self.dedispersed[
-                             :, : self.i0 - int(2 * time_window // self.tsamp)
-                             ]
+                :, : self.i0 - int(2 * time_window // self.tsamp)
+            ]
             self.sgram, self.clip_fac = self.normalise_data(self.sgram, off_pulse_data)
         return self
 
@@ -108,12 +108,12 @@ class BurstData(Candidate):
         for m in mask_chans:
             if isinstance(m, tuple):
                 assert len(m) == 2
-                self.dedispersed.mask[:, m[0]: m[1]] = True
+                self.dedispersed.mask[:, m[0] : m[1]] = True
             elif isinstance(m, int):
                 self.dedispersed.mask[:, m] = True
             elif isinstance(m, list):
                 assert len(m) == 2
-                self.dedispersed.mask[:, m[0]: m[1]] = True
+                self.dedispersed.mask[:, m[0] : m[1]] = True
             else:
                 raise AttributeError(
                     "mask_chans can only contain tuple/list (start_chan:end_chan) and/or ints"
@@ -159,5 +159,5 @@ class BurstData(Candidate):
         logger.info(f"Cropping data with time_window: {time_window}s.")
         time_around_burst = int(time_window // self.tsamp // 2)
         return self.dedispersed[
-               self.i0 - time_around_burst: self.i0 + time_around_burst, :
-               ].T
+            self.i0 - time_around_burst : self.i0 + time_around_burst, :
+        ].T

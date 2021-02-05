@@ -53,7 +53,7 @@ def compare_res_dict(ref, d):
                 if "file" not in kk:
                     if isinstance(ref[k][kk], float):
                         assert (
-                                pytest.approx(ref[k][kk], rel=1e-5 * ref[k][kk]) == d[k][kk]
+                            pytest.approx(ref[k][kk], rel=1e-5 * ref[k][kk]) == d[k][kk]
                         )
                     else:
                         assert ref[k][kk] == d[k][kk]
@@ -92,6 +92,7 @@ def test_read_json_and_precalc(bf):
     bio.read_json_and_precalc()
     assert bio.sgramModel.metadata == bf.metadata
     assert bio.sgramModel.param_names == bf.param_names
+
 
 # def test_save_results(bf, bd):
 #     bio = BurstIO(bf, bd)

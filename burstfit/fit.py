@@ -28,16 +28,16 @@ class BurstFit:
     """
 
     def __init__(
-            self,
-            sgram_model=None,
-            sgram=None,
-            width=None,
-            dm=None,
-            foff=None,
-            fch1=None,
-            tsamp=None,
-            clip_fac=None,
-            outname=None,
+        self,
+        sgram_model=None,
+        sgram=None,
+        width=None,
+        dm=None,
+        foff=None,
+        fch1=None,
+        tsamp=None,
+        clip_fac=None,
+        outname=None,
     ):
         self.sgram_model = sgram_model
         self.sgram = sgram
@@ -180,11 +180,11 @@ class BurstFit:
         self.spectra = self.spectra / np.trapz(self.spectra)
 
     def fitcycle(
-            self,
-            plot=False,
-            profile_bounds=[],
-            spectra_bounds=[],
-            sgram_bounds=[-np.inf, np.inf],
+        self,
+        plot=False,
+        profile_bounds=[],
+        spectra_bounds=[],
+        sgram_bounds=[-np.inf, np.inf],
     ):
         """
         Run the fitting cycle to fit one component
@@ -321,9 +321,9 @@ class BurstFit:
         """
         logger.info(f"Running sgram profile fit for component: {self.comp_num}")
         p0 = (
-                self.spectra_params[self.comp_num]["popt"]
-                + self.profile_params[self.comp_num]["popt"]
-                + [self.dm]  # , 4]
+            self.spectra_params[self.comp_num]["popt"]
+            + self.profile_params[self.comp_num]["popt"]
+            + [self.dm]  # , 4]
         )
 
         logger.info(f"initial estimate for parameters: {p0}")
@@ -408,36 +408,32 @@ class BurstFit:
         err = np.sqrt(np.diag(pcov))
         assert np.isinf(err).sum() == 0, "Errors are not finite. Terminating."
 
-        self.sgram_params['all'] = {}
+        self.sgram_params["all"] = {}
         for i in range(self.ncomponents):
-            po = popt[i * self.sgram_model.nparams:(i + 1) * self.sgram_model.nparams]
-            pe = err[i * self.sgram_model.nparams:(i + 1) * self.sgram_model.nparams]
-            self.sgram_params['all'][i + 1] = {"popt": list(po), "perr": pe}
+            po = popt[i * self.sgram_model.nparams : (i + 1) * self.sgram_model.nparams]
+            pe = err[i * self.sgram_model.nparams : (i + 1) * self.sgram_model.nparams]
+            self.sgram_params["all"][i + 1] = {"popt": list(po), "perr": pe}
 
         logger.info(f"Converged parameters are:")
         for i in range(1, self.ncomponents + 1):
             logger.info(f"Component {i}")
-            params = self.sgram_params['all'][i]['popt']
-            errors = self.sgram_params['all'][i]['perr']
+            params = self.sgram_params["all"][i]["popt"]
+            errors = self.sgram_params["all"][i]["perr"]
             for j, p in enumerate(params):
                 logger.info(f"{self.param_names[j]}: {p} +- {errors[j]}")
 
         if plot:
-            plot_2d_fit(
-                self.sgram,
-                self.model_from_params,
-                popt
-            )
+            plot_2d_fit(self.sgram, self.model_from_params, popt)
 
         self.residual = self.sgram - self.model
 
     def fitall(
-            self,
-            plot=True,
-            max_ncomp=5,
-            profile_bounds=[],
-            spectra_bounds=[],
-            sgram_bounds=[-np.inf, np.inf],
+        self,
+        plot=True,
+        max_ncomp=5,
+        profile_bounds=[],
+        spectra_bounds=[],
+        sgram_bounds=[-np.inf, np.inf],
     ):
         """
         Perform spectro-temporal fitting on the spectrogram for all the components.
@@ -522,9 +518,9 @@ class BurstFit:
 
         """
         logger.info(f"Running statistical tests on the residual.")
-        on_pulse = self.residual[:, self.i0 - self.width: self.i0 + self.width]
-        off_pulse_left = self.sgram[:, 0: 2 * self.width]
-        off_pulse_right = self.sgram[:, -2 * self.width:]
+        on_pulse = self.residual[:, self.i0 - self.width : self.i0 + self.width]
+        off_pulse_left = self.sgram[:, 0 : 2 * self.width]
+        off_pulse_right = self.sgram[:, -2 * self.width :]
         logger.info("Running off pulse - off pulse test")
         off_off = tests(off_pulse_left, off_pulse_right, ntest=2)
 
@@ -562,7 +558,7 @@ class BurstFit:
         """
         logger.info(f"Making model.")
         if "all" in self.sgram_params.keys():
-            dict = self.sgram_params['all']
+            dict = self.sgram_params["all"]
         else:
             dict = self.sgram_params
 
@@ -589,7 +585,7 @@ class BurstFit:
         nparams = int(len(self.param_names))
         model = np.zeros(shape=(self.nf, self.nt))
         for i in range(1, ncomp + 1):
-            popt = params[(i - 1) * nparams: i * nparams]
+            popt = params[(i - 1) * nparams : i * nparams]
             self.sgram_model.forfit = False
             model += self.sgram_model.evaluate([0], *popt)
         return model.ravel()
@@ -605,15 +601,19 @@ class BurstFit:
 
         """
         for comp in self.sgram_params.keys():
-            logger.info(f'Converting parameters of component: {comp}')
-            if comp == 'all':
+            logger.info(f"Converting parameters of component: {comp}")
+            if comp == "all":
                 self.physical_params[comp] = {}
                 for i in range(1, self.ncomponents + 1):
                     params = self.sgram_params[comp][i]
                     mapping = my_mapping(params, self)
-                    self.physical_params[comp][i] = transform_parameters(params, mapping, self.param_names)
+                    self.physical_params[comp][i] = transform_parameters(
+                        params, mapping, self.param_names
+                    )
             else:
                 params = self.sgram_params[comp]
                 mapping = my_mapping(params, self)
-                self.physical_params[comp] = transform_parameters(params, mapping, self.param_names)
+                self.physical_params[comp] = transform_parameters(
+                    params, mapping, self.param_names
+                )
         return self.physical_params

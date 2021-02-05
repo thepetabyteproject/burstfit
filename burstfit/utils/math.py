@@ -89,14 +89,16 @@ def transform_parameters(params, mapping, param_names):
     Returns:
 
     """
-    assert len(mapping) == len(params['popt'])
-    assert len(mapping) == len(params['perr'])
+    assert len(mapping) == len(params["popt"])
+    assert len(mapping) == len(params["perr"])
     physical_dict = {}
-    physical_dict['popt'] = {}
-    physical_dict['perr'] = {}
+    physical_dict["popt"] = {}
+    physical_dict["perr"] = {}
     for key in mapping:
         k, m, m_err, a, a_err = mapping[key]
-        param = params['popt'][param_names.index(k)]
-        err = params['perr'][param_names.index(k)]
-        physical_dict['popt'][key], physical_dict['perr'][key] = fmae(param, m, a, err, m_err, a_err)
+        param = params["popt"][param_names.index(k)]
+        err = params["perr"][param_names.index(k)]
+        physical_dict["popt"][key], physical_dict["perr"][key] = fmae(
+            param, m, a, err, m_err, a_err
+        )
     return physical_dict
