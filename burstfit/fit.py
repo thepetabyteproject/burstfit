@@ -136,8 +136,8 @@ class BurstFit:
         tau_width = 0
         try:
             logger.info("Making spectra using profile fit parameters.")
-            mu_idx = np.where(np.array(self.profile_param_names) == "mu")[0]
-            sig_idx = np.where(np.array(self.profile_param_names) == "sigma")[0]
+            mu_idx = np.where(np.array(self.profile_param_names) == "mu_t")[0]
+            sig_idx = np.where(np.array(self.profile_param_names) == "sigma_t")[0]
             assert len(mu_idx) == 1, "mu not found in profile parameter names"
             assert len(sig_idx) == 1, "sigma not found in profile parameter names"
             self.i0 = self.profile_params[self.comp_num]["popt"][mu_idx[0]]
@@ -399,14 +399,48 @@ class BurstFit:
         for k in self.sgram_params.keys():
             p0 += self.sgram_params[k]["popt"]
 
-        popt, pcov = curve_fit(
-            self.model_from_params,
-            xdata=[0],
-            ydata=self.sgram.ravel(),
-            p0=p0,
-        )
+        try:
+            popt, pcov = curve_fit(
+                self.model_from_params,
+                xdata=[0],
+                ydata=self.sgram.ravel(),
+                p0=p0,
+            )
+        except RuntimeError as e:
+            retry_frac = 0.9
+            logger.warning(f"{e}")
+            logger.warning(f"Retrying with p0+-({retry_frac}*p0) bounds")
+            p0_1 = np.array(p0) * (1 - retry_frac)
+            p0_2 = np.array(p0) * (1 + retry_frac)
+            bounds = (np.min([p0_1, p0_2], axis=0), np.max([p0_1, p0_2], axis=0))
+            popt, pcov = curve_fit(
+                self.model_from_params,
+                xdata=[0],
+                ydata=self.sgram.ravel(),
+                p0=p0,
+                bounds=bounds,
+            )
+
         err = np.sqrt(np.diag(pcov))
-        assert np.isinf(err).sum() == 0, "Errors are not finite. Terminating."
+        retry_frac = 0.2
+        if np.isinf(err).sum() > 0:
+            logger.warning(
+                f"Fit errors are not finite. Retrying with p0+-({retry_frac}*p0) bounds"
+            )
+            p0_1 = np.array(p0) * (1 - retry_frac)
+            p0_2 = np.array(p0) * (1 + retry_frac)
+            bounds = (np.min([p0_1, p0_2], axis=0), np.max([p0_1, p0_2], axis=0))
+            popt, pcov = curve_fit(
+                self.model_from_params,
+                xdata=[0],
+                ydata=self.sgram.ravel(),
+                p0=p0,
+                bounds=bounds,
+            )
+            err = np.sqrt(np.diag(pcov))
+            assert np.isinf(err).sum() == 0, "Errors are still not finite. Terminating."
+        #err = np.sqrt(np.diag(pcov))
+        #assert np.isinf(err).sum() == 0, "Errors are not finite. Terminating."
 
         self.sgram_params["all"] = {}
         for i in range(self.ncomponents):
@@ -506,6 +540,7 @@ class BurstFit:
             self.sgram_params["all"] = {}
             self.sgram_params["all"][1] = {"popt": popt, "perr": err}
             logger.info(f"Final number of components = 1. Terminating fitting.")
+
         self.reduced_chi_sq = self.calc_redchisq()
 
     @property
