@@ -58,3 +58,19 @@ def finer_dispersion_correction(dedispersed_model, delay_time, delay_bins, tsamp
             l = np.correlate(dedispersed_model[i, :], [r, 1 - r], mode="same")
         dedispersed_model_corrected[i] = l
     return dedispersed_model_corrected
+
+
+def radiometer(tsys, gain, bw, w):
+    """
+    Calculates the radiometer noise
+
+    Args:
+        tsys: Receiver Tsys in Kelvin
+        gain: Receiver gain in K/Jy
+        bw: Bandwidth of the data or burst (in Hz)
+        w: Tsamp (s)
+
+    Returns:
+
+    """
+    return tsys / (gain * (2 * w * bw) ** (1 / 2))
