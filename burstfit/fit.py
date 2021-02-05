@@ -50,6 +50,7 @@ class BurstFit:
         self.profile_params = {}
         self.spectra_params = {}
         self.sgram_params = {}
+        self.physical_params = {}
         self.clip_fac = clip_fac
         self.residual = None
         self.outname = outname
@@ -587,7 +588,7 @@ class BurstFit:
             model += self.sgram_model.evaluate([0], *popt)
         return model.ravel()
 
-    def get_physical_params(self, mapping, params=None, errors=None):
+    def get_physical_params(self, mapping, params=None, errors=None, comp_num=None):
         """
         Convert parameters to physical units using the input mapping.
 
@@ -595,27 +596,50 @@ class BurstFit:
             mapping: Mapping to convert the parameters to physical units.
             params: parameters to be converted.
             errors: errors to be converted.
+            comp_num: component number to convert
 
         Returns:
             physical_dict: Dictionary of physical parameters.
             physical_errs: Dictionary with errors converted to physical units.
 
         """
+        if not comp_num:
+            comp_num = self.comp_num
+
         if not params:
-            params = self.sgram_params[self.comp_num]["popt"]
+            params = self.sgram_params[comp_num]["popt"]
 
         if not errors:
-            errors = self.sgram_params[self.comp_num]["perr"]
-
-        assert len(mapping) == len(params)
-        assert len(mapping) == len(errors)
+            errors = self.sgram_params[comp_num]["perr"]
 
         physical_dict = {}
         physical_errs = {}
-        for key in mapping:
-            k, m, a = mapping[key]
-            param = params[self.param_names.index(k)]
-            physical_dict[key] = fma(param, m, a)
-            err = errors[self.param_names.index(k)]
-            physical_errs[key] = fma(err, m, 0)
+
+        if comp_num == 'all' and self.ncomponents > 1:
+            assert len(mapping) * self.ncomponents == len(params)
+            assert len(mapping) * self.ncomponents == len(errors)
+            for i in range(self.ncomponents):
+                for key in mapping:
+                    k, m, a = mapping[key]
+                    idx = i * self.ncomponents + self.param_names.index(k)
+                    param = params[idx]
+                    physical_dict[f"{i}_{key}"] = fma(param, m, a)
+                    err = errors[idx]
+                    physical_errs[f"{i}_{key}"] = fma(err, np.abs(m), 0)
+        else:
+            assert len(mapping) == len(params)
+            assert len(mapping) == len(errors)
+            for key in mapping:
+                k, m, a = mapping[key]
+                param = params[self.param_names.index(k)]
+                physical_dict[key] = fma(param, m, a)
+                err = errors[self.param_names.index(k)]
+                physical_errs[key] = fma(err, np.abs(m), 0)
+
+        if comp_num in self.physical_params.keys():
+            logger.warning(f"key: {comp_num} found in physical_params. Overwriting it.")
+
+        self.physical_params[comp_num] = {}
+        self.physical_params[comp_num]['popt'] = physical_dict
+        self.physical_params[comp_num]['perr'] = physical_errs
         return physical_dict, physical_errs
