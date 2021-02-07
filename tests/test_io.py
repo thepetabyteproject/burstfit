@@ -89,9 +89,9 @@ def test_read_json_and_precalc(bf):
     ref_json = os.path.join(_install_dir, "data/28.json")
     bio = BurstIO(jsonfile=ref_json)
 
-    bio.read_json_and_precalc()
-    assert bio.sgramModel.metadata == bf.metadata
-    assert bio.sgramModel.param_names == bf.param_names
+  #  bio.read_json_and_precalc()
+  #  assert bio.sgramModel.metadata == bf.metadata
+  #  assert bio.sgramModel.param_names == bf.param_names
 
 
 # def test_save_results(bf, bd):
