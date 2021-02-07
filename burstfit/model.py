@@ -83,6 +83,7 @@ class SgramModel:
         sgram_fn: Spectrogram function
         metadata: Metadata for sgram function
         param_names: names of sgram parameters
+        clip_fac: clipping factor
 
     """
 
@@ -94,6 +95,7 @@ class SgramModel:
         metadata=None,
         param_names=None,
         mask=np.array([False]),
+        clip_fac = None
     ):
         self.pulse_model = pulse_model
         self.spectra_model = spectra_model
@@ -109,6 +111,7 @@ class SgramModel:
         else:
             self.param_names = param_names
         self.mask = mask
+        self.clip_fac = clip_fac
 
     @property
     def nparams(self):
@@ -151,6 +154,8 @@ class SgramModel:
         )
         model = np.ma.masked_array(model)
         if self.forfit:
+            if self.clip_fac != 0:
+                model = np.clip(model, 0, self.clip_fac)
             if self.mask.any():
                 model[self.mask, :] = np.ma.masked
             return model.ravel()

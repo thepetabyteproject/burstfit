@@ -124,11 +124,12 @@ class BurstFit:
             self.tsamp,
             self.fch1,
             self.foff,
-            self.clip_fac,
         )
+        logger.debug("Setting sgram_model attributes.")
         self.sgram_model.metadata = self.metadata
         self.sgram_model.mask = self.mask
         self.sgram_model.forfit = True
+        self.sgram_model.clip_fac = self.clip_fac
 
     def make_spectra(self):
         """
@@ -459,6 +460,7 @@ class BurstFit:
                 logger.info(f"{self.param_names[j]}: {p} +- {errors[j]}")
 
         if plot:
+            self.sgram_model.forfit = False
             plot_2d_fit(self.sgram, self.model_from_params, popt)
 
         self.residual = self.sgram - self.model

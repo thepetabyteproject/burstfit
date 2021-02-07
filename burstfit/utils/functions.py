@@ -129,7 +129,7 @@ def sgram_fn(
     Spectrogram function
 
     Args:
-        metadata: Some useful metadata (nt, nf, dispersed_at_dm, tsamp, fstart, foff, clip_fac)
+        metadata: Some useful metadata (nt, nf, dispersed_at_dm, tsamp, fstart, foff)
         pulse_function: Function to model pulse
         spectra_function: Function to model spectra
         spectra_params: Dictionary with spectra parameters
@@ -139,7 +139,7 @@ def sgram_fn(
     Returns:
 
     """
-    nt, nf, dispersed_at_dm, tsamp, fstart, foff, clip_fac = metadata
+    nt, nf, dispersed_at_dm, tsamp, fstart, foff = metadata
     #     dm, tau_idx = other_params
     [dm] = other_params
     tau_idx = 4
@@ -174,6 +174,4 @@ def sgram_fn(
         dedispersed_model, delay_time, delay_bins, tsamp
     )
     model_final = dedispersed_model_corrected * spectra_from_fit[:, None]
-    if clip_fac != 0:
-        model_final = np.clip(model_final, 0, clip_fac)
     return model_final
