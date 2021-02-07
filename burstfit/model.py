@@ -1,4 +1,5 @@
 import logging
+
 import numpy as np
 
 logger = logging.getLogger(__name__)
@@ -95,7 +96,7 @@ class SgramModel:
         metadata=None,
         param_names=None,
         mask=np.array([False]),
-        clip_fac = None
+        clip_fac=None,
     ):
         self.pulse_model = pulse_model
         self.spectra_model = spectra_model
