@@ -1,4 +1,5 @@
 import logging
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -92,6 +93,7 @@ class SgramModel:
         sgram_fn=None,
         metadata=None,
         param_names=None,
+        mask=np.array([False]),
     ):
         self.pulse_model = pulse_model
         self.spectra_model = spectra_model
@@ -106,6 +108,7 @@ class SgramModel:
             )
         else:
             self.param_names = param_names
+        self.mask = mask
 
     @property
     def nparams(self):
@@ -129,15 +132,15 @@ class SgramModel:
 
         """
         ns = self.spectra_model.nparams
-        np = self.pulse_model.nparams
+        nparam = self.pulse_model.nparams
         assert len(params) == len(self.param_names)
         spectra_params = self.spectra_model.get_param_dict(
             *params[0:ns], keys="function"
         )
         pulse_params = self.pulse_model.get_param_dict(
-            *params[ns : ns + np], keys="function"
+            *params[ns : ns + nparam], keys="function"
         )
-        other_params = params[ns + np :]
+        other_params = params[ns + nparam :]
         model = self.sgram_function(
             self.metadata,
             self.pulse_model.function,
@@ -146,7 +149,10 @@ class SgramModel:
             pulse_params,
             other_params,
         )
+        model = np.ma.masked_array(model)
         if self.forfit:
+            if self.mask.any():
+                model[self.mask, :] = np.ma.masked
             return model.ravel()
         else:
             return model

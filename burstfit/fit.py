@@ -25,6 +25,7 @@ class BurstFit:
         tsamp: Sampling interval (seconds)
         clip_fac: Clip factor based on nbits of data
         outname: Outname for the outputs
+        mask: RFI channel mask array
     """
 
     def __init__(
@@ -38,6 +39,7 @@ class BurstFit:
         tsamp=None,
         clip_fac=None,
         outname=None,
+        mask=np.array([False]),
     ):
         self.sgram_model = sgram_model
         self.sgram = sgram
@@ -64,6 +66,7 @@ class BurstFit:
         self.param_names = None
         self.metadata = None
         self.reduced_chi_sq = None
+        self.mask = mask
 
     @property
     def ncomponents(self):
@@ -124,6 +127,7 @@ class BurstFit:
             self.clip_fac,
         )
         self.sgram_model.metadata = self.metadata
+        self.sgram_model.mask = self.mask
         self.sgram_model.forfit = True
 
     def make_spectra(self):
@@ -325,7 +329,7 @@ class BurstFit:
             + self.profile_params[self.comp_num]["popt"]
             + [self.dm]  # , 4]
         )
-
+        self.sgram_model.forfit = True
         logger.info(f"initial estimate for parameters: {p0}")
         try:
             popt, pcov = curve_fit(
@@ -398,7 +402,7 @@ class BurstFit:
         p0 = []
         for k in self.sgram_params.keys():
             p0 += self.sgram_params[k]["popt"]
-
+        self.sgram_model.forfit = True
         try:
             popt, pcov = curve_fit(
                 self.model_from_params,
@@ -439,8 +443,6 @@ class BurstFit:
             )
             err = np.sqrt(np.diag(pcov))
             assert np.isinf(err).sum() == 0, "Errors are still not finite. Terminating."
-        #err = np.sqrt(np.diag(pcov))
-        #assert np.isinf(err).sum() == 0, "Errors are not finite. Terminating."
 
         self.sgram_params["all"] = {}
         for i in range(self.ncomponents):
@@ -619,11 +621,12 @@ class BurstFit:
         ncomp = int(len(params) / len(self.param_names))
         nparams = int(len(self.param_names))
         model = np.zeros(shape=(self.nf, self.nt))
+        if self.sgram_model.forfit:
+            model = model.ravel()
         for i in range(1, ncomp + 1):
             popt = params[(i - 1) * nparams : i * nparams]
-            self.sgram_model.forfit = False
             model += self.sgram_model.evaluate([0], *popt)
-        return model.ravel()
+        return model
 
     def get_physical_parameters(self, my_mapping):
         """
