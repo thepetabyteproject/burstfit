@@ -33,7 +33,7 @@ def test_prepare_data(bd):
     assert bd.clip_fac
 
 
-def test_mask_chans(bd):
+def test_input_mask_chans(bd):
     bd.prepare_data(mask_chans=[10, 12])
     assert np.ma.is_masked(bd.sgram[12, :])
     assert np.ma.is_masked(bd.sgram[10, :])
@@ -43,3 +43,14 @@ def test_mask_chans(bd):
     assert np.ma.is_masked(bd.sgram[1, :])
     assert np.ma.is_masked(bd.sgram[2, :])
     assert np.ma.is_masked(bd.sgram[3, :])
+
+
+def test_all_masks(bd):
+    bd.flag_rfi = True
+    bd.kill_mask = np.zeros(bd.nchans, dtype="bool")
+    bd.kill_mask[[10, 30, 100]] = True
+
+    bd.prepare_data(mask_chans=[(1, 4)])
+    mask_list = [172, 173, 174, 175, 176, 177, 182, 10, 30, 100, 1, 2, 3]
+
+    assert np.ma.is_masked(bd.sgram[mask_list, :])

@@ -19,6 +19,11 @@ class BurstData(Candidate):
         width (int): pulse width of the candidate in samples
         snr (float): Signal to Noise Ratio
         min_samp (int): Minimum number of time samples
+        kill_mask (numpy.ndarray): Boolean mask of channels to kill
+        spectral_kurtosis_sigma (float): Sigma for spectral kurtosis filter
+        savgol_frequency_window (float): Filter window for savgol filter
+        savgol_sigma (float):  Sigma for savgol filter
+        flag_rfi (bool): To turn on RFI flagging
     """
 
     def __init__(
@@ -29,6 +34,11 @@ class BurstData(Candidate):
         width=0,
         snr=0,
         min_samp=256,
+        kill_mask=np.array([False]),
+        spectral_kurtosis_sigma=4,
+        savgol_frequency_window=15,
+        savgol_sigma=4,
+        flag_rfi=False,
     ):
 
         Candidate.__init__(
@@ -41,13 +51,17 @@ class BurstData(Candidate):
             snr=snr,
             min_samp=min_samp,
             device=0,
-            kill_mask=np.array([False]),
+            kill_mask=kill_mask,
+            spectral_kurtosis_sigma=spectral_kurtosis_sigma,
+            savgol_frequency_window=savgol_frequency_window,
+            savgol_sigma=savgol_sigma,
+            flag_rfi=flag_rfi,
         )
         self.dispersed_at_dm = None
         self.i0 = None
         self.clip_fac = None
         self.sgram = None
-        self.mask = None
+        self.input_mask = np.zeros(self.nchans, dtype="bool")
 
     def prepare_data(self, mask_chans=[], time_window=200e-3, normalise=True):
         """
@@ -93,9 +107,23 @@ class BurstData(Candidate):
         nt, nf = self.sgram.shape
         return self.tcand // self.tsamp - (nt // 2)
 
+    @property
+    def mask(self):
+        """
+
+        Returns: Channel mask array using all the available masks
+
+        """
+        m = self.input_mask
+        if self.kill_mask.any():
+            m = self.kill_mask | m
+        if self.rfi_mask.any():
+            m = self.rfi_mask | m
+        return m
+
     def mask_channels(self, mask_chans=[]):
         """
-        Function to mask some frequency channels
+        Function to mask some frequency channels using input_mask, kill_mask and rfi_mask
 
         Args:
             mask_chans: list with tuples (start_freq, end_freq) and channel numbers to mask
@@ -104,20 +132,20 @@ class BurstData(Candidate):
 
         """
         logger.debug(f"Masking channels")
-        self.mask = mask_chans
         for m in mask_chans:
             if isinstance(m, tuple):
                 assert len(m) == 2
-                self.dedispersed.mask[:, m[0] : m[1]] = True
+                self.input_mask[m[0] : m[1]] = True
             elif isinstance(m, int):
-                self.dedispersed.mask[:, m] = True
+                self.input_mask[m] = True
             elif isinstance(m, list):
                 assert len(m) == 2
-                self.dedispersed.mask[:, m[0] : m[1]] = True
+                self.input_mask[m[0] : m[1]] = True
             else:
                 raise AttributeError(
                     "mask_chans can only contain tuple/list (start_chan:end_chan) and/or ints"
                 )
+        self.dedispersed.mask[:, self.mask] = True
         return self
 
     def normalise_data(self, on_pulse_data, off_pulse_data, return_clip_fac=True):
