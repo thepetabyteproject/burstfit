@@ -52,6 +52,9 @@ class BurstFit:
         self.profile_params = {}
         self.spectra_params = {}
         self.sgram_params = {}
+        self.profile_bounds = {}
+        self.spectra_bounds = {}
+        self.sgram_bounds = {}
         self.physical_params = {}
         self.clip_fac = clip_fac
         self.residual = None
@@ -250,6 +253,7 @@ class BurstFit:
         err = np.sqrt(np.diag(pcov))
         assert np.isinf(err).sum() == 0, "Fit errors are not finite. Terminating."
         self.profile_params[self.comp_num] = {"popt": list(popt), "perr": err}
+        self.profile_bounds[self.comp_num] = bounds
 
         logger.info(f"Converged parameters (profile fit) are:")
         for i, p in enumerate(self.profile_params[self.comp_num]["popt"]):
@@ -296,6 +300,7 @@ class BurstFit:
         err = np.sqrt(np.diag(pcov))
         assert np.isinf(err).sum() == 0, "Fit errors are not finite. Terminating."
         self.spectra_params[self.comp_num] = {"popt": list(popt), "perr": err}
+        self.spectra_bounds[self.comp_num] = bounds
 
         logger.info(f"Converged parameters (spectra fit) are:")
         for i, p in enumerate(self.spectra_params[self.comp_num]["popt"]):
@@ -375,6 +380,8 @@ class BurstFit:
             assert np.isinf(err).sum() == 0, "Errors are still not finite. Terminating."
 
         self.sgram_params[self.comp_num] = {"popt": list(popt), "perr": err}
+        self.sgram_bounds[self.comp_num] = bounds
+
         logger.info(f"Converged parameters are:")
         for i, p in enumerate(self.sgram_params[self.comp_num]["popt"]):
             logger.info(f"{self.param_names[i]}: {p} +- {err[i]}")
@@ -410,6 +417,7 @@ class BurstFit:
                 xdata=[0],
                 ydata=self.sgram.ravel(),
                 p0=p0,
+                bounds=[-np.inf, np.inf],
             )
         except RuntimeError as e:
             retry_frac = 0.9
@@ -450,6 +458,7 @@ class BurstFit:
             po = popt[i * self.sgram_model.nparams : (i + 1) * self.sgram_model.nparams]
             pe = err[i * self.sgram_model.nparams : (i + 1) * self.sgram_model.nparams]
             self.sgram_params["all"][i + 1] = {"popt": list(po), "perr": pe}
+        self.sgram_bounds["all"] = bounds
 
         logger.info(f"Converged parameters are:")
         for i in range(1, self.ncomponents + 1):
