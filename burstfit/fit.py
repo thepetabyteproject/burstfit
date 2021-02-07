@@ -577,6 +577,11 @@ class BurstFit:
         return np.any([ofl_on, ofr_on])
 
     def calc_redchisq(self):
+        """
+
+        Returns: Reduced chi-square value of the fit
+
+        """
         logger.debug("Estimating reduced chi square value of the fit.")
         std = np.std(self.sgram[:, : 2 * self.width])
         chi_squared = np.sum(((self.sgram - self.model) / std) ** 2)
@@ -621,6 +626,7 @@ class BurstFit:
         ncomp = int(len(params) / len(self.param_names))
         nparams = int(len(self.param_names))
         model = np.zeros(shape=(self.nf, self.nt))
+        model = np.ma.masked_array(model)
         if self.sgram_model.forfit:
             model = model.ravel()
         for i in range(1, ncomp + 1):
