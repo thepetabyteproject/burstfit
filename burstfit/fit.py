@@ -411,13 +411,14 @@ class BurstFit:
         for k in self.sgram_params.keys():
             p0 += self.sgram_params[k]["popt"]
         self.sgram_model.forfit = True
+        bounds = [-np.inf, np.inf]
         try:
             popt, pcov = curve_fit(
                 self.model_from_params,
                 xdata=[0],
                 ydata=self.sgram.ravel(),
                 p0=p0,
-                bounds=[-np.inf, np.inf],
+                bounds=bounds,
             )
         except RuntimeError as e:
             retry_frac = 0.9
