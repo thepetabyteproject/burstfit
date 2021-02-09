@@ -386,7 +386,6 @@ class BurstFit:
         for i, p in enumerate(self.sgram_params[self.comp_num]["popt"]):
             logger.info(f"{self.param_names[i]}: {p} +- {err[i]}")
 
-        self.sgram_model.forfit = False
         if plot:
             plot_2d_fit(
                 self.residual,
@@ -470,7 +469,6 @@ class BurstFit:
                 logger.info(f"{self.param_names[j]}: {p} +- {errors[j]}")
 
         if plot:
-            self.sgram_model.forfit = False
             plot_2d_fit(self.sgram, self.model_from_params, popt)
 
         self.residual = self.sgram - self.model
@@ -620,11 +618,12 @@ class BurstFit:
         logger.info(f"Found {self.ncomponents} components.")
 
         model = np.zeros(shape=(self.nf, self.nt))
+        if self.sgram_model.forfit:
+            model = model.ravel()
         for i in range(1, self.ncomponents + 1):
             popt = dict[i]["popt"]
-            self.sgram_model.forfit = False
             model += self.sgram_model.evaluate([0], *popt)
-        return model
+        return model.reshape((self.nf, self.nt))
 
     def model_from_params(self, x, *params):
         """
