@@ -623,6 +623,8 @@ class BurstFit:
         for i in range(1, self.ncomponents + 1):
             popt = dict[i]["popt"]
             model += self.sgram_model.evaluate([0], *popt)
+        if self.sgram_model.forfit:
+            model = np.clip(model, 0, self.clip_fac)
         return model.reshape((self.nf, self.nt))
 
     def model_from_params(self, x, *params):
@@ -643,6 +645,8 @@ class BurstFit:
         for i in range(1, ncomp + 1):
             popt = params[(i - 1) * nparams : i * nparams]
             model += self.sgram_model.evaluate([0], *popt)
+        if self.sgram_model.forfit:
+            model = np.clip(model, 0, self.clip_fac)
         return model
 
     def get_physical_parameters(self, my_mapping):
