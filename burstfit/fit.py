@@ -212,7 +212,9 @@ class BurstFit:
         self.initial_profilefit(plot=plot, bounds=profile_bounds)
         self.make_spectra()
         self.initial_spectrafit(plot=plot, bounds=spectra_bounds)
+        _ = self.sgram_params.pop('all', None)
         self.sgram_fit(plot=plot, bounds=sgram_bounds)
+        self.reduced_chi_sq = self.calc_redchisq()
 
     def initial_profilefit(self, plot=False, bounds=[]):
         """
@@ -472,6 +474,7 @@ class BurstFit:
             plot_2d_fit(self.sgram, self.model_from_params, popt)
 
         self.residual = self.sgram - self.model
+        self.reduced_chi_sq = self.calc_redchisq()
 
     def fitall(
         self,
@@ -523,7 +526,6 @@ class BurstFit:
                     "Terminating individual component fitting."
                 )
                 break
-            self.reduced_chi_sq = self.calc_redchisq()
             self.comp_num += 1
 
             if self.comp_num == max_ncomp:
@@ -552,8 +554,6 @@ class BurstFit:
             self.sgram_params["all"] = {}
             self.sgram_params["all"][1] = {"popt": popt, "perr": err}
             logger.info(f"Final number of components = 1. Terminating fitting.")
-
-        self.reduced_chi_sq = self.calc_redchisq()
 
     @property
     def run_tests(self):
