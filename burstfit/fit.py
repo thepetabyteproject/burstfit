@@ -533,6 +533,7 @@ class BurstFit:
                     "Max number of components reached. "
                     "Terminating individual component fitting."
                 )
+        self.comp_num -= 1
 
         if self.ncomponents > 1:
             logger.info(
@@ -545,7 +546,7 @@ class BurstFit:
                 logger.info("On pulse residual looks like noise. ")
             else:
                 logger.warning(
-                    "On pulse residual doesnot look like noise."
+                    "On pulse residual does not look like noise."
                     "Check the fitting results carefully."
                 )
         else:
