@@ -504,7 +504,7 @@ class BurstFit:
                 "On pulse region looks like noise. Check candidate parameters"
             )
 
-        while self.ncomponents < max_ncomp:
+        while self.ncomponents <= max_ncomp:
             if np.any(profile_bounds):
                 logger.warning(
                     f"Input profile bounds detected. Using them for component {self.comp_num}"
@@ -528,12 +528,12 @@ class BurstFit:
                 break
             self.comp_num += 1
 
-            if self.comp_num == max_ncomp:
+            if self.comp_num > max_ncomp:
                 logger.info(
                     "Max number of components reached. "
                     "Terminating individual component fitting."
                 )
-        self.comp_num -= 1
+                self.comp_num -= 1
 
         if self.ncomponents > 1:
             logger.info(
