@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 
 import numpy as np
 
@@ -28,7 +29,13 @@ class BurstIO:
     """
 
     def __init__(
-        self, burstfit_obj=None, burstdata_obj=None, dictionary=None, jsonfile=None
+        self,
+        burstfit_obj=None,
+        burstdata_obj=None,
+        dictionary=None,
+        jsonfile=None,
+        outname=None,
+        outdir=None,
     ):
         self.burstfit = burstfit_obj
         self.burstdata = burstdata_obj
@@ -45,7 +52,8 @@ class BurstIO:
         self.spectra_function = None
         self.ncomponents = None
         self.tsamp = None
-        self.outname = None
+        self.outname = outname
+        self.outdir = outdir
 
     def set_attributes_to_save(self):
         """
@@ -81,7 +89,7 @@ class BurstIO:
         logger.info("Copied necessary attributes")
         return self
 
-    def save_results(self, outname=None):
+    def save_results(self, outname=None, outdir=None):
         """
 
         Saves results of parameter fitting
@@ -116,9 +124,13 @@ class BurstIO:
                 outname = self.outname + ".json"
             else:
                 outname = self.id + ".json"
-
-        logger.info(f"Writing JSON file: {outname}.")
-        with open(outname, "w") as fp:
+        if not outdir:
+            if self.outdir:
+                outdir = self.outdir
+            else:
+                outdir = os.getcwd()
+        logger.info(f"Writing JSON file: {outdir}/{outname}.")
+        with open(outdir + "/" + outname, "w") as fp:
             json.dump(out, fp, cls=MyEncoder, indent=4)
         return out
 

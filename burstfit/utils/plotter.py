@@ -1,3 +1,5 @@
+import os
+
 import matplotlib
 import pylab as plt
 
@@ -66,7 +68,14 @@ def plot_1d_fit(
 
 
 def plot_2d_fit(
-    sgram, function, popt, title=None, show=True, save=False, outname="2d_fit_res"
+    sgram,
+    function,
+    popt,
+    title=None,
+    show=True,
+    save=False,
+    outname="2d_fit_res",
+    outdir=None,
 ):
     """
     Plot the result of spectrogram fit
@@ -101,7 +110,9 @@ def plot_2d_fit(
         fig.suptitle(title)
     plt.tight_layout()
     if save:
-        plt.savefig(outname + ".png", bbox_inches="tight")
+        if not outdir:
+            outdir = os.getcwd()
+        plt.savefig(outdir + "/" + outname + ".png", bbox_inches="tight")
     if show:
         plt.show()
     return fig
