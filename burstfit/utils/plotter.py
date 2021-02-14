@@ -2,7 +2,7 @@ import os
 
 import matplotlib
 import pylab as plt
-
+import numpy as np
 matplotlib.use("Agg")
 
 
@@ -71,6 +71,7 @@ def plot_2d_fit(
     sgram,
     function,
     popt,
+    tsamp,
     title=None,
     show=True,
     save=False,
@@ -84,6 +85,7 @@ def plot_2d_fit(
         sgram: input 2D array of spectrogram
         function: spectrogram function used for fitting
         popt: fit parameters
+        tsamp: sampling time (s)
         title: title of the plot
 
     Returns:
@@ -95,24 +97,35 @@ def plot_2d_fit(
     vmin = sgram.min()
     vmax = sgram.max()
     diff = sgram - model
-    fig, axes = plt.subplots(2, 2, figsize=(8, 8), sharex=True)
-    axes[0, 0].imshow(sgram, aspect="auto", vmin=vmin, vmax=vmax)
+    nf, nt = sgram.shape
+
+    l = np.linspace(-nt // 2, nt // 2, nt)
+    ts = l * tsamp * 1000
+
+    fig, axes = plt.subplots(2, 2, figsize=(7, 7), sharex=True)
+    axes[0, 0].imshow(sgram, aspect="auto", vmin=vmin, vmax=vmax,
+                      extent=[ts[0], ts[-1], nf, 0])
     axes[0, 0].set_title("Original Spectrogram")
-    axes[0, 1].imshow(model, aspect="auto")
+    axes[0, 1].imshow(model, aspect="auto",
+                      extent=[ts[0], ts[-1], nf, 0])
     axes[0, 1].set_title("Model")
-    axes[1, 0].imshow(diff, aspect="auto", vmin=vmin, vmax=vmax)
+    axes[1, 0].imshow(diff, aspect="auto", vmin=vmin, vmax=vmax,
+                      extent=[ts[0], ts[-1], nf, 0])
     axes[1, 0].set_title("Residual Spectrogram")
-    axes[1, 1].plot(sgram.mean(0), c="k", alpha=0.7, linestyle="--", label="Original")
-    axes[1, 1].plot(diff.mean(0), c="r", alpha=0.7, label="Residual")
+    axes[1, 0].set_xlabel('Time (ms)')
+    axes[1, 1].plot(ts, sgram.mean(0), c="k", alpha=0.7, linestyle="--", label="Original")
+    axes[1, 1].plot(ts, diff.mean(0), c="r", alpha=0.7, linestyle='dotted', label="Residual")
     axes[1, 1].legend()
     axes[1, 1].set_title("Profiles")
+    axes[1, 1].set_xlabel('Time (ms)')
+
     if title:
         fig.suptitle(title)
     plt.tight_layout()
     if save:
         if not outdir:
             outdir = os.getcwd()
-        plt.savefig(outdir + "/" + outname + ".png", bbox_inches="tight")
+        plt.savefig(outdir + "/" + outname + ".png", bbox_inches="tight", dpi=300)
     if show:
         plt.show()
     return fig

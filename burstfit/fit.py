@@ -393,6 +393,7 @@ class BurstFit:
                 self.residual,
                 self.sgram_model.evaluate,
                 self.sgram_params[self.comp_num]["popt"],
+                self.tsamp
             )
 
         self.residual = self.sgram - self.model
