@@ -472,7 +472,7 @@ class BurstFit:
                 logger.info(f"{self.param_names[j]}: {p} +- {errors[j]}")
 
         if plot:
-            plot_2d_fit(self.sgram, self.model_from_params, popt)
+            plot_2d_fit(self.sgram, self.model_from_params, popt, self.tsamp)
 
         self.residual = self.sgram - self.model
         self.reduced_chi_sq = self.calc_redchisq()
