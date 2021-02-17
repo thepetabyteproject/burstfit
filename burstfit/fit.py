@@ -600,7 +600,8 @@ class BurstFit:
         logger.debug("Estimating reduced chi square value of the fit.")
         std = np.std(self.sgram[:, : 2 * self.width])
         chi_squared = np.sum(((self.sgram - self.model) / std) ** 2)
-        reduced_chi_squared = chi_squared / (self.sgram.size - len(self.param_names))
+        data_size = (~self.sgram.mask).sum()
+        reduced_chi_squared = chi_squared / (data_size - self.ncomponents*len(self.param_names))
         logger.info(f"Reduced chi-square value of fit is: {reduced_chi_squared}")
         return reduced_chi_squared
 
