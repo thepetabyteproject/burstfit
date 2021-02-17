@@ -70,6 +70,7 @@ class BurstFit:
         self.metadata = None
         self.reduced_chi_sq = None
         self.mask = mask
+        self.residual_std = None
 
     @property
     def ncomponents(self):
@@ -556,6 +557,8 @@ class BurstFit:
             self.sgram_params["all"] = {}
             self.sgram_params["all"][1] = {"popt": popt, "perr": err}
             logger.info(f"Final number of components = 1. Terminating fitting.")
+
+        self.residual_std = np.std(self.residual.sum(0))
 
     @property
     def run_tests(self):
