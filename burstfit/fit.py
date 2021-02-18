@@ -552,8 +552,8 @@ class BurstFit:
                     "Check the fitting results carefully."
                 )
         else:
-            popt = self.sgram_params[1]["popt"]
-            err = self.sgram_params[1]["perr"]
+            popt = self.sgram_params[1]["popt"].copy()
+            err = self.sgram_params[1]["perr"].copy()
             self.sgram_params["all"] = {}
             self.sgram_params["all"][1] = {"popt": popt, "perr": err}
             logger.info(f"Final number of components = 1. Terminating fitting.")
