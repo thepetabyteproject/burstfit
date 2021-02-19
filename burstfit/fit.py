@@ -394,7 +394,7 @@ class BurstFit:
                 self.residual,
                 self.sgram_model.evaluate,
                 self.sgram_params[self.comp_num]["popt"],
-                self.tsamp
+                self.tsamp,
             )
 
         self.residual = self.sgram - self.model
@@ -598,10 +598,25 @@ class BurstFit:
 
         """
         logger.debug("Estimating reduced chi square value of the fit.")
-        std = np.std(self.sgram[:, : 2 * self.width])
+        if "mu_t" and "sigma_t" in self.param_names:
+            logger.info(
+                "mu_t and sigma_t found in params. Using those to estimate off pulse region."
+            )
+            mu_idx = np.where(np.array(self.param_names) == "mu_t")[0][0]
+            sig_idx = np.where(np.array(self.param_names) == "sigma_t")[0][0]
+            mu = self.sgram_params[1]["popt"][mu_idx]
+            sig = self.sgram_params[1]["popt"][sig_idx]
+            end = int(mu - 3 * sig)
+        else:
+            end = self.nt // 2 - 3 * self.width
+        std = np.std(self.sgram[:, :end])
+        logger.debug(f"Standard deviation is {std}")
         chi_squared = np.sum(((self.sgram - self.model) / std) ** 2)
         data_size = (~self.sgram.mask).sum()
-        reduced_chi_squared = chi_squared / (data_size - self.ncomponents*len(self.param_names))
+        logger.debug(f"Unmasked data size is {data_size}")
+        reduced_chi_squared = chi_squared / (
+            data_size - self.ncomponents * len(self.param_names)
+        )
         logger.info(f"Reduced chi-square value of fit is: {reduced_chi_squared}")
         return reduced_chi_squared
 
