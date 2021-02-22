@@ -7,6 +7,7 @@ import numpy as np
 from burstfit.model import Model, SgramModel
 from burstfit.utils.functions import (
     pulse_fn,
+    gauss,
     gauss_norm,
     gauss_norm2,
     gauss_norm3,
@@ -47,7 +48,7 @@ class BurstIO:
         self.mask = None
         self.id = None
         self.sgram_function = None
-        self.sgramModel = None
+        self.sgram_model = None
         self.pulse_function = None
         self.spectra_function = None
         self.ncomponents = None
@@ -78,10 +79,10 @@ class BurstIO:
                 continue
             elif "model" in k:
                 sgram_model_class = getattr(self.burstfit, k)
-                self.sgramModel = sgram_model_class
-                self.sgram_function = self.sgramModel.sgram_function.__name__
-                self.pulse_function = self.sgramModel.pulse_model.function.__name__
-                self.spectra_function = self.sgramModel.spectra_model.function.__name__
+                self.sgram_model = sgram_model_class
+                self.sgram_function = self.sgram_model.sgram_function.__name__
+                self.pulse_function = self.sgram_model.pulse_model.function.__name__
+                self.spectra_function = self.sgram_model.spectra_model.function.__name__
             else:
                 setattr(self, k, getattr(self.burstfit, k))
         self.ncomponents = self.burstfit.ncomponents
@@ -106,7 +107,7 @@ class BurstIO:
             "burstfit",
             "burstdata",
             "metadata",
-            "sgramModel",
+            "sgram_model",
             "jsonfile",
             "dictionary",
         ]
@@ -152,12 +153,12 @@ class BurstIO:
         with open(self.jsonfile, "r") as fp:
             self.dictionary = json.load(fp)
 
-        logger.info(f"Setting models (pulse, spectra and spectrogram).")
-        self.set_classes_from_dict()
-
         logger.info(f"Setting I/O class attributes.")
         for k in self.dictionary.keys():
             setattr(self, k, self.dictionary[k])
+
+        logger.info(f"Setting models (pulse, spectra and spectrogram).")
+        self.set_classes_from_dict()
 
         self.set_metadata()
         logger.info(f"BurstIO class is ready with necessary attributes.")
@@ -169,14 +170,13 @@ class BurstIO:
         Returns:
 
         """
-        self.sgramModel.metadata = (
+        self.sgram_model.metadata = (
             self.nt,
             self.nf,
             self.dm,
             self.tsamp,
             self.fch1,
             self.foff,
-            self.clip_fac,
         )
 
     def set_classes_from_dict(self):
@@ -188,8 +188,12 @@ class BurstIO:
         """
         if self.dictionary["pulse_function"] == "pulse_fn":
             pulseModel = Model(pulse_fn)
+        elif self.dictionary["pulse_function"] == "gauss":
+            pulseModel = Model(gauss)
         else:
-            raise ValueError(f"{self.dictionary['pulse_function']} not supported.")
+            raise ValueError(
+                f"Function: {self.dictionary['pulse_function']} not supported."
+            )
 
         if self.dictionary["spectra_function"] == "gauss_norm":
             spectraModel = Model(gauss_norm)
@@ -198,12 +202,21 @@ class BurstIO:
         elif self.dictionary["spectra_function"] == "gauss_norm3":
             spectraModel = Model(gauss_norm3)
         else:
-            raise ValueError(f"{self.dictionary['spectra_function']} not supported.")
+            raise ValueError(
+                f"Function: {self.dictionary['spectra_function']} not supported."
+            )
 
         if self.dictionary["sgram_function"] == "sgram_fn":
-            self.sgramModel = SgramModel(pulseModel, spectraModel, sgram_fn)
+            self.sgram_model = SgramModel(
+                pulse_model=pulseModel,
+                spectra_model=spectraModel,
+                sgram_fn=sgram_fn,
+                clip_fac=self.clip_fac,
+            )
         else:
-            raise ValueError(f"{self.dictionary['sgram_function']} not supported.")
+            raise ValueError(
+                f"Function: {self.dictionary['sgram_function']} not supported."
+            )
 
     @property
     def model(self):
@@ -215,12 +228,20 @@ class BurstIO:
 
         """
         logging.info(f"Making model.")
-        assert len(self.sgram_params) == self.ncomponents
-        logging.info(f"Found {self.ncomponents} components.")
+        if "all" in self.sgram_params.keys():
+            dict = self.sgram_params["all"]
+        else:
+            dict = self.sgram_params
+
+        assert len(dict) == self.ncomponents
+        logger.info(f"Found {self.ncomponents} components.")
 
         model = np.zeros(shape=(self.nf, self.nt))
-        for i in range(1, self.ncomponents + 1):
-            popt = self.sgram_params[str(i)]["popt"]
-            self.sgramModel.forfit = False
-            model += self.sgramModel.evaluate([0], *popt)
-        return model
+        if self.sgram_model.forfit:
+            model = model.ravel()
+        for key, value in dict.items():
+            popt = value["popt"]
+            model += self.sgram_model.evaluate([0], *popt)
+        if self.sgram_model.forfit:
+            model = np.clip(model, 0, self.clip_fac)
+        return model.reshape((self.nf, self.nt))
