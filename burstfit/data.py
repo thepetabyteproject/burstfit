@@ -133,7 +133,7 @@ class BurstData(Candidate):
         Returns:
 
         """
-        logger.debug(f"Masking channels")
+        logger.debug(f"Preparing input mask.")
         for m in mask_chans:
             if isinstance(m, tuple):
                 assert len(m) == 2
@@ -156,6 +156,7 @@ class BurstData(Candidate):
         Returns:
 
         """
+        logger.debug("Masking channels.")
         self.dedispersed.mask[:, self.mask] = True
         return self
 
