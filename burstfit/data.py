@@ -85,7 +85,9 @@ class BurstData(Candidate):
         )
 
         if np.any(mask_chans):
-            self.mask_channels(mask_chans)
+            self.prepare_input_mask(mask_chans)
+
+        self.mask_channels()
 
         self.dispersed_at_dm = self.dm
         self.sgram = self.crop_dedispersed_data(time_window)
@@ -121,7 +123,7 @@ class BurstData(Candidate):
             m = self.rfi_mask | m
         return m
 
-    def mask_channels(self, mask_chans=[]):
+    def prepare_input_mask(self, mask_chans=[]):
         """
         Function to mask some frequency channels using input_mask, kill_mask and rfi_mask
 
@@ -145,6 +147,15 @@ class BurstData(Candidate):
                 raise AttributeError(
                     "mask_chans can only contain tuple/list (start_chan:end_chan) and/or ints"
                 )
+        return self
+
+    def mask_channels(self):
+        """
+        Apply channel  mask to the dedispersed data
+
+        Returns:
+
+        """
         self.dedispersed.mask[:, self.mask] = True
         return self
 
