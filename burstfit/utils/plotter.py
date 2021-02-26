@@ -1,8 +1,8 @@
 import os
 
 import matplotlib
-import pylab as plt
 import numpy as np
+import pylab as plt
 from skimage.transform import resize
 
 matplotlib.use("Agg")
@@ -154,7 +154,7 @@ def plot_fit_results(
     outname="2d_fit_res",
     outdir=None,
     vmin=None,
-    vmax=None
+    vmax=None,
 ):
     """
 
@@ -185,14 +185,7 @@ def plot_fit_results(
     if len(model.shape) == 1:
         model = model.reshape(sgram.shape)
 
-    if not vmin:
-        vmin = sgram.min()
-
-    if not vmax:
-        vmax = sgram.max()
-
     nf, nt = sgram.shape
-    assert nf % outsize[0] == 0
 
     freqs = fstart + foff * np.linspace(0, nf - 1, nf)
     if not np.any(mask):
@@ -200,11 +193,18 @@ def plot_fit_results(
 
     if np.any(outsize):
         assert len(outsize) == 2
+        assert nf % outsize[0] == 0
         tsamp = tsamp * nt / outsize[1]
         freqs = freqs.reshape(outsize[0], nf // outsize[0]).mean(-1)
         mask = (mask.reshape(outsize[0], nf // outsize[0]).mean(-1)).astype(np.bool)
         model = resize(model, outsize)
         sgram = resize(sgram, outsize)
+
+    if not vmin:
+        vmin = sgram.min()
+
+    if not vmax:
+        vmax = sgram.max()
 
     diff = sgram - model
     nf, nt = sgram.shape
