@@ -5,6 +5,7 @@ import logging
 import numpy as np
 from scipy.optimize import curve_fit
 
+from burstfit.mcmc import MCMC
 from burstfit.utils.math import tests, transform_parameters
 from burstfit.utils.plotter import plot_1d_fit, plot_2d_fit
 
@@ -559,6 +560,57 @@ class BurstFit:
             logger.info(f"Final number of components = 1. Terminating fitting.")
 
         self.residual_std = np.std(self.residual.sum(0))
+
+        if self.mcmc:
+            self.run_mcmc(plot=plot)
+
+    def run_mcmc(
+        self,
+        plot=False,
+        nwalkers=30,
+        nsteps=1000,
+        skip=3000,
+        ncores=10,
+        return_sampler=False,
+    ):
+        """
+
+        Args:
+            plot:
+            nwalkers:
+            nsteps:
+            skip:
+            ncores:
+            return_sampler:
+
+        Returns:
+
+        """
+        outname = self.outname
+        param_names = []
+        for i in range(1, self.ncomponents + 1):
+            for p in self.param_names:
+                param_names += [p + "_" + str(i)]
+        mcmc = MCMC(
+            self.model_from_params,
+            self.sgram,
+            self.sgram_params["all"],
+            param_names,
+            nwalkers,
+            nsteps,
+            skip,
+            ncores,
+            outname,
+        )
+        mcmc.run_mcmc()
+        mcmc.print_results()
+
+        if plot:
+            mcmc.plot()
+        if return_sampler:
+            return mcmc.sampler, mcmc.samples
+        else:
+            return mcmc.samples
 
     @property
     def run_tests(self):

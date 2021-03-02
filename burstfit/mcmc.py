@@ -179,7 +179,7 @@ class MCMC:
         if not np.any(self.samples):
             self.get_chain()
         qs = np.quantile(self.samples, [0.16, 0.5, 0.84], axis=0)
-        logger.info(f"MCMC parameters are:")
+        logger.info(f"MCMC fit results are:")
         e1 = qs[1] - qs[0]
         e2 = qs[2] - qs[1]
         p = qs[1]
