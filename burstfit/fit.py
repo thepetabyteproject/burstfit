@@ -27,6 +27,7 @@ class BurstFit:
         clip_fac: Clip factor based on nbits of data
         outname: Outname for the outputs
         mask: RFI channel mask array
+        mcmcfit: To run MCMC after curve_fit
     """
 
     def __init__(
@@ -41,6 +42,7 @@ class BurstFit:
         clip_fac=None,
         outname=None,
         mask=np.array([False]),
+        mcmcfit=False,
     ):
         self.sgram_model = sgram_model
         self.sgram = sgram
@@ -72,6 +74,8 @@ class BurstFit:
         self.reduced_chi_sq = None
         self.mask = mask
         self.residual_std = None
+        self.mcmcfit = mcmcfit
+        self.mcmc = None
 
     @property
     def ncomponents(self):
@@ -486,6 +490,7 @@ class BurstFit:
         profile_bounds=[],
         spectra_bounds=[],
         sgram_bounds=[-np.inf, np.inf],
+        **mcmc_kwargs,
     ):
         """
         Perform spectro-temporal fitting on the spectrogram for all the components.
@@ -496,6 +501,7 @@ class BurstFit:
             plot: to plot the fitting results.
             max_ncomp: maximum number of components to fit.
             sgram_bounds: bounds on spectrogram fit.
+            **mcmc_kwargs: arguments for mcmc
 
         Returns:
 
@@ -561,18 +567,10 @@ class BurstFit:
 
         self.residual_std = np.std(self.residual.sum(0))
 
-        if self.mcmc:
-            self.run_mcmc(plot=plot)
+        if self.mcmcfit:
+            self.run_mcmc(plot=plot, **mcmc_kwargs)
 
-    def run_mcmc(
-        self,
-        plot=False,
-        nwalkers=30,
-        nsteps=1000,
-        skip=3000,
-        ncores=10,
-        return_sampler=False,
-    ):
+    def run_mcmc(self, plot=False, nwalkers=30, nsteps=1000, skip=3000, ncores=10):
         """
 
         Args:
@@ -581,7 +579,6 @@ class BurstFit:
             nsteps:
             skip:
             ncores:
-            return_sampler:
 
         Returns:
 
@@ -591,7 +588,7 @@ class BurstFit:
         for i in range(1, self.ncomponents + 1):
             for p in self.param_names:
                 param_names += [p + "_" + str(i)]
-        mcmc = MCMC(
+        self.mcmc = MCMC(
             self.model_from_params,
             self.sgram,
             self.sgram_params["all"],
@@ -602,15 +599,11 @@ class BurstFit:
             ncores,
             outname,
         )
-        mcmc.run_mcmc()
-        mcmc.print_results()
-
+        self.mcmc.run_mcmc()
+        self.mcmc.print_results()
         if plot:
-            mcmc.plot()
-        if return_sampler:
-            return mcmc.sampler, mcmc.samples
-        else:
-            return mcmc.samples
+            self.mcmc.plot()
+        return self.mcmc
 
     @property
     def run_tests(self):
