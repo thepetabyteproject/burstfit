@@ -24,6 +24,7 @@ class MCMC:
         nsteps:
         skip:
         start_pos_dev:
+        prior_range:
         ncores:
         outname:
     """
@@ -37,7 +38,8 @@ class MCMC:
         nwalkers=30,
         nsteps=1000,
         skip=3000,
-        start_pos_dev=0.1,
+        start_pos_dev=0.01,
+        prior_range=0.2,
         ncores=10,
         outname="mcmc_res",
     ):
@@ -57,7 +59,7 @@ class MCMC:
 
         self.cf_errors = cf_errors
         self.initial_guess = np.array(initial_guess)
-        self.prior_range = 0.2
+        self.prior_range = prior_range
         self.sgram = sgram
         self.std = np.std(sgram)
         self.nwalkers = nwalkers

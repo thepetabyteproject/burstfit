@@ -570,7 +570,16 @@ class BurstFit:
         if self.mcmcfit:
             self.run_mcmc(plot=plot, **mcmc_kwargs)
 
-    def run_mcmc(self, plot=False, nwalkers=30, nsteps=1000, skip=3000, ncores=10):
+    def run_mcmc(
+        self,
+        plot=False,
+        nwalkers=30,
+        nsteps=1000,
+        skip=3000,
+        ncores=10,
+        start_pos_dev=0.01,
+        prior_range=0.2,
+    ):
         """
 
         Args:
@@ -596,6 +605,8 @@ class BurstFit:
             nwalkers,
             nsteps,
             skip,
+            start_pos_dev,
+            prior_range,
             ncores,
             outname,
         )
