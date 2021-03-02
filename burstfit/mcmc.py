@@ -28,6 +28,7 @@ class MCMC:
         prior_range: Percent of initial guess to set as prior range
         ncores: Number of CPUs to use
         outname: Name of output files
+        save_results: Save MCMC samples to a file
     """
 
     def __init__(
@@ -181,7 +182,7 @@ class MCMC:
             f"{(1 + self.prior_range) * self.initial_guess})"
         )
         if self.save_results:
-            backend = emcee.backends.HDFBackend(f"{self.outname}.h5")
+            backend = emcee.backends.HDFBackend(f"{self.outname}_samples.h5")
             backend.reset(self.nwalkers, self.ndim)
         else:
             backend = None

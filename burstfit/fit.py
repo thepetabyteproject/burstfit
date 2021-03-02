@@ -580,20 +580,31 @@ class BurstFit:
         start_pos_dev=0.01,
         prior_range=0.5,
         save_results=True,
+        outname=None,
     ):
         """
+        Runs MCMC using the final fit parameters.
 
         Args:
-            plot:
-            nwalkers:
-            nsteps:
-            skip:
-            ncores:
+            plot: To plot the outputs.
+            nwalkers: Number of walkers for MCMC.
+            nsteps: Number of iterations for MCMC.
+            skip: Number of samples to skip to remove burn-in.
+            ncores: Number of CPUs to use.
+            start_pos_dev: Percent deviation for start position of the samples
+            prior_range: Percent of initial guess to set as prior range
+            save_results: Save MCMC samples to a file
+            outname: Name of output files
 
         Returns:
 
         """
-        outname = self.outname
+        if not outname:
+            if self.outname:
+                outname = self.outname
+            else:
+                outname = "mcmc_res"
+
         param_names = []
         for i in range(1, self.ncomponents + 1):
             for p in self.param_names:
