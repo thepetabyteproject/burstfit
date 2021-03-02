@@ -81,17 +81,20 @@ class MCMC:
     @property
     def ndim(self):
         """
+        Returns the number of dimensions.
 
-        Returns:
+        Returns: number of dimensions
 
         """
         return len(self.initial_guess)
 
     def lnprior(self, params):
         """
+        Prior function. Priors are uniform from (1-prior_range)*initial_guess to (1+prior_range)*initial_guess.
+        Minimum prior for tau is set to 0.
 
         Args:
-            params:
+            params: Parameters to check.
 
         Returns:
 
@@ -106,11 +109,13 @@ class MCMC:
 
     def lnprob(self, params):
         """
+        Log probability function.
 
         Args:
-            params:
+            params: Parameters to evaluate at.
 
         Returns:
+            Prior + log likelihood at the inputs.
 
         """
         lp = self.lnprior(params)
@@ -120,11 +125,13 @@ class MCMC:
 
     def lnlk(self, inps):
         """
+        Log likelihood function. Uses the model_function to generate the model.
 
         Args:
-            inps:
+            inps: Parameters to evaluate at.
 
         Returns:
+            Log likelihood.
 
         """
         model = self.model_function([0], *inps)
@@ -132,6 +139,8 @@ class MCMC:
 
     def set_initial_pos_and_priors(self):
         """
+        Function to set the initial values of walkers and prior ranges.
+        Minimum prior for tau is set to 0.
 
         Returns:
 
@@ -158,8 +167,10 @@ class MCMC:
 
     def run_mcmc(self):
         """
+        Runs the MCMC.
 
         Returns:
+            Sampler object
 
         """
         logger.debug(
@@ -206,11 +217,13 @@ class MCMC:
 
     def get_chain(self, skip=None):
         """
+        Returns the chanins from sampler object after removing some samples for burn-in.
 
         Args:
-            skip:
+            skip: Number of samples to skip for burn-in.
 
         Returns:
+            Sample chain.
 
         """
         if not skip:
@@ -225,6 +238,7 @@ class MCMC:
 
     def print_results(self):
         """
+        Prints the results of MCMC analysis. It uses median values with 1-sigma errors based on MCMC posteriors.
 
         Returns:
 
@@ -241,9 +255,10 @@ class MCMC:
 
     def plot(self, save=False):
         """
+        Plot the samples and corner plot of MCMC posteriors.
 
         Args:
-            save:
+            save: To save the corner plot.
 
         Returns:
 

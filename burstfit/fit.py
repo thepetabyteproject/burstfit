@@ -578,7 +578,7 @@ class BurstFit:
         skip=3000,
         ncores=10,
         start_pos_dev=0.01,
-        prior_range=0.2,
+        prior_range=0.5,
         save_results=True,
     ):
         """
@@ -615,7 +615,7 @@ class BurstFit:
         self.mcmc.run_mcmc()
         self.mcmc.print_results()
         if plot:
-            self.mcmc.plot()
+            self.mcmc.plot(save=save_results)
             qs = np.quantile(self.mcmc.samples, [0.5], axis=0)
             plot_2d_fit(self.sgram, self.model_from_params, qs[0], self.tsamp)
         return self.mcmc
