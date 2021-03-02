@@ -614,6 +614,8 @@ class BurstFit:
         self.mcmc.print_results()
         if plot:
             self.mcmc.plot()
+            qs = np.quantile(self.mcmc.samples, [0.5], axis=0)
+            plot_2d_fit(self.sgram, self.model_from_params, qs[0], self.tsamp)
         return self.mcmc
 
     @property
