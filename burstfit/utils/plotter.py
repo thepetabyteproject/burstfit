@@ -1,5 +1,6 @@
 import os
 
+import corner
 import matplotlib
 import numpy as np
 import pylab as plt
@@ -295,3 +296,44 @@ def plot_me(datar, xlabel=None, ylabel=None, title=None):
         if title:
             plt.title(title)
     return plt.show()
+
+
+def plot_mcmc_results(samples, name, param_starts, labels, save=False):
+    """
+    Save corner plot of MCMC results
+
+    Args:
+        samples: MCMC samples to plot
+        name: output name
+        param_starts: mark the initial parameter guess
+        labels: labels for axes
+        save: to save the corner plot
+
+    Returns:
+
+    """
+    ndim = samples.shape[1]
+    fig, axes = plt.subplots(ndim, figsize=(10, 7), sharex=True)
+    for i in range(ndim):
+        ax = axes[i]
+        ax.plot(samples[:, i], "k", alpha=0.3)
+        ax.set_xlim(0, len(samples))
+        ax.set_ylabel(labels[i])
+        ax.yaxis.set_label_coords(-0.1, 0.5)
+    axes[-1].set_xlabel("step number")
+    fig.suptitle(name)
+
+    plt.figure()
+    fig = corner.corner(
+        samples,
+        labels=labels,
+        bins=20,
+        truths=param_starts,
+        quantiles=[0.16, 0.5, 0.84],
+        show_titles=True,
+        title_kwargs={"fontsize": 12},
+    )
+    fig.suptitle(name)
+    plt.tight_layout()
+    if save:
+        fig.savefig(f"{name}_corner.png", bbox_inches="tight")
