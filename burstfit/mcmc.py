@@ -74,8 +74,8 @@ class MCMC:
         self.sampler = None
         self.samples = None
         self.outname = outname
-        self.save_results=save_results
-        self.autocorr=None
+        self.save_results = save_results
+        self.autocorr = None
         self.set_initial_pos_and_priors()
 
     @property
@@ -136,7 +136,7 @@ class MCMC:
         Returns:
 
         """
-        logger.info(f'Initial guess for MCMC is: {self.initial_guess}')
+        logger.info(f"Initial guess for MCMC is: {self.initial_guess}")
         pos = [
             np.array(self.initial_guess)
             * np.random.uniform(
@@ -149,10 +149,11 @@ class MCMC:
         self.max_prior = (1 + self.prior_range) * self.initial_guess
         self.min_prior = (1 - self.prior_range) * self.initial_guess
 
-        tau_idx = [i for i, t in enumerate(self.param_names) if 'tau' in t]
-        for idx in tau_idx:
-            self.min_prior[idx] = 0
-
+        tau_idx = [i for i, t in enumerate(self.param_names) if "tau" in t]
+        if len(tau_idx) > 0:
+            logger.info("Found tau in param_names. Setting their min prior to 0.")
+            for idx in tau_idx:
+                self.min_prior[idx] = 0
         return self
 
     def run_mcmc(self):
@@ -161,11 +162,15 @@ class MCMC:
         Returns:
 
         """
-        logger.debug(f'Range of initial positions of walkers (min, max): ({self.pos.min(0)}, {self.pos.max(0)})')
-        logger.debug(f'Range of priors (min, max): ({(1 - self.prior_range) * self.initial_guess},'
-                     f'{(1 + self.prior_range) * self.initial_guess})')
+        logger.debug(
+            f"Range of initial positions of walkers (min, max): ({self.pos.min(0)}, {self.pos.max(0)})"
+        )
+        logger.debug(
+            f"Range of priors (min, max): ({(1 - self.prior_range) * self.initial_guess},"
+            f"{(1 + self.prior_range) * self.initial_guess})"
+        )
         if self.save_results:
-            backend = emcee.backends.HDFBackend(f'{self.outname}.h5')
+            backend = emcee.backends.HDFBackend(f"{self.outname}.h5")
             backend.reset(self.nwalkers, self.ndim)
         else:
             backend = None
@@ -175,13 +180,11 @@ class MCMC:
         old_tau = np.inf
         with closing(Pool(self.ncores)) as pool:
             sampler = emcee.EnsembleSampler(
-                self.nwalkers,
-                self.ndim,
-                self.lnprob,
-                pool=pool,
-                backend=backend
+                self.nwalkers, self.ndim, self.lnprob, pool=pool, backend=backend
             )
-            for sample in sampler.sample(self.pos, iterations=self.nsteps, progress=True, store=True):
+            for sample in sampler.sample(
+                self.pos, iterations=self.nsteps, progress=True, store=True
+            ):
                 if sampler.iteration % 100:
                     continue
 
@@ -214,7 +217,9 @@ class MCMC:
             skip = self.skip
         self.samples = self.sampler.get_chain(flat=True)[skip:, :]
         if self.samples.shape[0] == 0:
-            logger.warning(f'Not enough samples in chain to skip. Not removing burn-in.')
+            logger.warning(
+                f"Not enough samples in chain to skip. Not removing burn-in."
+            )
             self.samples = self.sampler.get_chain(flat=True)
         return self.samples
 
