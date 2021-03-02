@@ -579,6 +579,7 @@ class BurstFit:
         ncores=10,
         start_pos_dev=0.01,
         prior_range=0.2,
+        save_results=True,
     ):
         """
 
@@ -609,6 +610,7 @@ class BurstFit:
             prior_range,
             ncores,
             outname,
+            save_results
         )
         self.mcmc.run_mcmc()
         self.mcmc.print_results()

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+from contextlib import closing
 from multiprocessing import Pool
 
 import emcee
@@ -16,17 +17,17 @@ class MCMC:
     Class to run MCMC on the burst model.
 
     Args:
-        model_function:
-        sgram:
-        initial_guess:
-        param_names:
-        nwalkers:
-        nsteps:
-        skip:
-        start_pos_dev:
-        prior_range:
-        ncores:
-        outname:
+        model_function: Function to create the model
+        sgram: 2D spectrogram data
+        initial_guess: Initial guess of parameters for MCMC (can be a dictionary or list)
+        param_names: Names of parameters
+        nwalkers: Number of walkers to use in MCMC
+        nsteps: Number of iterations to use in MCMC
+        skip: Number of samples to skip for burn-in
+        start_pos_dev: Percent deviation for start position of the samples
+        prior_range: Percent of initial guess to set as prior range
+        ncores: Number of CPUs to use
+        outname: Name of output files
     """
 
     def __init__(
@@ -34,7 +35,7 @@ class MCMC:
         model_function,
         sgram,
         initial_guess,
-        param_names=None,
+        param_names,
         nwalkers=30,
         nsteps=1000,
         skip=3000,
@@ -42,6 +43,7 @@ class MCMC:
         prior_range=0.2,
         ncores=10,
         outname="mcmc_res",
+        save_results=True,
     ):
         self.model_function = model_function
         if isinstance(initial_guess, dict):
@@ -59,6 +61,8 @@ class MCMC:
 
         self.cf_errors = cf_errors
         self.initial_guess = np.array(initial_guess)
+        assert len(param_names) == len(initial_guess)
+        self.param_names = param_names
         self.prior_range = prior_range
         self.sgram = sgram
         self.std = np.std(sgram)
@@ -69,9 +73,10 @@ class MCMC:
         self.ncores = ncores
         self.sampler = None
         self.samples = None
-        self.param_names = param_names
         self.outname = outname
-        self.set_initial_pos()
+        self.save_results=save_results
+        self.autocorr=None
+        self.set_initial_pos_and_priors()
 
     @property
     def ndim(self):
@@ -91,8 +96,8 @@ class MCMC:
         Returns:
 
         """
-        m1 = (params) < (1 + self.prior_range) * self.initial_guess
-        m2 = (params) > (1 - self.prior_range) * self.initial_guess
+        m1 = params <= self.max_prior
+        m2 = params >= self.min_prior
 
         if m1.sum() + m2.sum() == 2 * len(self.initial_guess):
             return 0
@@ -125,12 +130,13 @@ class MCMC:
         model = self.model_function([0], *inps)
         return -0.5 * np.sum(((self.sgram.ravel() - model) / self.std) ** 2)
 
-    def set_initial_pos(self):
+    def set_initial_pos_and_priors(self):
         """
 
         Returns:
 
         """
+        logger.info(f'Initial guess for MCMC is: {self.initial_guess}')
         pos = [
             np.array(self.initial_guess)
             * np.random.uniform(
@@ -139,6 +145,14 @@ class MCMC:
             for i in range(self.nwalkers)
         ]
         self.pos = np.array(pos)
+
+        self.max_prior = (1 + self.prior_range) * self.initial_guess
+        self.min_prior = (1 - self.prior_range) * self.initial_guess
+
+        tau_idx = [i for i, t in enumerate(self.param_names) if 'tau' in t]
+        for idx in tau_idx:
+            self.min_prior[idx] = 0
+
         return self
 
     def run_mcmc(self):
@@ -147,14 +161,43 @@ class MCMC:
         Returns:
 
         """
-        with Pool(self.ncores) as pool:
+        logger.debug(f'Range of initial positions of walkers (min, max): ({self.pos.min(0)}, {self.pos.max(0)})')
+        logger.debug(f'Range of priors (min, max): ({(1 - self.prior_range) * self.initial_guess},'
+                     f'{(1 + self.prior_range) * self.initial_guess})')
+        if self.save_results:
+            backend = emcee.backends.HDFBackend(f'{self.outname}.h5')
+            backend.reset(self.nwalkers, self.ndim)
+        else:
+            backend = None
+
+        index = 0
+        autocorr = np.empty(self.nsteps)
+        old_tau = np.inf
+        with closing(Pool(self.ncores)) as pool:
             sampler = emcee.EnsembleSampler(
                 self.nwalkers,
                 self.ndim,
                 self.lnprob,
                 pool=pool,
+                backend=backend
             )
-            sampler.run_mcmc(self.pos, self.nsteps, progress=True)
+            for sample in sampler.sample(self.pos, iterations=self.nsteps, progress=True, store=True):
+                if sampler.iteration % 100:
+                    continue
+
+                tau = sampler.get_autocorr_time(tol=0)
+                autocorr[index] = np.mean(tau)
+                index += 1
+
+                # Check convergence
+                converged = np.all(tau * 100 < sampler.iteration)
+                converged &= np.all(np.abs(old_tau - tau) / tau < 0.01)
+                if converged:
+                    break
+                old_tau = tau
+
+            pool.terminate()
+        self.autocorr = autocorr
         self.sampler = sampler
         return self.sampler
 
@@ -170,6 +213,9 @@ class MCMC:
         if not skip:
             skip = self.skip
         self.samples = self.sampler.get_chain(flat=True)[skip:, :]
+        if self.samples.shape[0] == 0:
+            logger.warning(f'Not enough samples in chain to skip. Not removing burn-in.')
+            self.samples = self.sampler.get_chain(flat=True)
         return self.samples
 
     def print_results(self):
