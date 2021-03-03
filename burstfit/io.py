@@ -84,10 +84,17 @@ class BurstIO:
                 self.sgram_function = self.sgram_model.sgram_function.__name__
                 self.pulse_function = self.sgram_model.pulse_model.function.__name__
                 self.spectra_function = self.sgram_model.spectra_model.function.__name__
-            elif k == 'mcmc':
+            elif k == "mcmc":
                 mcmc_class = getattr(self.burstfit, k)
                 if mcmc_class:
-                    remove = ['sgram', 'sampler', 'samples', 'autocorr', 'pos', 'model_function']
+                    remove = [
+                        "sgram",
+                        "sampler",
+                        "samples",
+                        "autocorr",
+                        "pos",
+                        "model_function",
+                    ]
                     mcmc_dict = vars(mcmc_class)
                     for r in remove:
                         mcmc_dict.pop(r, None)

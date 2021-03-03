@@ -639,6 +639,9 @@ class BurstFit:
             self.mcmc_params[i + 1] = {"popt": list(po), "perr": pe}
         self.mcmc.print_results()
 
+        self.residual = self.sgram - self.model
+        self.reduced_chi_sq = self.calc_redchisq()
+
         if plot:
             self.mcmc.plot(save=save_results)
             qs = np.quantile(self.mcmc.samples, [0.5], axis=0)
@@ -715,10 +718,13 @@ class BurstFit:
 
         """
         logger.info(f"Making model.")
-        if "all" in self.sgram_params.keys():
-            dict = self.sgram_params["all"]
+        if self.mcmc_params:
+            dict = self.mcmc_params
         else:
-            dict = self.sgram_params
+            if "all" in self.sgram_params.keys():
+                dict = self.sgram_params["all"]
+            else:
+                dict = self.sgram_params
 
         assert len(dict) == self.ncomponents
         logger.info(f"Found {self.ncomponents} components.")
