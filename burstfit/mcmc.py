@@ -84,7 +84,8 @@ class MCMC:
         """
         Returns the number of dimensions.
 
-        Returns: number of dimensions
+        Returns:
+            number of dimensions
 
         """
         return len(self.initial_guess)
@@ -161,7 +162,9 @@ class MCMC:
 
         tau_idx = [i for i, t in enumerate(self.param_names) if "tau" in t]
         if len(tau_idx) > 0:
-            logger.info("Found tau in param_names. Setting their min prior to 0.")
+            logger.info(
+                "Found tau in param_names. Setting its min value of prior to 0."
+            )
             for idx in tau_idx:
                 self.min_prior[idx] = 0
         return self
@@ -181,6 +184,13 @@ class MCMC:
             f"Range of priors (min, max): ({(1 - self.prior_range) * self.initial_guess},"
             f"{(1 + self.prior_range) * self.initial_guess})"
         )
+        if self.nwalkers < 2 * self.ndim:
+            logger.warning(
+                "Number of walkers is less than 2*ndim. Setting nwalkers to 2*ndim+1."
+            )
+            self.nwalkers = 2 * self.ndim + 1
+
+        logger.info()
         if self.save_results:
             backend = emcee.backends.HDFBackend(f"{self.outname}_samples.h5")
             backend.reset(self.nwalkers, self.ndim)
@@ -264,6 +274,7 @@ class MCMC:
         Returns:
 
         """
+        logger.info("Plotting MCMC results.")
         plot_mcmc_results(
             self.samples, self.outname, self.initial_guess, self.param_names, save
         )
