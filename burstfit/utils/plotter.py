@@ -337,3 +337,28 @@ def plot_mcmc_results(samples, name, param_starts, labels, save=False):
     plt.tight_layout()
     if save:
         fig.savefig(f"{name}_corner.png", bbox_inches="tight")
+
+
+def autocorr_plot(n, y, name, save):
+    """
+    Make the autocorrelation plot to visualize convergence of MCMC.
+
+    Args:
+        n: iterations
+        y: autocorrelations
+        name: outname of plot
+        save: to save the plot
+
+    Returns:
+
+    """
+    plt.figure()
+    plt.plot(n, n / 100.0, "--k")
+    plt.plot(n, y)
+    plt.xlim(0, n.max())
+    plt.ylim(0, y.max() + 0.1 * (y.max() - y.min()))
+    plt.xlabel("number of steps")
+    plt.ylabel(r"mean $\hat{\tau}$")
+    plt.title(f"{name}")
+    if save:
+        plt.savefig(f"{name}_autocorr.png", bbox_inches="tight")

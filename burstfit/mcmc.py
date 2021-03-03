@@ -7,7 +7,7 @@ from multiprocessing import Pool
 import emcee
 import numpy as np
 
-from burstfit.utils.plotter import plot_mcmc_results
+from burstfit.utils.plotter import plot_mcmc_results, autocorr_plot
 
 logger = logging.getLogger(__name__)
 
@@ -267,3 +267,19 @@ class MCMC:
         plot_mcmc_results(
             self.samples, self.outname, self.initial_guess, self.param_names, save
         )
+
+    def make_autocorr_plot(self, save=False):
+        """
+        Make autocorrelation plot for MCMC (i.e autocorrelation  time scale vs iteration)
+        see https://emcee.readthedocs.io/en/stable/tutorials/autocorr/
+
+        Args:
+            save: To save the plot
+
+        Returns:
+
+        """
+        index = (self.autocorr > 0.01).sum()
+        n = 100 * np.arange(1, index + 1)
+        y = self.autocorr[:index]
+        autocorr_plot(n, y, self.outname, save)
