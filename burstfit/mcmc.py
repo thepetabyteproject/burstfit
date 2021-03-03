@@ -77,6 +77,9 @@ class MCMC:
         self.outname = outname
         self.save_results = save_results
         self.autocorr = None
+        self.pos = None
+        self.max_prior = None
+        self.min_prior = None
         self.set_initial_pos_and_priors()
 
     @property
@@ -190,7 +193,6 @@ class MCMC:
             )
             self.nwalkers = 2 * self.ndim + 1
 
-        logger.info()
         if self.save_results:
             backend = emcee.backends.HDFBackend(f"{self.outname}_samples.h5")
             backend.reset(self.nwalkers, self.ndim)
@@ -200,6 +202,10 @@ class MCMC:
         index = 0
         autocorr = np.empty(self.nsteps)
         old_tau = np.inf
+
+        logger.info(f'Running MCMC with the following parameters: nwalkers={self.nwalkers}, '
+                    f'nsteps={self.nsteps}, start_pos_dev={self.start_pos_dev}, ncores={self.ncores},'
+                    f'skip={self.skip}, min prior={self.min_prior}, max prior={self.max_prior}')
         with closing(Pool(self.ncores)) as pool:
             sampler = emcee.EnsembleSampler(
                 self.nwalkers, self.ndim, self.lnprob, pool=pool, backend=backend
