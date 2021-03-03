@@ -55,6 +55,7 @@ class BurstIO:
         self.tsamp = None
         self.outname = outname
         self.outdir = outdir
+        self.mcmc = None
 
     def set_attributes_to_save(self):
         """
@@ -83,6 +84,14 @@ class BurstIO:
                 self.sgram_function = self.sgram_model.sgram_function.__name__
                 self.pulse_function = self.sgram_model.pulse_model.function.__name__
                 self.spectra_function = self.sgram_model.spectra_model.function.__name__
+            elif k == 'mcmc':
+                mcmc_class = getattr(self.burstfit, k)
+                if mcmc_class:
+                    remove = ['sgram', 'sampler', 'samples', 'autocorr', 'pos', 'model_function']
+                    mcmc_dict = vars(mcmc_class)
+                    for r in remove:
+                        mcmc_dict.pop(r, None)
+                    self.mcmc = mcmc_dict
             else:
                 setattr(self, k, getattr(self.burstfit, k))
         self.ncomponents = self.burstfit.ncomponents
