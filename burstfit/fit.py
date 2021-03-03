@@ -55,6 +55,7 @@ class BurstFit:
         self.profile_params = {}
         self.spectra_params = {}
         self.sgram_params = {}
+        self.mcmc_params = {}
         self.profile_bounds = {}
         self.spectra_bounds = {}
         self.sgram_bounds = {}
@@ -624,7 +625,20 @@ class BurstFit:
             save_results,
         )
         self.mcmc.run_mcmc()
+        if not np.any(self.mcmc.samples):
+            self.mcmc.get_chain()
+
+        qs = np.quantile(self.mcmc.samples, [0.16, 0.5, 0.84], axis=0)
+        e1 = qs[1] - qs[0]
+        e2 = qs[2] - qs[1]
+        err = [[e1[i], e2[i]] for i in range(len(e1))]
+        popt = qs[1]
+        for i in range(self.ncomponents):
+            po = popt[i * self.sgram_model.nparams : (i + 1) * self.sgram_model.nparams]
+            pe = err[i * self.sgram_model.nparams : (i + 1) * self.sgram_model.nparams]
+            self.mcmc_params[i + 1] = {"popt": list(po), "perr": pe}
         self.mcmc.print_results()
+
         if plot:
             self.mcmc.plot(save=save_results)
             qs = np.quantile(self.mcmc.samples, [0.5], axis=0)
