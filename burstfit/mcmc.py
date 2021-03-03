@@ -150,7 +150,15 @@ class MCMC:
         Returns:
 
         """
+        logging.info("Setting initial positions and priors for MCMC.")
         logger.info(f"Initial guess for MCMC is: {self.initial_guess}")
+
+        if self.nwalkers < 2 * self.ndim:
+            logger.warning(
+                "Number of walkers is less than 2*ndim. Setting nwalkers to 2*ndim+1."
+            )
+            self.nwalkers = 2 * self.ndim + 1
+
         pos = [
             np.array(self.initial_guess)
             * np.random.uniform(
@@ -162,7 +170,6 @@ class MCMC:
 
         self.max_prior = (1 + self.prior_range) * self.initial_guess
         self.min_prior = (1 - self.prior_range) * self.initial_guess
-
         tau_idx = [i for i, t in enumerate(self.param_names) if "tau" in t]
         if len(tau_idx) > 0:
             logger.info(
@@ -187,11 +194,6 @@ class MCMC:
             f"Range of priors (min, max): ({(1 - self.prior_range) * self.initial_guess},"
             f"{(1 + self.prior_range) * self.initial_guess})"
         )
-        if self.nwalkers < 2 * self.ndim:
-            logger.warning(
-                "Number of walkers is less than 2*ndim. Setting nwalkers to 2*ndim+1."
-            )
-            self.nwalkers = 2 * self.ndim + 1
 
         if self.save_results:
             backend = emcee.backends.HDFBackend(f"{self.outname}_samples.h5")
@@ -203,9 +205,11 @@ class MCMC:
         autocorr = np.empty(self.nsteps)
         old_tau = np.inf
 
-        logger.info(f'Running MCMC with the following parameters: nwalkers={self.nwalkers}, '
-                    f'nsteps={self.nsteps}, start_pos_dev={self.start_pos_dev}, ncores={self.ncores},'
-                    f'skip={self.skip}, min prior={self.min_prior}, max prior={self.max_prior}')
+        logger.info(
+            f"Running MCMC with the following parameters: nwalkers={self.nwalkers}, "
+            f"nsteps={self.nsteps}, start_pos_dev={self.start_pos_dev}, ncores={self.ncores}, "
+            f"skip={self.skip}, min prior={self.min_prior}, max prior={self.max_prior}"
+        )
         with closing(Pool(self.ncores)) as pool:
             sampler = emcee.EnsembleSampler(
                 self.nwalkers, self.ndim, self.lnprob, pool=pool, backend=backend
@@ -268,7 +272,7 @@ class MCMC:
         e2 = qs[2] - qs[1]
         p = qs[1]
         for i, param in enumerate(self.param_names):
-            logger.info(f"{self.param_names[i]}: {p[i]} + {e2[i]:.2f} - {e1[i]:.2f}")
+            logger.info(f"{self.param_names[i]}: {p[i]} + {e2[i]:.3f} - {e1[i]:.3f}")
 
     def plot(self, save=False):
         """

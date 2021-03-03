@@ -95,7 +95,7 @@ class BurstIO:
                         "pos",
                         "model_function",
                     ]
-                    mcmc_dict = vars(mcmc_class)
+                    mcmc_dict = vars(mcmc_class).copy()
                     for r in remove:
                         mcmc_dict.pop(r, None)
                     self.mcmc = mcmc_dict
