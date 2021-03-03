@@ -202,7 +202,7 @@ class MCMC:
             backend = None
 
         index = 0
-        autocorr = np.empty(self.nsteps)
+        autocorr = np.zeros(self.nsteps)
         old_tau = np.inf
 
         logger.info(
@@ -300,7 +300,7 @@ class MCMC:
         Returns:
 
         """
-        index = (self.autocorr > 0.01).sum()
+        index = (self.autocorr > 0).sum()
         n = 100 * np.arange(1, index + 1)
         y = self.autocorr[:index]
         autocorr_plot(n, y, self.outname, save)
