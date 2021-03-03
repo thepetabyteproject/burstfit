@@ -249,7 +249,12 @@ class MCMC:
         """
         if not skip:
             skip = self.skip
-        self.samples = self.sampler.get_chain(flat=True)[skip:, :]
+        tau = self.sampler.get_autocorr_time(tol=0)
+        burnin = int(2 * np.max(tau))
+        thin = int(0.5 * np.min(tau))
+        skip = np.max([skip, burnin])
+        logger.info(f"Discarding {skip} samples.")
+        self.samples = self.sampler.get_chain(flat=True, discard=burnin, thin=thin)
         if self.samples.shape[0] == 0:
             logger.warning(
                 f"Not enough samples in chain to skip. Not removing burn-in."
