@@ -175,8 +175,20 @@ class MCMC:
             logger.info(
                 "Found tau in param_names. Setting its min value of prior to 0."
             )
+            max_tau = 0
             for idx in tau_idx:
                 self.min_prior[idx] = 0
+                max_tau = np.max([self.max_prior[idx], max_tau])
+
+            sig_t_idx = [i for i, t in enumerate(self.param_names) if "sigma_t" in t]
+            if len(sig_t_idx) > 0:
+                logger.info(
+                    f"Found sigma_t in param_names. Setting its max value of prior to "
+                    f"(1+prior_range)*initial_guess + max_tau_prior({max_tau})"
+                )
+                for idx in sig_t_idx:
+                    self.max_prior[idx] = self.max_prior[idx] + max_tau
+
         return self
 
     def run_mcmc(self):
