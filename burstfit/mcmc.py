@@ -80,7 +80,8 @@ class MCMC:
         self.pos = None
         self.max_prior = None
         self.min_prior = None
-        self.set_initial_pos_and_priors()
+        self.set_initial_pos()
+        self.set_priors()
 
     @property
     def ndim(self):
@@ -142,7 +143,7 @@ class MCMC:
         model = self.model_function([0], *inps)
         return -0.5 * np.sum(((self.sgram.ravel() - model) / self.std) ** 2)
 
-    def set_initial_pos_and_priors(self):
+    def set_initial_pos(self):
         """
         Function to set the initial values of walkers and prior ranges.
         Minimum prior for tau is set to 0.
@@ -150,7 +151,7 @@ class MCMC:
         Returns:
 
         """
-        logging.info("Setting initial positions and priors for MCMC.")
+        logging.info("Setting initial positions for MCMC.")
         logger.info(f"Initial guess for MCMC is: {self.initial_guess}")
 
         if self.nwalkers < 2 * self.ndim:
@@ -167,27 +168,65 @@ class MCMC:
             for i in range(self.nwalkers)
         ]
         self.pos = np.array(pos)
+        return self
 
+    def set_priors(self):
+        """
+        Set priors for MCMC
+
+        Returns:
+
+        """
+        logger.info("Setting priors for MCMC.")
         self.max_prior = (1 + self.prior_range) * self.initial_guess
         self.min_prior = (1 - self.prior_range) * self.initial_guess
+
         tau_idx = [i for i, t in enumerate(self.param_names) if "tau" in t]
+        max_tau = np.max(np.take(self.max_prior, tau_idx))
+
+        sig_t_idx = [i for i, t in enumerate(self.param_names) if "sigma_t" in t]
+        max_sigma_t = np.max(np.take(self.max_prior, sig_t_idx))
+
+        S_idx = [i for i, t in enumerate(self.param_names) if "S" in t]
+
+        mu_f_idx = [i for i, t in enumerate(self.param_names) if "mu_f" in t]
+        sigma_f_idx = [i for i, t in enumerate(self.param_names) if "sigma_f" in t]
+
+        nf, nt = self.sgram.shape
+
         if len(tau_idx) > 0:
             logger.info(
                 "Found tau in param_names. Setting its min value of prior to 0."
             )
-            max_tau = 0
-            for idx in tau_idx:
-                self.min_prior[idx] = 0
-                max_tau = np.max([self.max_prior[idx], max_tau])
+            self.min_prior[tau_idx] = 0
 
-            sig_t_idx = [i for i, t in enumerate(self.param_names) if "sigma_t" in t]
-            if len(sig_t_idx) > 0:
-                logger.info(
-                    f"Found sigma_t in param_names. Setting its max value of prior to "
-                    f"(1+prior_range)*initial_guess + max_tau_prior({max_tau})"
-                )
-                for idx in sig_t_idx:
-                    self.max_prior[idx] = self.max_prior[idx] + max_tau
+        if len(sig_t_idx) > 0 and len(tau_idx) > 0:
+            logger.info(
+                f"Found sigma_t and tau in param_names. Setting its max value of prior to "
+                f"2*(max_tau_prior({max_tau}) + max_sigma_t_prior({max_sigma_t}))"
+            )
+            self.max_prior[tau_idx] = 2 * (max_sigma_t + max_tau)
+            self.max_prior[sig_t_idx] = 2 * (max_sigma_t + max_tau)
+
+        if len(S_idx) > 0 and len(sig_t_idx) > 0:
+            logger.info(
+                f"Found S and sigma_t in param_names. Setting its max value of prior to "
+                f"5*max(ts)*max_sigma_t_prior. Setting its min value of prior to 0."
+            )
+            self.max_prior[S_idx] = 5 * np.max(self.sgram.sum(0)) * max_sigma_t
+            self.min_prior[S_idx] = 0
+
+        if len(mu_f_idx) > 0:
+            logger.info(
+                f"Found mu_f in param_names. Setting its priors to (-2*nf, 3*nf)"
+            )
+            self.min_prior[mu_f_idx] = -2 * nf
+            self.max_prior[mu_f_idx] = 3 * nf
+
+        if len(sigma_f_idx) > 0:
+            logger.info(f"Found sigma_f in param_names. Setting its priors to (0, nf)")
+            self.min_prior[sigma_f_idx] = 0
+            self.max_prior[sigma_f_idx] = nf
 
         return self
 
