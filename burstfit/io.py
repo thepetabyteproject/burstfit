@@ -244,10 +244,13 @@ class BurstIO:
 
         """
         logging.info(f"Making model.")
-        if "all" in self.sgram_params.keys():
-            dict = self.sgram_params["all"]
+        if self.mcmc_params:
+            dict = self.mcmc_params
         else:
-            dict = self.sgram_params
+            if "all" in self.sgram_params.keys():
+                dict = self.sgram_params["all"]
+            else:
+                dict = self.sgram_params
 
         assert len(dict) == self.ncomponents
         logger.info(f"Found {self.ncomponents} components.")
