@@ -224,9 +224,9 @@ class MCMC:
             self.max_prior[mu_f_idx] = 3 * nf
 
         if len(sigma_f_idx) > 0:
-            logger.info(f"Found sigma_f in param_names. Setting its priors to (0, nf)")
+            logger.info(f"Found sigma_f in param_names. Setting its priors to (0, 5*nf)")
             self.min_prior[sigma_f_idx] = 0
-            self.max_prior[sigma_f_idx] = nf
+            self.max_prior[sigma_f_idx] = 5*nf
 
         return self
 
