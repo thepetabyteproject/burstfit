@@ -117,6 +117,35 @@ def pulse_fn(t, S, mu, sigma, tau):
     return p
 
 
+def pulse_fn_vec(t, S, mu, sigma, tau):
+    """
+
+    Vectorized implementation of pulse profile function: Gaussian convolved with an exponential tail
+    (see https://arxiv.org/pdf/1404.6593.pdf, equation 4, for more details)
+
+    Args:
+        t: input array
+        S: Area of the pulse (fluence)
+        mu: means of gaussians
+        sigma: sigma of gaussian
+        tau: scattering timescales
+
+    Returns:
+        2D specrtrogram with pulse profiles
+
+    """
+    A = S / (2 * tau)
+    B = np.exp((1 / 2) * (sigma / tau) ** 2)
+    C = np.exp(-1 * (t - mu) / tau)
+    D = 1 + special.erf((t - (mu + (sigma ** 2) / tau)) / (sigma * np.sqrt(2)))
+    pulse = A * B * C * D
+    mask = ((sigma / tau) > 6)[:, 0]
+    if mask.sum() > 0:
+        gauss_pulse = gauss(t, S, mu, sigma)
+        pulse[mask] = gauss_pulse[mask]
+    return pulse
+
+
 def sgram_fn(
     metadata,
     pulse_function,
@@ -175,3 +204,61 @@ def sgram_fn(
     )
     model_final = dedispersed_model_corrected * spectra_from_fit[:, None]
     return model_final
+
+
+def sgram_fn_vec(
+    metadata,
+    pulse_function,
+    spectra_function,
+    spectra_params,
+    pulse_params,
+    other_params,
+):
+    """
+    Vectorized implementation of spectrogram function. Needs the following keys in pulse_params: S, mu_t, sigma_t, tau
+
+    Args:
+        metadata: Some useful metadata (nt, nf, dispersed_at_dm, tsamp, fstart, foff)
+        pulse_function: Function to model pulse
+        spectra_function: Function to model spectra
+        spectra_params: Dictionary with spectra parameters
+        pulse_params: Dictionary with pulse parameters
+        other_params: list of other params needed for this function (eg: [dm])
+
+    Returns:
+
+    """
+
+    nt, nf, dispersed_at_dm, tsamp, fstart, foff = metadata
+    [dm] = other_params
+    tau_idx = 4
+    nt = int(nt)
+    nf = int(nf)
+    freqs = fstart + foff * np.linspace(0, nf - 1, nf)
+    chans = np.arange(nf)
+    times = np.arange(nt)
+    spectra_from_fit = spectra_function(chans, **spectra_params)  # nu_0, nu_sig)
+
+    model_dm = dispersed_at_dm - dm
+
+    assert "tau" in pulse_params.keys()
+    assert "mu_t" in pulse_params.keys()
+    assert "S" in pulse_params.keys()
+    assert "sigma_t" in pulse_params.keys()
+
+    tau = pulse_params["tau"]
+    taus = tau * (freqs / fstart) ** (-1 * tau_idx)
+
+    mu_t = pulse_params["mu_t"]
+    mus = (
+        mu_t
+        + 4148808.0 * model_dm * (1 / (freqs[0]) ** 2 - 1 / (freqs) ** 2) / 1000 / tsamp
+    )
+
+    mus = np.expand_dims(mus, -1)
+    taus = np.expand_dims(taus, -1)
+
+    l = pulse_function(times, pulse_params["S"], mus, pulse_params["sigma_t"], taus)
+    model = l * spectra_from_fit[:, None]
+
+    return model
