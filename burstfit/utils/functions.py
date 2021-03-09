@@ -144,13 +144,14 @@ def pulse_fn_vec(t, S, mu, sigma, tau):
     gauss_idx = np.where(mask)[0]
     scat_idx = np.where(~mask)[0]
 
-    tau = tau[scat_idx]
-    mu_scat = mu[scat_idx]
-    A = S / (2 * tau)
-    B = np.exp((1 / 2) * (sigma / tau) ** 2)
-    C = np.exp(-1 * (t - mu_scat) / tau)
-    D = 1 + special.erf((t - (mu_scat + (sigma ** 2) / tau)) / (sigma * np.sqrt(2)))
-    pulse[scat_idx] = A * B * C * D
+    if len(scat_idx) > 0:
+        tau = tau[scat_idx]
+        mu_scat = mu[scat_idx]
+        A = S / (2 * tau)
+        B = np.exp((1 / 2) * (sigma / tau) ** 2)
+        C = np.exp(-1 * (t - mu_scat) / tau)
+        D = 1 + special.erf((t - (mu_scat + (sigma ** 2) / tau)) / (sigma * np.sqrt(2)))
+        pulse[scat_idx] = A * B * C * D
 
     if len(gauss_idx) > 0:
         gauss_pulse = gauss(t, S, mu[gauss_idx], sigma)
