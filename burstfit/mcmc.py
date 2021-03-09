@@ -224,9 +224,11 @@ class MCMC:
             self.max_prior[mu_f_idx] = 3 * nf
 
         if len(sigma_f_idx) > 0:
-            logger.info(f"Found sigma_f in param_names. Setting its priors to (0, 5*nf)")
+            logger.info(
+                f"Found sigma_f in param_names. Setting its priors to (0, 5*nf)"
+            )
             self.min_prior[sigma_f_idx] = 0
-            self.max_prior[sigma_f_idx] = 5*nf
+            self.max_prior[sigma_f_idx] = 5 * nf
 
         return self
 
@@ -259,8 +261,13 @@ class MCMC:
         logger.info(
             f"Running MCMC with the following parameters: nwalkers={self.nwalkers}, "
             f"nsteps={self.nsteps}, start_pos_dev={self.start_pos_dev}, ncores={self.ncores}, "
-            f"skip={self.skip}, min prior={self.min_prior}, max prior={self.max_prior}"
+            f"skip={self.skip}"
         )
+
+        logger.info("Priors used in MCMC are:")
+        for j, p in enumerate(self.param_names):
+            logger.info(f"{p}: [{self.min_prior[j]}, {self.max_prior[j]}]")
+
         with closing(Pool(self.ncores)) as pool:
             sampler = emcee.EnsembleSampler(
                 self.nwalkers, self.ndim, self.lnprob, pool=pool, backend=backend
