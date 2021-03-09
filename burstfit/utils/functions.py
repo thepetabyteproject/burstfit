@@ -21,8 +21,6 @@ def gauss(x, S, mu, sigma):
     Returns:
 
     """
-    if (np.array([S, mu, sigma]) < 0).sum() > 0:
-        return np.zeros(len(x))
     return (S / (np.sqrt(2 * np.pi) * sigma)) * np.exp(
         -(1 / 2) * ((x - mu) / sigma) ** 2
     )
