@@ -242,14 +242,14 @@ def sgram_fn_vec(
     model_dm = dispersed_at_dm - dm
 
     assert "tau" in pulse_params.keys()
-    assert "mu_t" in pulse_params.keys()
+    assert "mu" in pulse_params.keys()
     assert "S" in pulse_params.keys()
-    assert "sigma_t" in pulse_params.keys()
+    assert "sigma" in pulse_params.keys()
 
     tau = pulse_params["tau"]
     taus = tau * (freqs / fstart) ** (-1 * tau_idx)
 
-    mu_t = pulse_params["mu_t"]
+    mu_t = pulse_params["mu"]
     mus = (
         mu_t
         + 4148808.0 * model_dm * (1 / (freqs[0]) ** 2 - 1 / (freqs) ** 2) / 1000 / tsamp
@@ -258,7 +258,7 @@ def sgram_fn_vec(
     mus = np.expand_dims(mus, -1)
     taus = np.expand_dims(taus, -1)
 
-    l = pulse_function(times, pulse_params["S"], mus, pulse_params["sigma_t"], taus)
+    l = pulse_function(times, pulse_params["S"], mus, pulse_params["sigma"], taus)
     model = l * spectra_from_fit[:, None]
 
     return model
