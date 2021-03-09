@@ -134,15 +134,30 @@ def pulse_fn_vec(t, S, mu, sigma, tau):
         2D spectrogram with pulse profiles
 
     """
+    if not isinstance(tau, (list, np.ndarray)):
+        tau = np.array([tau])
+
+    if not isinstance(mu, (list, np.ndarray)):
+        mu = np.array([mu])
+
+    pulse = np.empty(shape=(len(tau), len(t)))
+
+    mask = (sigma / tau) > 6
+    gauss_idx = np.where(mask)[0]
+    scat_idx = np.where(~mask)[0]
+
+    tau = tau[scat_idx]
+    mu_scat = mu[scat_idx]
     A = S / (2 * tau)
     B = np.exp((1 / 2) * (sigma / tau) ** 2)
-    C = np.exp(-1 * (t - mu) / tau)
-    D = 1 + special.erf((t - (mu + (sigma ** 2) / tau)) / (sigma * np.sqrt(2)))
-    pulse = A * B * C * D
-    mask = ((sigma / tau) > 6)[:, 0]
-    if mask.sum() > 0:
-        gauss_pulse = gauss(t, S, mu, sigma)
-        pulse[mask] = gauss_pulse[mask]
+    C = np.exp(-1 * (t - mu_scat) / tau)
+    D = 1 + special.erf((t - (mu_scat + (sigma ** 2) / tau)) / (sigma * np.sqrt(2)))
+    pulse[scat_idx] = A * B * C * D
+
+    if len(gauss_idx) > 0:
+        gauss_pulse = gauss(t, S, mu[gauss_idx], sigma)
+        pulse[gauss_idx] = gauss_pulse
+    pulse = np.squeeze(pulse)
     return pulse
 
 
