@@ -126,12 +126,12 @@ def pulse_fn_vec(t, S, mu, sigma, tau):
     Args:
         t: input array
         S: Area of the pulse (fluence)
-        mu: means of gaussians
+        mu: means of gaussians for each channel
         sigma: sigma of gaussian
-        tau: scattering timescales
+        tau: scattering timescale for each channel
 
     Returns:
-        2D specrtrogram with pulse profiles
+        2D spectrogram with pulse profiles
 
     """
     A = S / (2 * tau)
@@ -215,7 +215,8 @@ def sgram_fn_vec(
     other_params,
 ):
     """
-    Vectorized implementation of spectrogram function. Needs the following keys in pulse_params: S, mu_t, sigma_t, tau
+    Vectorized implementation of spectrogram function. Assumes the following input names for pulse_function:
+    S, mu, sigma, tau
 
     Args:
         metadata: Some useful metadata (nt, nf, dispersed_at_dm, tsamp, fstart, foff)
