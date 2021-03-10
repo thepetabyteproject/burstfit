@@ -213,7 +213,7 @@ class MCMC:
                 f"Found S and sigma_t in param_names. Setting its max value of prior to "
                 f"5*max(ts)*max_sigma_t_prior. Setting its min value of prior to 0."
             )
-            self.max_prior[S_idx] = 5 * np.max(self.sgram.sum(0)) * max_sigma_t
+            self.max_prior[S_idx] = 50 * np.max(self.sgram.sum(0)) * max_sigma_t
             self.min_prior[S_idx] = 0
 
         if len(mu_f_idx) > 0:
