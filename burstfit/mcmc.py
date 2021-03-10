@@ -299,7 +299,7 @@ class MCMC:
         Returns the chanins from sampler object after removing some samples for burn-in.
 
         Args:
-            skip: Number of samples to skip for burn-in.
+            skip: Number of steps to skip for burn-in.
 
         Returns:
             Sample chain.
@@ -311,13 +311,14 @@ class MCMC:
         burnin = int(2 * np.max(tau))
         thin = int(0.5 * np.min(tau))
         skip = np.max([skip, burnin])
-        logger.info(f"Discarding {skip} samples.")
-        self.samples = self.sampler.get_chain(flat=True, discard=burnin, thin=thin)
-        if self.samples.shape[0] == 0:
-            logger.warning(
-                f"Not enough samples in chain to skip. Not removing burn-in."
-            )
-            self.samples = self.sampler.get_chain(flat=True)
+        logger.info(f"Discarding {skip} steps/iterations.")
+        if skip > self.sampler.iteration:
+            logger.warning(f"Not enough steps in chain to skip. Not removing burn-in.")
+            skip = 0
+        if thin == 0:
+            self.samples = self.sampler.get_chain(flat=True, discard=skip)
+        else:
+            self.samples = self.sampler.get_chain(flat=True, discard=skip, thin=thin)
         return self.samples
 
     def print_results(self):
