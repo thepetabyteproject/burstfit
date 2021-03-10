@@ -2,7 +2,6 @@ import logging
 
 import numpy as np
 from scipy import special
-
 from burstfit.utils.astro import dedisperse, finer_dispersion_correction
 
 logger = logging.getLogger(__name__)
@@ -149,7 +148,7 @@ def pulse_fn_vec(t, S, mu, sigma, tau):
         mu_scat = mu[scat_idx]
         A = S / (2 * tau)
         B = np.exp((1 / 2) * (sigma / tau) ** 2)
-        ln_C = -1 * (t - mu) / tau
+        ln_C = -1 * (t - mu_scat) / tau
         D = 1 + special.erf((t - (mu_scat + (sigma ** 2) / tau)) / (sigma * np.sqrt(2)))
         m0 = D == 0
         ln_C[m0] = 0
