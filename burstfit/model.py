@@ -24,6 +24,9 @@ class Model:
         if not param_names:
             self.param_names = self.function_input_names
         else:
+            assert len(param_names) == len(
+                self.function_input_names
+            ), "Length of param_names is not equal to number of input parameters of the function."
             self.param_names = param_names
         self.params = params
 
