@@ -200,6 +200,12 @@ class MCMC:
             )
             self.min_prior[tau_idx] = 0
 
+        if len(sig_t_idx) > 0:
+            logger.info(
+                "Found sigma_t in param_names. Setting its min value of prior to 0."
+            )
+            self.min_prior[sig_t_idx] = 0
+
         if len(sig_t_idx) > 0 and len(tau_idx) > 0:
             logger.info(
                 f"Found sigma_t and tau in param_names. Setting its max value of prior to "
