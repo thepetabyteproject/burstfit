@@ -77,6 +77,7 @@ class BurstFit:
         self.residual_std = None
         self.mcmcfit = mcmcfit
         self.mcmc = None
+        self.off_pulse_ts_std = None
 
     @property
     def ncomponents(self):
@@ -571,6 +572,8 @@ class BurstFit:
         if self.mcmcfit:
             self.run_mcmc(plot=plot, **mcmc_kwargs)
 
+        self.off_pulse_ts_std = np.std(self.get_off_pulse_region().sum(0))
+
     def run_mcmc(
         self,
         plot=False,
@@ -649,6 +652,43 @@ class BurstFit:
             plot_2d_fit(self.sgram, self.model_from_params, qs[0], self.tsamp)
         return self.mcmc
 
+    def get_off_pulse_region(self):
+        """
+        Returns off pulse region (2D) using fit parameters.
+
+        Returns:
+
+        """
+        if "mu_t" and "sigma_t" in self.param_names:
+            logger.info(
+                "mu_t and sigma_t found in params. Using those to estimate off pulse region."
+            )
+            mu_idx = np.where(np.array(self.param_names) == "mu_t")[0][0]
+            sig_idx = np.where(np.array(self.param_names) == "sigma_t")[0][0]
+
+            if self.mcmc_params:
+                logger.info("Using MCMC parameters")
+                params = self.mcmc_params
+            elif "all" in self.sgram_params.keys():
+                logger.info("Using sgram all-component-fit parameters.")
+                params = self.sgram_params["all"]
+            else:
+                logger.info("Using sgram fit parameters.")
+                params = self.sgram_params
+
+            mus = []
+            sigs = []
+            for k in params.keys():
+                mus.append(params[k]["popt"][mu_idx])
+                sigs.append(params[k]["popt"][sig_idx])
+
+            min_mu = np.min(mus)
+            max_sigma = np.max(sigs)
+            end = int(min_mu - 3 * 2.355 * max_sigma)
+        else:
+            end = self.nt // 2 - 3 * self.width
+        return self.sgram[:, :end].copy()
+
     @property
     def run_tests(self):
         """
@@ -682,23 +722,15 @@ class BurstFit:
 
     def calc_redchisq(self):
         """
+        Calculates reduced chi-square value of the fit using sgram, model and off pulse standard deviation.
 
-        Returns: Reduced chi-square value of the fit
+        Returns:
+            Reduced chi-square value of the fit
 
         """
         logger.debug("Estimating reduced chi square value of the fit.")
-        if "mu_t" and "sigma_t" in self.param_names:
-            logger.info(
-                "mu_t and sigma_t found in params. Using those to estimate off pulse region."
-            )
-            mu_idx = np.where(np.array(self.param_names) == "mu_t")[0][0]
-            sig_idx = np.where(np.array(self.param_names) == "sigma_t")[0][0]
-            mu = self.sgram_params[1]["popt"][mu_idx]
-            sig = self.sgram_params[1]["popt"][sig_idx]
-            end = int(mu - 3 * sig)
-        else:
-            end = self.nt // 2 - 3 * self.width
-        std = np.std(self.sgram[:, :end])
+        sg = self.get_off_pulse_region()
+        std = np.std(sg)
         logger.debug(f"Standard deviation is {std}")
         chi_squared = np.sum(((self.sgram - self.model) / std) ** 2)
         data_size = (~self.sgram.mask).sum()

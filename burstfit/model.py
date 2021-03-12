@@ -71,7 +71,8 @@ class Model:
     def nparams(self):
         """
 
-        Returns: number of parameters
+        Returns:
+            number of parameters
 
         """
         return len(self.function_input_names)
@@ -121,7 +122,8 @@ class SgramModel:
     def nparams(self):
         """
 
-        Returns: number of parameters
+        Returns:
+            number of parameters
 
         """
         return len(self.param_names)
