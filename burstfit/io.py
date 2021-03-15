@@ -12,6 +12,8 @@ from burstfit.utils.functions import (
     gauss_norm2,
     gauss_norm3,
     sgram_fn,
+    pulse_fn_vec,
+    sgram_fn_vec,
 )
 from burstfit.utils.misc import MyEncoder
 
@@ -206,6 +208,8 @@ class BurstIO:
             pulseModel = Model(pulse_fn)
         elif self.dictionary["pulse_function"] == "gauss":
             pulseModel = Model(gauss)
+        elif self.dictionary["pulse_function"] == "pulse_fn_vec":
+            pulseModel = Model(pulse_fn_vec)
         else:
             raise ValueError(
                 f"Function: {self.dictionary['pulse_function']} not supported."
@@ -223,16 +227,19 @@ class BurstIO:
             )
 
         if self.dictionary["sgram_function"] == "sgram_fn":
-            self.sgram_model = SgramModel(
-                pulse_model=pulseModel,
-                spectra_model=spectraModel,
-                sgram_fn=sgram_fn,
-                clip_fac=self.clip_fac,
-            )
+            sgram_function = sgram_fn
+        elif self.dictionary["sgram_function"] == "sgram_fn_vec":
+            sgram_function = sgram_fn_vec
         else:
             raise ValueError(
                 f"Function: {self.dictionary['sgram_function']} not supported."
             )
+        self.sgram_model = SgramModel(
+            pulse_model=pulseModel,
+            spectra_model=spectraModel,
+            sgram_fn=sgram_function,
+            clip_fac=self.clip_fac,
+        )
 
     @property
     def model(self):
