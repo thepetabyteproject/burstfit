@@ -359,6 +359,6 @@ def autocorr_plot(n, y, name, save):
     plt.ylim(0, y.max() + 0.1 * (y.max() - y.min()))
     plt.xlabel("number of steps")
     plt.ylabel(r"mean $\hat{\tau}$")
-    plt.title(f"{name}")
+    plt.title(f'{name}')
     if save:
         plt.savefig(f"{name}_autocorr.png", bbox_inches="tight")

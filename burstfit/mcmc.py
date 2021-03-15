@@ -314,9 +314,15 @@ class MCMC:
         if not skip:
             skip = self.skip
         tau = self.sampler.get_autocorr_time(tol=0)
-        burnin = int(2 * np.max(tau))
-        thin = int(0.5 * np.min(tau))
-        skip = np.max([skip, burnin])
+        if np.isnan(tau).sum() == 0:
+            burnin = int(2 * np.max(tau))
+            thin = int(0.5 * np.min(tau))
+            skip = np.max([skip, burnin])
+        else:
+            logger.warning(
+                "Autocorrelation time is nan. Not using tau for burn-in calculation."
+            )
+
         logger.info(f"Discarding {skip} steps/iterations.")
         if skip > self.sampler.iteration:
             logger.warning(f"Not enough steps in chain to skip. Not removing burn-in.")
