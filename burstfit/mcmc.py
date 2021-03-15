@@ -317,7 +317,8 @@ class MCMC:
         if np.isnan(tau).sum() == 0:
             burnin = int(2 * np.max(tau))
             thin = int(0.5 * np.min(tau))
-            skip = np.max([skip, burnin])
+            if burnin < skip:
+                skip = burnin
         else:
             logger.warning(
                 "Autocorrelation time is nan. Not using tau for burn-in calculation."
