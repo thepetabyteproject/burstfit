@@ -29,6 +29,8 @@ class BurstIO:
         burstdata_obj: Instance of burstdata class with burst data
         dictionary: dictionary with fitting results
         jsonfile: JSON file with the fitting results
+        outname:
+        outdir:
     """
 
     def __init__(
@@ -58,6 +60,10 @@ class BurstIO:
         self.outname = outname
         self.outdir = outdir
         self.mcmc = None
+
+        if self.jsonfile:
+            if not os.path.isfile(self.jsonfile):
+                raise IOError(f"{self.jsonfile} not found")
 
     def set_attributes_to_save(self):
         """
