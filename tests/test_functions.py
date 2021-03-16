@@ -55,3 +55,26 @@ def test_pulse_fn():
     p = pulse_fn(x, 10, 50, 10, 5)
     assert pytest.approx(np.trapz(p), rel=0.1) == 10
     assert pytest.approx(x[np.argmax(p)], rel=1) == 20
+
+
+def test_pulse_fn_vec():
+    x = np.linspace(0, 99, 100)
+    p = pulse_fn_vec(x, 10, 50, 20, 2)
+    assert pytest.approx(np.trapz(p), rel=0.1) == 10
+    assert pytest.approx(x[np.argmax(p)], rel=1) == 20
+
+    p = pulse_fn_vec(x, 10, 50, 10, 5)
+    assert pytest.approx(np.trapz(p), rel=0.1) == 10
+    assert pytest.approx(x[np.argmax(p)], rel=1) == 20
+
+    mus = np.array([50, 20])
+    taus = np.array([5, 10])
+    mus = np.expand_dims(mus, -1)
+    taus = np.expand_dims(taus, -1)
+    p = pulse_fn_vec(x, 10, mus, 10, taus)
+
+    assert pytest.approx(np.trapz(p[0]), rel=0.1) == 10
+    assert pytest.approx(x[np.argmax(p[0])], rel=1) == 50
+
+    assert pytest.approx(np.trapz(p[1]), rel=0.1) == 10
+    assert pytest.approx(x[np.argmax(p[1])], rel=1) == 20

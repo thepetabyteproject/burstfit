@@ -131,10 +131,10 @@ def pulse_fn_vec(t, S, mu, sigma, tau):
         2D spectrogram with pulse profiles
 
     """
-    if not isinstance(tau, (list, np.ndarray)):
+    if not isinstance(tau, np.ndarray):
         tau = np.array([tau])
 
-    if not isinstance(mu, (list, np.ndarray)):
+    if not isinstance(mu, np.ndarray):
         mu = np.array([mu])
 
     pulse = np.empty(shape=(len(tau), len(t)))
