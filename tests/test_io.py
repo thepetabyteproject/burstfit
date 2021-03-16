@@ -12,7 +12,7 @@ from burstfit.utils.functions import pulse_fn, gauss_norm2, sgram_fn
 _install_dir = os.path.abspath(os.path.dirname(__file__))
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def bd():
     fil_file = os.path.join(_install_dir, "data/28.fil")
     bd = BurstData(
@@ -27,7 +27,7 @@ def bd():
     return bd
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def bf(bd):
     pm = Model(pulse_fn)
     sm = Model(gauss_norm2)

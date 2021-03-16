@@ -8,7 +8,7 @@ _install_dir = os.path.abspath(os.path.dirname(__file__))
 import pytest
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def bd():
     fil_file = os.path.join(_install_dir, "data/28.fil")
     bd = BurstData(
