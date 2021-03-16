@@ -182,10 +182,12 @@ class MCMC:
         self.min_prior = (1 - self.prior_range) * self.initial_guess
 
         tau_idx = [i for i, t in enumerate(self.param_names) if "tau" in t]
-        max_tau = np.max(np.take(self.max_prior, tau_idx))
+        if len(tau_idx):
+            max_tau = np.max(np.take(self.max_prior, tau_idx))
 
         sig_t_idx = [i for i, t in enumerate(self.param_names) if "sigma_t" in t]
-        max_sigma_t = np.max(np.take(self.max_prior, sig_t_idx))
+        if len(sig_t_idx):
+            max_sigma_t = np.max(np.take(self.max_prior, sig_t_idx))
 
         S_idx = [i for i, t in enumerate(self.param_names) if "S" in t]
 
