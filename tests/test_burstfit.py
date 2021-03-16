@@ -12,7 +12,7 @@ os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 import pytest
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def bd():
     fil_file = os.path.join(_install_dir, "data/28.fil")
     bd = BurstData(
@@ -27,7 +27,7 @@ def bd():
     return bd
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def bf(bd):
     pm = Model(pulse_fn)
     sm = Model(gauss_norm2)
@@ -45,7 +45,7 @@ def bf(bd):
     return bf
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def bf_fitted(bf):
     bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False)
     return bf
@@ -142,7 +142,7 @@ def test_run_mcmc(bf_fitted):
     real_errs = [3.5, 4.5, 9, 11, 0.05, 60, 0.17, 0.082, 0.11, 0.22]
     for i in range(len(real_errs)):
         assert (
-            pytest.approx(bf_fitted.mcmc_params[1]["popt"][i], abs=real_errs[i])
+            pytest.approx(bf_fitted.mcmc_params[1]["popt"][i], abs=2 * real_errs[i])
             == real_vals[i]
         )
 
