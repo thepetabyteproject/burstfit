@@ -8,6 +8,7 @@ from burstfit.model import Model, SgramModel
 from burstfit.utils.functions import pulse_fn, gauss_norm2, sgram_fn
 
 _install_dir = os.path.abspath(os.path.dirname(__file__))
+os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 import pytest
 
 
@@ -123,3 +124,27 @@ def test_model_from_params(bf_fitted):
     m = bf_fitted.model_from_params([0], *bf_fitted.sgram_params[1]["popt"])
     m = m.reshape((bf_fitted.nf, bf_fitted.nt))
     assert 79 == pytest.approx(np.argmax(m.sum(0)), rel=1)
+
+
+def test_run_mcmc(bf_fitted):
+    mcmc_kwargs = {
+        "nwalkers": 20,
+        "nsteps": 100,
+        "skip": 500,
+        "ncores": 4,
+        "start_pos_dev": 0.01,
+        "prior_range": 0.8,
+        "save_results": True,
+        "outname": "test_h5",
+    }
+    bf_fitted.run_mcmc(plot=True, **mcmc_kwargs)
+    real_vals = [73.97, 28.77, 285.61, 52.4, 0.38, 584.88, 78.93, 0.75, 0.15, 474.45]
+    real_errs = [3.5, 4.5, 9, 11, 0.05, 60, 0.17, 0.082, 0.11, 0.22]
+    for i in range(len(real_errs)):
+        assert (
+            pytest.approx(bf_fitted.mcmc_params[1]["popt"][i], abs=real_errs[i])
+            == real_vals[i]
+        )
+
+    assert os.path.isfile("test_h5_samples.h5")
+    os.remove("test_h5_samples.h5")
