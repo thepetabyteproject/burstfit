@@ -1,0 +1,46 @@
+site_name: BurstFit Documentation
+site_author: Kshitij Agarwal
+docs_dir: sources
+site_description: 'BurstFit Documentation'
+repo_name: burstfit
+repo_url: https://github.com/thepetabyteproject/burstfit
+
+theme:
+  name: material
+  palette:
+    primary: black
+  features:
+    - search.highlight
+
+nav:
+  - Getting Started: index.md
+  - BurstFit: ipynb/BurstFit.ipynb
+  - BurstData: ipynb/BurstData.ipynb
+  - BurstIO: ipynb/BurstIO.ipynb
+  - MCMC: ipynb/MCMC.ipynb
+  - BurstFit_custom: ipynb/BurstFit_custom_function.ipynb
+  - Reference API:
+      - BurstFit: fit.md
+      - BurstData: data.md
+      - BurstIO: io.md
+      - MCMC: mcmc.md
+      - Model: model.md
+      - Utils:
+          - Astro: utils/astro.md
+          - Functions: utils/functions.md
+          - Math: utils/math.md
+          - Plotter: utils/plotter.md
+  #- Contributing Guide: CONTRIBUTING.md
+
+plugins:
+  - search
+  - mkdocs-jupyter:
+      include_source: True
+
+markdown_extensions:
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - admonition
