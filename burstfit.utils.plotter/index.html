@@ -1,0 +1,789 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="BurstFit Documentation">
+      
+      
+      
+        <meta name="author" content="Devansh Agarwal, Kshitij Agarwal">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.6">
+    
+    
+      
+        <title>Plotter - BurstFit Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2c0c5eaf.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.7fa14f5b.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#000000">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="black" data-md-color-accent="">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#burstfitutilsplotter" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="BurstFit Documentation" class="md-header__button md-logo" aria-label="BurstFit Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            BurstFit Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Plotter
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="md-header__options">
+      
+    </div>
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/thepetabyteproject/burstfit/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    burstfit
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="BurstFit Documentation" class="md-nav__button md-logo" aria-label="BurstFit Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    BurstFit Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/thepetabyteproject/burstfit/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    burstfit
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BurstFit/" class="md-nav__link">
+        BurstFit
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BurstData/" class="md-nav__link">
+        BurstData
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BurstIO/" class="md-nav__link">
+        BurstIO
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MCMC/" class="md-nav__link">
+        MCMC
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BurstFit_custom_function/" class="md-nav__link">
+        BurstFit_custom
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      <label class="md-nav__link" for="__nav_7">
+        Reference API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Reference API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Reference API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bustfit/" class="md-nav__link">
+        BurstFit
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../burstfit.data/" class="md-nav__link">
+        BurstData
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../burstfit.io/" class="md-nav__link">
+        BurstIO
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../burstfit.mcmc/" class="md-nav__link">
+        MCMC
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../burstfit.model/" class="md-nav__link">
+        Model
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_6" type="checkbox" id="__nav_7_6" checked>
+      
+      <label class="md-nav__link" for="__nav_7_6">
+        Utils
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Utils" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_6">
+          <span class="md-nav__icon md-icon"></span>
+          Utils
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../burstfit.utils.astro/" class="md-nav__link">
+        Astro
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../burstfit.utils.functions/" class="md-nav__link">
+        Functions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../burstfit.utils.math/" class="md-nav__link">
+        Math
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../burstfit.utils.misc/" class="md-nav__link">
+        Misc
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Plotter
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Plotter
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#plot_1d_fit" class="md-nav__link">
+    plot_1d_fit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot_2d_fit" class="md-nav__link">
+    plot_2d_fit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot_fit_results" class="md-nav__link">
+    plot_fit_results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot_me" class="md-nav__link">
+    plot_me
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot_mcmc_results" class="md-nav__link">
+    plot_mcmc_results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autocorr_plot" class="md-nav__link">
+    autocorr_plot
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#plot_1d_fit" class="md-nav__link">
+    plot_1d_fit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot_2d_fit" class="md-nav__link">
+    plot_2d_fit
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot_fit_results" class="md-nav__link">
+    plot_fit_results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot_me" class="md-nav__link">
+    plot_me
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot_mcmc_results" class="md-nav__link">
+    plot_mcmc_results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autocorr_plot" class="md-nav__link">
+    autocorr_plot
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/thepetabyteproject/burstfit/edit/master/docs/burstfit.utils.plotter.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <p><a name="burstfit.utils.plotter"></a></p>
+<h1 id="burstfitutilsplotter">burstfit.utils.plotter</h1>
+<p><a href="https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/plotter.py#L1">[view_source]</a></p>
+<p><a name="burstfit.utils.plotter.plot_1d_fit"></a></p>
+<h4 id="plot_1d_fit">plot_1d_fit</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_1d_fit</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">popt</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_names</span><span class="o">=</span><span class="p">[],</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">outname</span><span class="o">=</span><span class="s2">&quot;1d_fit_res&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/plotter.py#L12">[view_source]</a></p>
+<p>Plot the results of 1D fits</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>xdata</code> - x value array</li>
+<li><code>ydata</code> - original data values</li>
+<li><code>function</code> - function used for fitting</li>
+<li><code>popt</code> - fit parameters of the function</li>
+<li><code>xlabel</code> - label of x axis</li>
+<li><code>ylabel</code> - label of y axis</li>
+<li><code>title</code> - title of the plot</li>
+<li><code>param_names</code> - names of the parameters</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p><a name="burstfit.utils.plotter.plot_2d_fit"></a></p>
+<h4 id="plot_2d_fit">plot_2d_fit</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_2d_fit</span><span class="p">(</span><span class="n">sgram</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">popt</span><span class="p">,</span> <span class="n">tsamp</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">outname</span><span class="o">=</span><span class="s2">&quot;2d_fit_res&quot;</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/plotter.py#L73">[view_source]</a></p>
+<p>Plot the result of spectrogram fit</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>sgram</code> - input 2D array of spectrogram</li>
+<li><code>function</code> - spectrogram function used for fitting</li>
+<li><code>popt</code> - fit parameters</li>
+<li><code>tsamp</code> - sampling time (s)</li>
+<li><code>title</code> - title of the plot</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p><a name="burstfit.utils.plotter.plot_fit_results"></a></p>
+<h4 id="plot_fit_results">plot_fit_results</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_fit_results</span><span class="p">(</span><span class="n">sgram</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">popt</span><span class="p">,</span> <span class="n">tsamp</span><span class="p">,</span> <span class="n">fstart</span><span class="p">,</span> <span class="n">foff</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">outname</span><span class="o">=</span><span class="s2">&quot;2d_fit_res&quot;</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/plotter.py#L143">[view_source]</a></p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>sgram</code> - Original spectrogram data</li>
+<li><code>function</code> - spectrogram function used for modeling</li>
+<li><code>popt</code> - parameters for function</li>
+<li><code>tsamp</code> - sampling time (s)</li>
+<li><code>fstart</code> - start frequency (MHz)</li>
+<li><code>foff</code> - channel bandwidth (MHz)</li>
+<li><code>mask</code> - channel mask array</li>
+<li><code>outsize</code> - resize the 2D plots</li>
+<li><code>title</code> - title of the plot</li>
+<li><code>show</code> - to show the plot</li>
+<li><code>save</code> - to save the plot</li>
+<li><code>outname</code> - output name of png file</li>
+<li><code>outdir</code> - output directory for the plot</li>
+<li><code>vmin</code> - minimum range of colormap</li>
+<li><code>vmax</code> - maximum range of colormap</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p><a name="burstfit.utils.plotter.plot_me"></a></p>
+<h4 id="plot_me">plot_me</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_me</span><span class="p">(</span><span class="n">datar</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/plotter.py#L269">[view_source]</a></p>
+<p>Generic function to plot 1D or 2D array.
+Requires SciencePlots.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>datar</code> - data to plot</li>
+<li><code>xlabel</code> - label of x axis</li>
+<li><code>ylabel</code> - label of y axis</li>
+<li><code>title</code> - title of the plot</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p><a name="burstfit.utils.plotter.plot_mcmc_results"></a></p>
+<h4 id="plot_mcmc_results">plot_mcmc_results</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">plot_mcmc_results</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">param_starts</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/plotter.py#L301">[view_source]</a></p>
+<p>Save corner plot of MCMC results</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>samples</code> - MCMC samples to plot</li>
+<li><code>name</code> - output name</li>
+<li><code>param_starts</code> - mark the initial parameter guess</li>
+<li><code>labels</code> - labels for axes</li>
+<li><code>save</code> - to save the corner plot</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p><a name="burstfit.utils.plotter.autocorr_plot"></a></p>
+<h4 id="autocorr_plot">autocorr_plot</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">autocorr_plot</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">save</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/plotter.py#L342">[view_source]</a></p>
+<p>Make the autocorrelation plot to visualize convergence of MCMC.</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>n</code> - iterations</li>
+<li><code>y</code> - autocorrelations</li>
+<li><code>name</code> - outname of plot</li>
+<li><code>save</code> - to save the plot</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../burstfit.utils.misc/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Misc
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["search.highlight"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a1c7c35e.min.js"></script>
+      
+    
+  </body>
+</html>
