@@ -1,6 +1,6 @@
 site_name: BurstFit Documentation
-site_author: Kshitij Agarwal
-docs_dir: sources
+site_author: Devansh Agarwal, Kshitij Agarwal
+docs_dir: build/content
 site_description: 'BurstFit Documentation'
 repo_name: burstfit
 repo_url: https://github.com/thepetabyteproject/burstfit
@@ -14,23 +14,23 @@ theme:
 
 nav:
   - Getting Started: index.md
-  - BurstFit: ipynb/BurstFit.ipynb
-  - BurstData: ipynb/BurstData.ipynb
-  - BurstIO: ipynb/BurstIO.ipynb
-  - MCMC: ipynb/MCMC.ipynb
-  - BurstFit_custom: ipynb/BurstFit_custom_function.ipynb
+  - BurstFit: BurstFit.ipynb
+  - BurstData: BurstData.ipynb
+  - BurstIO: BurstIO.ipynb
+  - MCMC: MCMC.ipynb
+  - BurstFit_custom: BurstFit_custom_function.ipynb
   - Reference API:
-      - BurstFit: fit.md
-      - BurstData: data.md
-      - BurstIO: io.md
-      - MCMC: mcmc.md
-      - Model: model.md
-      - Utils:
-          - Astro: utils/astro.md
-          - Functions: utils/functions.md
-          - Math: utils/math.md
-          - Plotter: utils/plotter.md
-  #- Contributing Guide: CONTRIBUTING.md
+    - BurstFit: bustfit.md 
+    - BurstData: burstfit.data.md
+    - BurstIO: burstfit.io.md
+    - MCMC: burstfit.mcmc.md
+    - Model: burstfit.model.md
+    - Utils:
+      - Astro: burstfit.utils.astro.md
+      - Functions: burstfit.utils.functions.md
+      - Math: burstfit.utils.math.md
+      - Misc: burstfit.utils.misc.md
+      - Plotter: burstfit.utils.plotter.md
 
 plugins:
   - search

@@ -1,5 +1,4 @@
-keras-autodoc>=0.7.0
 mkdocs>=1.1.2
-mkdocs-material>=6.2.7
-argmark>=0.2
+mkdocs-material>=7.0.6
 mkdocs-jupyter>=0.15.1
+pydoc-markdown>=3.10.0

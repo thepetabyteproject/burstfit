@@ -1,0 +1,63 @@
+loaders:
+  - type: python
+processors:
+  - type: filter
+  - type: smart
+  - type: crossref
+#renderer:
+#  type: markdown
+#  filename: docs/build/API.md
+#  data_code_block: true
+#  classdef_render_init_signature_if_needed: true
+#  data_expression_maxlength: 88
+#  signature_with_def: true
+#  render_toc: true
+#  source_linker:
+#    type: github
+#    repo: thepetabyteproject/burstfit
+#  data_code_block: true
+
+renderer:
+  type: mkdocs
+  output_directory: docs/build/
+  markdown:
+    data_code_block: true
+    data_expression_maxlength: 88
+    signature_with_def: true
+    source_linker:
+     type: github
+     repo: thepetabyteproject/burstfit
+  pages:
+    - title: Home
+      name: index
+      source: README.md
+    - title: bustfit
+      contents:
+        - "burstfit.fit.*"
+    - title: burstfit.io
+      contents:
+        - "burstfit.io.*"
+    - title: burstfit.data
+      contents:
+        - "burstfit.data.*"
+    - title: burstfit.model
+      contents:
+        - "burstfit.model.*"
+    - title: burstfit.mcmc
+      contents:
+        - "burstfit.mcmc.*"
+    - title: burstfit.utils.astro
+      contents:
+        - "burstfit.utils.astro.*"
+    - title: burstfit.utils.functions
+      contents:
+        - "burstfit.utils.functions.*"
+    - title: burstfit.utils.math
+      contents:
+        - "burstfit.utils.math.*"
+    - title: burstfit.utils.misc
+      contents:
+        - "burstfit.utils.misc.*"
+    - title: burstfit.utils.plotter
+      contents:
+        - "burstfit.utils.plotter.*"
