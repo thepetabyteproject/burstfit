@@ -14,11 +14,11 @@ theme:
 
 nav:
   - Getting Started: index.md
-  - BurstFit: BurstFit.ipynb
-  - BurstData: BurstData.ipynb
-  - BurstIO: BurstIO.ipynb
-  - MCMC: MCMC.ipynb
-  - BurstFit_custom: BurstFit_custom_function.ipynb
+  - Basic Fitting: BurstFit.ipynb
+  - Preparing Data: BurstData.ipynb
+  - Save Fit Results: BurstIO.ipynb
+  - Fitting using MCMC: MCMC.ipynb
+  - Fitting using custom function: BurstFit_custom_function.ipynb
   - Reference API:
     - BurstFit: bustfit.md 
     - BurstData: burstfit.data.md

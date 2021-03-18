@@ -12,7 +12,7 @@ class BurstData(Candidate):
     """
     Class to handle burst data
 
-     Args:
+    Args:
         fp Union[str, list]: String or a list of files. It can either filterbank or psrfits files.
         dm (float): Dispersion Measure of the candidate
         tcand (float): start time of the candidate in seconds at the highest frequency channel
