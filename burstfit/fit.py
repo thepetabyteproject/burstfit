@@ -3,8 +3,8 @@
 import logging
 
 import numpy as np
-from scipy.optimize import curve_fit
 
+from burstfit.curvefit import CurveFit
 from burstfit.mcmc import MCMC
 from burstfit.utils.math import tests, transform_parameters
 from burstfit.utils.plotter import plot_1d_fit, plot_2d_fit
@@ -254,14 +254,14 @@ class BurstFit:
             else:
                 bounds = [-np.inf, np.inf]
         logger.debug(f"Bounds for profile fit are: {bounds}")
-        popt, pcov = curve_fit(
-            self.sgram_model.pulse_model.function,
-            xdata,
-            ydata,
+        cf = CurveFit(
+            function=self.sgram_model.pulse_model.function,
+            xdata=xdata,
+            ydata=ydata,
             bounds=bounds,
+            retry=False,
         )
-        err = np.sqrt(np.diag(pcov))
-        assert np.isinf(err).sum() == 0, "Fit errors are not finite. Terminating."
+        popt, err = cf.run_fit()
         self.profile_params[self.comp_num] = {"popt": list(popt), "perr": err}
         self.profile_bounds[self.comp_num] = bounds
 
@@ -301,14 +301,14 @@ class BurstFit:
             else:
                 bounds = [-np.inf, np.inf]
         logger.debug(f"Bounds for spectra fit are: {bounds}")
-        popt, pcov = curve_fit(
-            self.sgram_model.spectra_model.function,
-            xdata,
-            ydata,
+        cf = CurveFit(
+            function=self.sgram_model.spectra_model.function,
+            xdata=xdata,
+            ydata=ydata,
             bounds=bounds,
+            retry=False,
         )
-        err = np.sqrt(np.diag(pcov))
-        assert np.isinf(err).sum() == 0, "Fit errors are not finite. Terminating."
+        popt, err = cf.run_fit()
         self.spectra_params[self.comp_num] = {"popt": list(popt), "perr": err}
         self.spectra_bounds[self.comp_num] = bounds
 
@@ -347,48 +347,17 @@ class BurstFit:
         )
         self.sgram_model.forfit = True
         logger.info(f"initial estimate for parameters: {p0}")
-        try:
-            popt, pcov = curve_fit(
-                self.sgram_model.evaluate,
-                xdata=[0],
-                ydata=self.residual.ravel(),
-                p0=p0,
-                bounds=bounds,
-            )
-        except RuntimeError as e:
-            retry_frac = 0.9
-            logger.warning(f"{e}")
-            logger.warning(f"Retrying with p0+-({retry_frac}*p0) bounds")
-            p0_1 = np.array(p0) * (1 - retry_frac)
-            p0_2 = np.array(p0) * (1 + retry_frac)
-            bounds = (np.min([p0_1, p0_2], axis=0), np.max([p0_1, p0_2], axis=0))
-            popt, pcov = curve_fit(
-                self.sgram_model.evaluate,
-                xdata=[0],
-                ydata=self.residual.ravel(),
-                p0=p0,
-                bounds=bounds,
-            )
-
-        err = np.sqrt(np.diag(pcov))
-        retry_frac = 0.2
-        if np.isinf(err).sum() > 0:
-            logger.warning(
-                f"Fit errors are not finite. Retrying with p0+-({retry_frac}*p0) bounds"
-            )
-            p0_1 = np.array(p0) * (1 - retry_frac)
-            p0_2 = np.array(p0) * (1 + retry_frac)
-            bounds = (np.min([p0_1, p0_2], axis=0), np.max([p0_1, p0_2], axis=0))
-            popt, pcov = curve_fit(
-                self.sgram_model.evaluate,
-                xdata=[0],
-                ydata=self.residual.ravel(),
-                p0=p0,
-                bounds=bounds,
-            )
-            err = np.sqrt(np.diag(pcov))
-            assert np.isinf(err).sum() == 0, "Errors are still not finite. Terminating."
-
+        cf = CurveFit(
+            function=self.sgram_model.evaluate,
+            xdata=[0],
+            ydata=self.residual.ravel(),
+            p0=p0,
+            bounds=bounds,
+            retry=True,
+            retry_frac_runtimeerror=0.9,
+            retry_frac_infinite_err=0.2,
+        )
+        popt, err = cf.run_fit()
         self.sgram_params[self.comp_num] = {"popt": list(popt), "perr": err}
         self.sgram_bounds[self.comp_num] = bounds
 
@@ -422,48 +391,17 @@ class BurstFit:
             p0 += self.sgram_params[k]["popt"]
         self.sgram_model.forfit = True
         bounds = [-np.inf, np.inf]
-        try:
-            popt, pcov = curve_fit(
-                self.model_from_params,
-                xdata=[0],
-                ydata=self.sgram.ravel(),
-                p0=p0,
-                bounds=bounds,
-            )
-        except RuntimeError as e:
-            retry_frac = 0.9
-            logger.warning(f"{e}")
-            logger.warning(f"Retrying with p0+-({retry_frac}*p0) bounds")
-            p0_1 = np.array(p0) * (1 - retry_frac)
-            p0_2 = np.array(p0) * (1 + retry_frac)
-            bounds = (np.min([p0_1, p0_2], axis=0), np.max([p0_1, p0_2], axis=0))
-            popt, pcov = curve_fit(
-                self.model_from_params,
-                xdata=[0],
-                ydata=self.sgram.ravel(),
-                p0=p0,
-                bounds=bounds,
-            )
-
-        err = np.sqrt(np.diag(pcov))
-        retry_frac = 0.2
-        if np.isinf(err).sum() > 0:
-            logger.warning(
-                f"Fit errors are not finite. Retrying with p0+-({retry_frac}*p0) bounds"
-            )
-            p0_1 = np.array(p0) * (1 - retry_frac)
-            p0_2 = np.array(p0) * (1 + retry_frac)
-            bounds = (np.min([p0_1, p0_2], axis=0), np.max([p0_1, p0_2], axis=0))
-            popt, pcov = curve_fit(
-                self.model_from_params,
-                xdata=[0],
-                ydata=self.sgram.ravel(),
-                p0=p0,
-                bounds=bounds,
-            )
-            err = np.sqrt(np.diag(pcov))
-            assert np.isinf(err).sum() == 0, "Errors are still not finite. Terminating."
-
+        cf = CurveFit(
+            function=self.model_from_params,
+            xdata=[0],
+            ydata=self.sgram.ravel(),
+            p0=p0,
+            bounds=bounds,
+            retry=True,
+            retry_frac_runtimeerror=0.9,
+            retry_frac_infinite_err=0.2,
+        )
+        popt, err = cf.run_fit()
         self.sgram_params["all"] = {}
         for i in range(self.ncomponents):
             po = popt[i * self.sgram_model.nparams : (i + 1) * self.sgram_model.nparams]
