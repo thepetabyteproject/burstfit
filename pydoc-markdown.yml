@@ -34,6 +34,9 @@ renderer:
     - title: burstfit.mcmc
       contents:
         - "burstfit.mcmc.*"
+    - title: burstfit.curvefit
+      contents:
+        - "burstfit.curvefit.*"
     - title: burstfit.utils.astro
       contents:
         - "burstfit.utils.astro.*"

@@ -24,6 +24,7 @@ nav:
     - BurstData: burstfit.data.md
     - BurstIO: burstfit.io.md
     - MCMC: burstfit.mcmc.md
+    - CurveFit: burstfit.curvefit.md
     - Model: burstfit.model.md
     - Utils:
       - Astro: burstfit.utils.astro.md
