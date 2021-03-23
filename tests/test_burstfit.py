@@ -46,7 +46,20 @@ def bf(bd):
 
 
 @pytest.fixture(scope="module", autouse=True)
-def bf_fitted(bf):
+def bf_fitted(bd):
+    pm = Model(pulse_fn, param_names=["S", "mu_t", "sigma_t", "tau"])
+    sm = Model(gauss_norm2, param_names=["mu1", "sig1", "mu2", "sig2", "amp1"])
+    sgmodel = SgramModel(pm, sm, sgram_fn)
+    bf = BurstFit(
+        sgram_model=sgmodel,
+        sgram=bd.sgram,
+        dm=bd.dm,
+        width=bd.width,
+        foff=bd.foff,
+        fch1=bd.fch1,
+        tsamp=bd.tsamp,
+        clip_fac=bd.clip_fac,
+    )
     bf.fitall(spectra_bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False)
     return bf
 
@@ -59,7 +72,7 @@ def test_precalc(bf, bd):
     bf.precalc()
     assert bf.nf == 336
     assert bf.nt == 156
-    assert bf.profile_param_names == ["S", "mu_t", "sigma_t", "tau"]
+    assert bf.profile_param_names == ["S", "mu", "sigma", "tau"]
     assert bf.spectra_param_names == ["mu1", "sig1", "mu2", "sig2", "amp1"]
     assert bf.metadata[2] == bd.dm
     assert pytest.approx(np.argmax(bf.ts), rel=1) == 79
