@@ -3,7 +3,7 @@ from burstfit.mcmc import MCMC
 from burstfit.data import BurstData
 from burstfit.fit import BurstFit
 from burstfit.model import Model, SgramModel
-from burstfit.utils.functions import pulse_fn, gauss_norm2, sgram_fn
+from burstfit.utils.functions import pulse_fn_vec, gauss_norm2, sgram_fn_vec
 import numpy as np
 import os
 
@@ -28,9 +28,9 @@ def bd():
 def bf(bd):
     pnames = ["S", "mu_t", "sigma_t", "tau"]
     snames = ["mu_f1", "sigma_f1", "mu_f2", "sigma_f2", "amp"]
-    pm = Model(pulse_fn, param_names=pnames)
+    pm = Model(pulse_fn_vec, param_names=pnames)
     sm = Model(gauss_norm2, param_names=snames)
-    sgmodel = SgramModel(pm, sm, sgram_fn)
+    sgmodel = SgramModel(pm, sm, sgram_fn_vec)
     bf = BurstFit(
         sgram_model=sgmodel,
         sgram=bd.sgram,
