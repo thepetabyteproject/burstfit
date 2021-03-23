@@ -59,7 +59,7 @@ def test_precalc(bf, bd):
     bf.precalc()
     assert bf.nf == 336
     assert bf.nt == 156
-    assert bf.profile_param_names == ["S", "mu", "sigma", "tau"]
+    assert bf.profile_param_names == ["S", "mu_t", "sigma_t", "tau"]
     assert bf.spectra_param_names == ["mu1", "sig1", "mu2", "sig2", "amp1"]
     assert bf.metadata[2] == bd.dm
     assert pytest.approx(np.argmax(bf.ts), rel=1) == 79
