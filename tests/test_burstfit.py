@@ -150,7 +150,7 @@ def test_run_mcmc(bf_fitted):
         "save_results": True,
         "outname": "test_h5",
     }
-    bf_fitted.run_mcmc(plot=True, **mcmc_kwargs)
+    bf_fitted.run_mcmc(plot=False, **mcmc_kwargs)
     real_vals = [73.97, 28.77, 285.61, 52.4, 0.38, 584.88, 78.93, 0.75, 0.15, 474.45]
     real_errs = [3.5, 4.5, 9, 11, 0.05, 60, 0.17, 0.082, 0.11, 0.22]
     for i in range(len(real_errs)):
