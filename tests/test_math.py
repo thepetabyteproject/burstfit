@@ -16,7 +16,13 @@ def test_ftest():
 
 def test_stat_tests():
     a = np.random.normal(loc=0, scale=1, size=1000)
+    res = te(a, a, ntest=2)
+    assert res == 1
+
     b = np.random.normal(loc=0, scale=1, size=1000)
+    res = te(a, b, ntest=1)
+    assert res == 1
+
     res = te(a, b, ntest=2)
     assert res == 1
 
