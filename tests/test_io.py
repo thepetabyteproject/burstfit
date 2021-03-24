@@ -125,10 +125,36 @@ def test_save_results(bf, bd):
 
 
 def test_read_json_and_precalc(bf, bd, bio):
-    assert bio.sgram_params["all"]["1"]["popt"] == bf.sgram_params["all"][1]["popt"]
-    assert bio.sgram_params["all"]["1"]["perr"] == list(
-        bf.sgram_params["all"][1]["perr"]
-    )
+    bio_params = bio.sgram_params["all"]["1"]["popt"]
+    bio_err = bio.sgram_params["all"]["1"]["perr"]
+
+    real_params = [
+        74.59582235949433,
+        27.97342598198541,
+        281.8173333861384,
+        45.422769230700155,
+        0.4118904298590064,
+        562.1550933825228,
+        78.93436603779134,
+        0.7834801657548776,
+        0.07015154728496703,
+        474.6979323912283,
+    ]
+    real_errors = [
+        3.0272239357503827,
+        2.9417970129387547,
+        5.532359257989639,
+        5.157774342176106,
+        0.03429010794926379,
+        20.954648557177954,
+        0.05268036879010988,
+        0.009891316574292881,
+        0.0003835808494783465,
+        0.118093058085362,
+    ]
+    assert bio_params == real_params
+    assert bio_err == real_errors
+
     assert bio.ncomponents == 1
     assert bio.sgram_function == "sgram_fn"
     assert bio.pulse_function == "pulse_fn"
@@ -136,8 +162,10 @@ def test_read_json_and_precalc(bf, bd, bio):
 
     header = vars(bd.your_header)
     for key, value in bio.fileheader.items():
-        if "base" not in key and "file" not in key:
-            assert value == header[key]
+        if "base" not in key and "file" not in key and "dtype" not in key:
+            assert pytest.approx(value) == header[key]
+        elif "dtype" in key:
+            assert value == header[key].__name__
     assert bio.clip_fac == bf.clip_fac
     assert bio.nt == bf.nt
     assert bio.nf == bf.nf
@@ -145,4 +173,14 @@ def test_read_json_and_precalc(bf, bd, bio):
 
 
 def test_model(bf, bio):
-    assert (bf.model - bio.model).sum() == 0
+    bf.sgram_model.forfit = False
+    assert (
+        pytest.approx(
+            (
+                bf.model_from_params([0], *bio.sgram_params["all"]["1"]["popt"])
+                - bio.model
+            ).mean(),
+            rel=0.1,
+        )
+        == 0
+    )
