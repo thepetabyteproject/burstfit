@@ -162,10 +162,10 @@ def test_read_json_and_precalc(bf, bd, bio):
 
     header = vars(bd.your_header)
     for key, value in bio.fileheader.items():
-        if "base" not in key and "file" not in key and "dtype" not in key:
+        # Note: your_header['dtype'] was modified to a string when set_attributes_to_save() is called.
+        # This is why the following assertion works. Otherwise header['dtype'].__name__ should be used.
+        if "base" not in key and "file" not in key:
             assert pytest.approx(value) == header[key]
-        elif "dtype" in key:
-            assert value == header[key].__name__
     assert bio.clip_fac == bf.clip_fac
     assert bio.nt == bf.nt
     assert bio.nf == bf.nf
