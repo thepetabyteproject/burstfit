@@ -40,7 +40,7 @@ class MCMC:
         nwalkers=30,
         nsteps=1000,
         skip=3000,
-        start_pos_dev=0.01,
+        start_pos_dev=0.1,
         prior_range=0.2,
         ncores=10,
         outname="mcmc_res",
@@ -221,7 +221,7 @@ class MCMC:
                 f"Found S and sigma_t in param_names. Setting its max value of prior to "
                 f"5*max(ts)*max_sigma_t_prior. Setting its min value of prior to 0."
             )
-            self.max_prior[S_idx] = 50 * np.max(self.sgram.sum(0)) * max_sigma_t
+            self.max_prior[S_idx] = 200 * np.max(self.sgram.sum(0)) * max_sigma_t
             self.min_prior[S_idx] = 0
 
         if len(mu_f_idx) > 0:
