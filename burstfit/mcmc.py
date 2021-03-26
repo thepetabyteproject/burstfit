@@ -40,7 +40,7 @@ class MCMC:
         nwalkers=30,
         nsteps=1000,
         skip=3000,
-        start_pos_dev=0.1,
+        start_pos_dev=0.01,
         prior_range=0.2,
         ncores=10,
         outname="mcmc_res",
