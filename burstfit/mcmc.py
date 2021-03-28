@@ -322,6 +322,7 @@ class MCMC:
             if burnin < skip:
                 skip = burnin
         else:
+            thin = 0
             logger.warning(
                 "Autocorrelation time is nan. Not using tau for burn-in calculation."
             )
