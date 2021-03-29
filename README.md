@@ -2,6 +2,12 @@
 Spectro-temporal modeling of FRBs
 
 # Installation
+You can install `burstfit` directly using `pip`
+
+```bash
+pip install burstfit
+```
+Or if you want to try out the latest stuff,
 ```bash
 git clone https://github.com/thepetabyteproject/burstfit
 cd burstfit
