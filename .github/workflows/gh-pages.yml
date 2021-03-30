@@ -1,0 +1,30 @@
+name: build and deploy mkdocs to github pages
+on:
+  release:
+    types: [created]
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: "recursive" 
+          fetch-depth: 0       # Fetch all history for .GitInfo and .Lastmod
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+      - name: Install dependencies and burstfit
+        run: |
+          python3 -m pip install --upgrade pip     # install pip
+          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r docs/requirements.txt
+          python3 setup.py install
+      - name: Build site
+        run: bash build_docs.sh
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/site
