@@ -1,7 +1,7 @@
 <a name="burstfit.fit"></a>
 # burstfit.fit
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L3)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L3)
 
 <a name="burstfit.fit.BurstFit"></a>
 ## BurstFit Objects
@@ -10,7 +10,7 @@
 class BurstFit()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L15)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L15)
 
 BurstFit class to perform spectro-temporal modeling on the burst data
 
@@ -36,7 +36,7 @@ BurstFit class to perform spectro-temporal modeling on the burst data
  | def ncomponents()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L83)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L83)
 
 Returns: number of components
 
@@ -47,7 +47,7 @@ Returns: number of components
  | def validate()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L96)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L96)
 
 Validate the class attributes
 
@@ -61,7 +61,7 @@ Validate the class attributes
  | def precalc()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L111)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L111)
 
 Perform precalculations for fitting
 
@@ -75,7 +75,7 @@ Perform precalculations for fitting
  | def make_spectra()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L145)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L145)
 
 Make the spectra by using the profile fitting parameters.
 
@@ -89,7 +89,7 @@ Make the spectra by using the profile fitting parameters.
  | def fitcycle(plot=False, profile_bounds=[], spectra_bounds=[], sgram_bounds=[-np.inf, np.inf])
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L198)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L198)
 
 Run the fitting cycle to fit one component
 
@@ -111,7 +111,7 @@ Run the fitting cycle to fit one component
  | def initial_profilefit(plot=False, bounds=[])
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L227)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L227)
 
 Perform initial profile fit on the pulse.
 
@@ -131,7 +131,7 @@ Perform initial profile fit on the pulse.
  | def initial_spectrafit(plot=False, bounds=[])
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L284)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L284)
 
 Perform initial spectra fit on the spectra.
 
@@ -151,7 +151,7 @@ Perform initial spectra fit on the spectra.
  | def sgram_fit(plot=False, bounds=[-np.inf, np.inf])
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L331)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L331)
 
 Perform fit on the spectrogram and updates the residual.
 
@@ -171,7 +171,7 @@ Perform fit on the spectrogram and updates the residual.
  | def fit_all_components(plot)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L409)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L378)
 
 Fit all components together (used if num_comp > 1)
 
@@ -190,7 +190,7 @@ Fit all components together (used if num_comp > 1)
  | def fitall(plot=True, max_ncomp=5, profile_bounds=[], spectra_bounds=[], sgram_bounds=[-np.inf, np.inf], **mcmc_kwargs, ,)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L488)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L426)
 
 Perform spectro-temporal fitting on the spectrogram for all the components.
 
@@ -214,7 +214,7 @@ Perform spectro-temporal fitting on the spectrogram for all the components.
  | def run_mcmc(plot=False, nwalkers=30, nsteps=1000, skip=3000, ncores=10, start_pos_dev=0.01, prior_range=0.5, save_results=True, outname=None)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L577)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L515)
 
 Runs MCMC using the final fit parameters.
 
@@ -241,7 +241,7 @@ Runs MCMC using the final fit parameters.
  | def get_off_pulse_region()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L655)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L593)
 
 Returns off pulse region (2D) using fit parameters.
 
@@ -256,7 +256,7 @@ Returns off pulse region (2D) using fit parameters.
  | def run_tests()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L693)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L631)
 
 Run statistical tests to compare ON pulse residual with OFF pulse spectrogram distributions.
 
@@ -271,7 +271,7 @@ Run statistical tests to compare ON pulse residual with OFF pulse spectrogram di
  | def calc_redchisq()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L723)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L661)
 
 Calculates reduced chi-square value of the fit using sgram, model and off pulse standard deviation.
 
@@ -287,7 +287,7 @@ Calculates reduced chi-square value of the fit using sgram, model and off pulse 
  | def model()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L745)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L683)
 
 Function to make the model.
 
@@ -302,7 +302,7 @@ Function to make the model.
  | def model_from_params(x, *params)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L775)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L713)
 
 Function to make the model using spectrogram parameters.
 
@@ -317,7 +317,7 @@ Function to make the model using spectrogram parameters.
  | def get_physical_parameters(my_mapping)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/fit.py#L797)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/fit.py#L735)
 
 Function to use the my_mapping function and convert fitted parameters to physical units
 

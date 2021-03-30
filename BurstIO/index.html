@@ -14,18 +14,18 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.6">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.0">
     
     
       
-        <title>BurstIO - BurstFit Documentation</title>
+        <title>Save Fit Results - BurstFit Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.2c0c5eaf.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.33e2939f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.7fa14f5b.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
         
           
           
@@ -57,8 +57,9 @@
     
     
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="black" data-md-color-accent="">
-      
   
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -66,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#burst-fitting" class="md-skip">
+        <a href="#saving-fit-results-using-burstio-class" class="md-skip">
           Skip to content
         </a>
       
@@ -96,15 +97,14 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              BurstIO
+              Save Fit Results
             
           </span>
         </div>
       </div>
     </div>
-    <div class="md-header__options">
-      
-    </div>
+    
+    
     
       <label class="md-header__button md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
@@ -120,7 +120,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
       </label>
       <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
       </button>
     </form>
     <div class="md-search__output">
@@ -142,7 +142,7 @@
 <a href="https://github.com/thepetabyteproject/burstfit/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     burstfit
@@ -185,7 +185,7 @@
 <a href="https://github.com/thepetabyteproject/burstfit/" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
   </div>
   <div class="md-source__repository">
     burstfit
@@ -219,7 +219,7 @@
   
     <li class="md-nav__item">
       <a href="../BurstFit/" class="md-nav__link">
-        BurstFit
+        Basic Fitting
       </a>
     </li>
   
@@ -234,7 +234,7 @@
   
     <li class="md-nav__item">
       <a href="../BurstData/" class="md-nav__link">
-        BurstData
+        Preparing Data
       </a>
     </li>
   
@@ -253,19 +253,23 @@
       
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          BurstIO
+          Save Fit Results
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        BurstIO
+        Save Fit Results
       </a>
       
         
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -279,120 +283,26 @@
     Burst Fitting
   </a>
   
-    <nav class="md-nav" aria-label="Burst Fitting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#get-candidate-cutout-and-preprocess" class="md-nav__link">
-    Get candidate cutout and preprocess
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#burstio-class" class="md-nav__link">
+    BurstIO class
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#burstdata-class-get-data-cutout-and-pre-process" class="md-nav__link">
-    BurstData class (get data cutout and pre-process)
+      
+        <li class="md-nav__item">
+  <a href="#read-json" class="md-nav__link">
+    Read JSON
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#fitting-using-burstfit" class="md-nav__link">
-    Fitting using BurstFit
+      
+        <li class="md-nav__item">
+  <a href="#reproduce-model" class="md-nav__link">
+    Reproduce Model
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#define-relevant-functions-for-profile-spectra-and-spectrogram" class="md-nav__link">
-    Define relevant functions for profile, spectra and spectrogram
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#provide-basic-candidate-information-to-burstfit-sgram-model-dm-width-rfi-mask-etc" class="md-nav__link">
-    Provide basic candidate information to BurstFit: sgram, model, DM, width, RFI mask, etc
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fitting" class="md-nav__link">
-    Fitting ....
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#we-can-use-burstio-class-to-save-the-results" class="md-nav__link">
-    We can use BurstIO class to save the results.
-  </a>
-  
-    <nav class="md-nav" aria-label="We can use BurstIO class to save the results.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#this-saves-the-relevant-parameters-header-of-the-file-candidate-parameters-fit-results-function-names-to-a-json-file" class="md-nav__link">
-    This saves the relevant parameters: header of the file, candidate parameters, fit results, function names to a JSON file.
-  </a>
-  
-    <nav class="md-nav" aria-label="This saves the relevant parameters: header of the file, candidate parameters, fit results, function names to a JSON file.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#here-are-the-parameters-that-are-saved" class="md-nav__link">
-    Here are the parameters that are saved:
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fitted-parameters-for-all-components-are-saved-in-sgram_paramsall" class="md-nav__link">
-    Fitted parameters for all components are saved in sgram_params['all']
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#burstio-class-can-also-be-used-to-read-the-json-file-with-fitting-results-and-reproduce-the-sgram-model" class="md-nav__link">
-    BurstIO class can also be used to read the json file with fitting results and reproduce the sgram model
-  </a>
-  
-    <nav class="md-nav" aria-label="BurstIO class can also be used to read the json file with fitting results and reproduce the sgram model">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#this-reads-the-json-file-and-sets-up-relevant-functions-and-metadata" class="md-nav__link">
-    This reads the json file and sets up relevant functions and metadata
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#similar-to-burstfit-class-we-can-use-biomodel-to-make-the-model-this-uses-the-sgram_params-or-mcmc_params-if-available-to-make-the-model" class="md-nav__link">
-    Similar to BurstFit class, we can use bio.model to make the model. This uses the sgram_params or mcmc_params (if available) to make the model.
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -413,7 +323,7 @@
   
     <li class="md-nav__item">
       <a href="../MCMC/" class="md-nav__link">
-        MCMC
+        Fitting using MCMC
       </a>
     </li>
   
@@ -428,7 +338,7 @@
   
     <li class="md-nav__item">
       <a href="../BurstFit_custom_function/" class="md-nav__link">
-        BurstFit_custom
+        Fitting using custom function
       </a>
     </li>
   
@@ -511,6 +421,18 @@
   
   
     <li class="md-nav__item">
+      <a href="../burstfit.curvefit/" class="md-nav__link">
+        CurveFit
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../burstfit.model/" class="md-nav__link">
         Model
       </a>
@@ -526,14 +448,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_6" type="checkbox" id="__nav_7_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_7" type="checkbox" id="__nav_7_7" >
       
-      <label class="md-nav__link" for="__nav_7_6">
+      <label class="md-nav__link" for="__nav_7_7">
         Utils
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Utils" data-md-level="2">
-        <label class="md-nav__title" for="__nav_7_6">
+        <label class="md-nav__title" for="__nav_7_7">
           <span class="md-nav__icon md-icon"></span>
           Utils
         </label>
@@ -626,6 +548,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -638,120 +562,26 @@
     Burst Fitting
   </a>
   
-    <nav class="md-nav" aria-label="Burst Fitting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#get-candidate-cutout-and-preprocess" class="md-nav__link">
-    Get candidate cutout and preprocess
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#burstio-class" class="md-nav__link">
+    BurstIO class
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#burstdata-class-get-data-cutout-and-pre-process" class="md-nav__link">
-    BurstData class (get data cutout and pre-process)
+      
+        <li class="md-nav__item">
+  <a href="#read-json" class="md-nav__link">
+    Read JSON
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#fitting-using-burstfit" class="md-nav__link">
-    Fitting using BurstFit
+      
+        <li class="md-nav__item">
+  <a href="#reproduce-model" class="md-nav__link">
+    Reproduce Model
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#define-relevant-functions-for-profile-spectra-and-spectrogram" class="md-nav__link">
-    Define relevant functions for profile, spectra and spectrogram
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#provide-basic-candidate-information-to-burstfit-sgram-model-dm-width-rfi-mask-etc" class="md-nav__link">
-    Provide basic candidate information to BurstFit: sgram, model, DM, width, RFI mask, etc
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fitting" class="md-nav__link">
-    Fitting ....
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#we-can-use-burstio-class-to-save-the-results" class="md-nav__link">
-    We can use BurstIO class to save the results.
-  </a>
-  
-    <nav class="md-nav" aria-label="We can use BurstIO class to save the results.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#this-saves-the-relevant-parameters-header-of-the-file-candidate-parameters-fit-results-function-names-to-a-json-file" class="md-nav__link">
-    This saves the relevant parameters: header of the file, candidate parameters, fit results, function names to a JSON file.
-  </a>
-  
-    <nav class="md-nav" aria-label="This saves the relevant parameters: header of the file, candidate parameters, fit results, function names to a JSON file.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#here-are-the-parameters-that-are-saved" class="md-nav__link">
-    Here are the parameters that are saved:
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fitted-parameters-for-all-components-are-saved-in-sgram_paramsall" class="md-nav__link">
-    Fitted parameters for all components are saved in sgram_params['all']
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#burstio-class-can-also-be-used-to-read-the-json-file-with-fitting-results-and-reproduce-the-sgram-model" class="md-nav__link">
-    BurstIO class can also be used to read the json file with fitting results and reproduce the sgram model
-  </a>
-  
-    <nav class="md-nav" aria-label="BurstIO class can also be used to read the json file with fitting results and reproduce the sgram model">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#this-reads-the-json-file-and-sets-up-relevant-functions-and-metadata" class="md-nav__link">
-    This reads the json file and sets up relevant functions and metadata
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#similar-to-burstfit-class-we-can-use-biomodel-to-make-the-model-this-uses-the-sgram_params-or-mcmc_params-if-available-to-make-the-model" class="md-nav__link">
-    Similar to BurstFit class, we can use bio.model to make the model. This uses the sgram_params or mcmc_params (if available) to make the model.
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -772,15 +602,13 @@
                   </a>
                 
                 
-                  <h1>BurstIO</h1>
-                
                 
 <div class="notebook-content">
 <style type="text/css">
     pre { line-height: 125%; }
-td.linenos pre { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-span.linenos { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-td.linenos pre.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 .highlight .hll { background-color: var(--jp-cell-editor-active-background) }
 .highlight { background: var(--jp-cell-editor-background); color: var(--jp-mirror-editor-variable-color) }
@@ -15160,10 +14988,15 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
     </script>
     <!-- End of mathjax configuration -->
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="saving-fit-results-using-burstio-class">Saving fit results using BurstIO class<a class="anchor-link" href="#Saving-fit-results-using-BurstIO-class">&#182;</a></h1>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15186,7 +15019,7 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15207,17 +15040,24 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Let's quickly do a fitting using BurstData and BurstFit classes.</p>
+
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="burst-fitting">Burst Fitting<a class="anchor-link" href="#Burst-Fitting">&#182;</a></h2>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="get-candidate-cutout-and-preprocess">Get candidate cutout and preprocess<a class="anchor-link" href="#Get-candidate-cutout-and-preprocess">&#182;</a></h4><h4 id="burstdata-class-get-data-cutout-and-pre-process">BurstData class (get data cutout and pre-process)<a class="anchor-link" href="#BurstData-class-(get-data-cutout-and-pre-process)">&#182;</a></h4>
+<p>Get data and preprocess</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15234,7 +15074,7 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15255,16 +15095,15 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
         <div class="CodeMirror cm-s-jupyter">
-    <div class=" highlight highlight-ipynb hl-python"><pre><span></span><span class="c1"># We will mask channel numbers from 53 to 64 as they are 0. </span>
-<span class="n">bd</span><span class="o">.</span><span class="n">prepare_data</span><span class="p">(</span><span class="n">mask_chans</span><span class="o">=</span><span class="p">[(</span><span class="mi">53</span><span class="p">,</span> <span class="mi">64</span><span class="p">)])</span>
+    <div class=" highlight highlight-ipynb hl-python"><pre><span></span><span class="n">bd</span><span class="o">.</span><span class="n">prepare_data</span><span class="p">(</span><span class="n">mask_chans</span><span class="o">=</span><span class="p">[(</span><span class="mi">53</span><span class="p">,</span> <span class="mi">64</span><span class="p">)])</span>
 </pre></div>
 
         </div>
@@ -15273,15 +15112,55 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>2021-03-18 19:54:15,367 - prepare_data -burstfit.data - INFO - Preparing data for burst fitting.
+2021-03-18 19:54:15,415 - crop_dedispersed_data -burstfit.data - INFO - Cropping data with time_window: 0.2s.
+2021-03-18 19:54:15,416 - normalise_data -burstfit.data - INFO - Normalising data using off pulse mean and std.
+2021-03-18 19:54:15,527 - normalise_data -burstfit.data - INFO - Off pulse mean and std are: (128.00148285380777, 19.999437514831243)
+</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Using &lt;class &#39;str&#39;&gt;:
+../tests/data/tcand_2_dm_565.30000_snr_11.92560.fil</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="fitting-using-burstfit">Fitting using BurstFit<a class="anchor-link" href="#Fitting-using-BurstFit">&#182;</a></h4><h4 id="define-relevant-functions-for-profile-spectra-and-spectrogram">Define relevant functions for profile, spectra and spectrogram<a class="anchor-link" href="#Define-relevant-functions-for-profile,-spectra-and-spectrogram">&#182;</a></h4>
+<p>Setting up BurstFit:</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15301,7 +15180,7 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15316,15 +15195,10 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="provide-basic-candidate-information-to-burstfit-sgram-model-dm-width-rfi-mask-etc">Provide basic candidate information to BurstFit: sgram, model, DM, width, RFI mask, etc<a class="anchor-link" href="#Provide-basic-candidate-information-to-BurstFit:-sgram,-model,-DM,-width,-RFI-mask,-etc">&#182;</a></h4>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15350,12 +15224,13 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="fitting-">Fitting ....<a class="anchor-link" href="#Fitting-....">&#182;</a></h4>
+<p>Fitting ....</p>
+
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15369,15 +15244,84 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>2021-03-18 19:54:15,810 - run_tests -burstfit.fit - INFO - Running statistical tests on the residual.
+2021-03-18 19:54:15,811 - run_tests -burstfit.fit - INFO - Running off pulse - off pulse test
+2021-03-18 19:54:15,828 - tests -root - INFO - P values: T-test (0.60679), Kruskal (0.70429), KS (0.87426), F-test (0.61511)
+2021-03-18 19:54:15,829 - run_tests -burstfit.fit - INFO - Running on pulse - off pulse (L) test
+2021-03-18 19:54:15,845 - tests -root - INFO - P values: T-test (0.00000), Kruskal (0.00000), KS (0.00000), F-test (0.00044)
+2021-03-18 19:54:15,846 - run_tests -burstfit.fit - INFO - Running on pulse - off pulse (R) test
+2021-03-18 19:54:15,864 - tests -root - INFO - P values: T-test (0.00000), Kruskal (0.00000), KS (0.00001), F-test (0.00015)
+2021-03-18 19:54:15,865 - fitcycle -burstfit.fit - INFO - Fitting component 1.
+2021-03-18 19:54:15,868 - initial_profilefit -burstfit.fit - INFO - Running initial profile fit for component: 1
+2021-03-18 19:54:15,963 - initial_profilefit -burstfit.fit - INFO - Converged parameters (profile fit) are:
+2021-03-18 19:54:15,964 - initial_profilefit -burstfit.fit - INFO - S: 763.9470222396869 +- 76.47155802814272
+2021-03-18 19:54:15,964 - initial_profilefit -burstfit.fit - INFO - mu_t: 1202.832588161036 +- 3.3843576775928397
+2021-03-18 19:54:15,965 - initial_profilefit -burstfit.fit - INFO - sigma_t: 11.487928835362144 +- 2.863860070777841
+2021-03-18 19:54:15,966 - initial_profilefit -burstfit.fit - INFO - tau: 15.684895946500633 +- 6.35034474880263
+2021-03-18 19:54:15,966 - make_spectra -burstfit.fit - INFO - Making spectra using profile fit parameters.
+2021-03-18 19:54:15,969 - initial_spectrafit -burstfit.fit - INFO - Running spectra profile fit for component: 1
+2021-03-18 19:54:15,983 - initial_spectrafit -burstfit.fit - INFO - Converged parameters (spectra fit) are:
+2021-03-18 19:54:15,983 - initial_spectrafit -burstfit.fit - INFO - mu_f: 24.478044459914074 +- 0.40858355670038715
+2021-03-18 19:54:15,984 - initial_spectrafit -burstfit.fit - INFO - sigma_f: 5.876907075384988 +- 0.3336071378032658
+2021-03-18 19:54:15,985 - sgram_fit -burstfit.fit - INFO - Running sgram profile fit for component: 1
+2021-03-18 19:54:15,985 - sgram_fit -burstfit.fit - INFO - initial estimate for parameters: [24.478044459914074, 5.876907075384988, 763.9470222396869, 1202.832588161036, 11.487928835362144, 15.684895946500633, 565.3]
+2021-03-18 19:54:16,690 - sgram_fit -burstfit.fit - INFO - Converged parameters are:
+2021-03-18 19:54:16,690 - sgram_fit -burstfit.fit - INFO - mu_f: 24.975849003327195 +- 0.3914311686459791
+2021-03-18 19:54:16,691 - sgram_fit -burstfit.fit - INFO - sigma_f: 6.166294966919394 +- 0.3834043551301487
+2021-03-18 19:54:16,691 - sgram_fit -burstfit.fit - INFO - S: 731.2832079635614 +- 48.013029647860286
+2021-03-18 19:54:16,691 - sgram_fit -burstfit.fit - INFO - mu_t: 1207.2991214508688 +- 4.213243536228096
+2021-03-18 19:54:16,692 - sgram_fit -burstfit.fit - INFO - sigma_t: 11.259609732524533 +- 1.5688742150501045
+2021-03-18 19:54:16,692 - sgram_fit -burstfit.fit - INFO - tau: 6.132069921186363 +- 1.6235180608220625
+2021-03-18 19:54:16,692 - sgram_fit -burstfit.fit - INFO - DM: 564.3361968307069 +- 0.5239059844852217
+2021-03-18 19:54:16,693 - model -burstfit.fit - INFO - Making model.
+2021-03-18 19:54:16,693 - model -burstfit.fit - INFO - Found 1 components.
+2021-03-18 19:54:16,702 - get_off_pulse_region -burstfit.fit - INFO - mu_t and sigma_t found in params. Using those to estimate off pulse region.
+2021-03-18 19:54:16,703 - get_off_pulse_region -burstfit.fit - INFO - Using sgram fit parameters.
+2021-03-18 19:54:16,705 - model -burstfit.fit - INFO - Making model.
+2021-03-18 19:54:16,705 - model -burstfit.fit - INFO - Found 1 components.
+2021-03-18 19:54:16,717 - calc_redchisq -burstfit.fit - INFO - Reduced chi-square value of fit is: 0.9957156205218006
+2021-03-18 19:54:16,718 - run_tests -burstfit.fit - INFO - Running statistical tests on the residual.
+2021-03-18 19:54:16,718 - run_tests -burstfit.fit - INFO - Running off pulse - off pulse test
+2021-03-18 19:54:16,727 - tests -root - INFO - P values: T-test (0.60679), Kruskal (0.70429), KS (0.87426), F-test (0.61511)
+2021-03-18 19:54:16,727 - run_tests -burstfit.fit - INFO - Running on pulse - off pulse (L) test
+2021-03-18 19:54:16,736 - tests -root - INFO - P values: T-test (0.43667), Kruskal (0.87474), KS (0.08273), F-test (0.36088)
+2021-03-18 19:54:16,736 - run_tests -burstfit.fit - INFO - On pulse residual is similar to left off pulse region.
+2021-03-18 19:54:16,737 - run_tests -burstfit.fit - INFO - Running on pulse - off pulse (R) test
+2021-03-18 19:54:16,745 - tests -root - INFO - P values: T-test (0.79066), Kruskal (0.83635), KS (0.07254), F-test (0.25825)
+2021-03-18 19:54:16,746 - run_tests -burstfit.fit - INFO - On pulse residual is similar to right off pulse region.
+2021-03-18 19:54:16,746 - fitall -burstfit.fit - INFO - On pulse residual looks like noise. Terminating individual component fitting.
+2021-03-18 19:54:16,747 - fitall -burstfit.fit - INFO - Final number of components = 1. Terminating fitting.
+2021-03-18 19:54:16,748 - get_off_pulse_region -burstfit.fit - INFO - mu_t and sigma_t found in params. Using those to estimate off pulse region.
+2021-03-18 19:54:16,749 - get_off_pulse_region -burstfit.fit - INFO - Using sgram all-component-fit parameters.
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="we-can-use-burstio-class-to-save-the-results">We can use BurstIO class to save the results.<a class="anchor-link" href="#We-can-use-BurstIO-class-to-save-the-results.">&#182;</a></h3>
+<h2 id="burstio-class">BurstIO class<a class="anchor-link" href="#BurstIO-class">&#182;</a></h2>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15391,10 +15335,10 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15408,15 +15352,49 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>2021-03-18 19:54:16,830 - set_attributes_to_save -burstfit.io - INFO - Setting attributes to be saved.
+2021-03-18 19:54:16,831 - set_attributes_to_save -burstfit.io - INFO - Reading attributes from BurstData object.
+2021-03-18 19:54:16,832 - set_attributes_to_save -burstfit.io - INFO - Reading attributes from BurstFit object.
+2021-03-18 19:54:16,832 - set_attributes_to_save -burstfit.io - INFO - Copied necessary attributes
+2021-03-18 19:54:16,832 - save_results -burstfit.io - INFO - Preparing dictionary to be saved.
+2021-03-18 19:54:16,833 - save_results -burstfit.io - INFO - Writing JSON file: /hyrule/data/users/kshitij/kg_121102/burstfit/examples/cand_tstart_57645.411052962729_tcand_2.0000000_dm_565.30000_snr_11.90000.json.
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="this-saves-the-relevant-parameters-header-of-the-file-candidate-parameters-fit-results-function-names-to-a-json-file">This saves the relevant parameters: header of the file, candidate parameters, fit results, function names to a JSON file.<a class="anchor-link" href="#This-saves-the-relevant-parameters:-header-of-the-file,-candidate-parameters,-fit-results,-function-names-to-a-JSON-file.">&#182;</a></h4><h5 id="here-are-the-parameters-that-are-saved">Here are the parameters that are saved:<a class="anchor-link" href="#Here-are-the-parameters-that-are-saved:">&#182;</a></h5>
+<p>This saves the relevant parameters to a JSON file:</p>
+<ul>
+<li>header of the file</li>
+<li>candidate parameters</li>
+<li>fit results</li>
+<li>function names  </li>
+</ul>
+<p>Here are the parameters that are saved:</p>
+
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15430,15 +15408,124 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>{&#39;fileheader&#39;: {&#39;filelist&#39;: [&#39;../tests/data/tcand_2_dm_565.30000_snr_11.92560.fil&#39;],
+  &#39;filename&#39;: &#39;../tests/data/tcand_2_dm_565.30000_snr_11.92560.fil&#39;,
+  &#39;basename&#39;: &#39;tcand_2_dm_565.30000_snr_11.92560&#39;,
+  &#39;source_name&#39;: &#39;C0531+33&#39;,
+  &#39;ra_deg&#39;: 82.99416666666666,
+  &#39;dec_deg&#39;: 33.14711122222222,
+  &#39;bw&#39;: -800.0,
+  &#39;center_freq&#39;: 1374.53125,
+  &#39;nbits&#39;: 8,
+  &#39;format&#39;: &#39;fil&#39;,
+  &#39;dtype&#39;: &#39;uint8&#39;,
+  &#39;time_decimation_factor&#39;: 1,
+  &#39;frequency_decimation_factor&#39;: 1,
+  &#39;native_tsamp&#39;: 8.192e-05,
+  &#39;native_foff&#39;: -12.5,
+  &#39;native_nchans&#39;: 64,
+  &#39;native_nspectra&#39;: 48828.0,
+  &#39;fch1&#39;: 1774.53125,
+  &#39;npol&#39;: 1,
+  &#39;tstart&#39;: 57645.41105296273,
+  &#39;gl&#39;: -5.119968059432011,
+  &#39;gb&#39;: -0.22260846394980457,
+  &#39;tstart_utc&#39;: &#39;2016-09-14T09:51:54.976&#39;},
+ &#39;nstart&#39;: 24382.0,
+ &#39;tcand&#39;: 2,
+ &#39;mask&#39;: array([False, False, False, False, False, False, False, False, False,
+        False, False, False, False, False, False, False, False, False,
+        False, False, False, False, False, False, False, False, False,
+        False, False, False, False, False, False, False, False, False,
+        False, False, False, False, False, False, False, False, False,
+        False, False, False, False, False, False, False, False,  True,
+         True,  True,  True,  True,  True,  True,  True,  True,  True,
+         True]),
+ &#39;id&#39;: &#39;cand_tstart_57645.411052962729_tcand_2.0000000_dm_565.30000_snr_11.90000&#39;,
+ &#39;sgram_function&#39;: &#39;sgram_fn_vec&#39;,
+ &#39;pulse_function&#39;: &#39;pulse_fn_vec&#39;,
+ &#39;spectra_function&#39;: &#39;gauss_norm&#39;,
+ &#39;ncomponents&#39;: 1,
+ &#39;tsamp&#39;: 8.192e-05,
+ &#39;outname&#39;: None,
+ &#39;outdir&#39;: None,
+ &#39;mcmc&#39;: None,
+ &#39;width&#39;: 64,
+ &#39;dm&#39;: 565.3,
+ &#39;foff&#39;: -12.5,
+ &#39;fch1&#39;: 1774.53125,
+ &#39;comp_num&#39;: 1,
+ &#39;profile_params&#39;: {1: {&#39;popt&#39;: [763.9470222396869,
+    1202.832588161036,
+    11.487928835362144,
+    15.684895946500633],
+   &#39;perr&#39;: array([76.47155803,  3.38435768,  2.86386007,  6.35034475])}},
+ &#39;spectra_params&#39;: {1: {&#39;popt&#39;: [24.478044459914074, 5.876907075384988],
+   &#39;perr&#39;: array([0.40858356, 0.33360714])}},
+ &#39;sgram_params&#39;: {1: {&#39;popt&#39;: [24.975849003327195,
+    6.166294966919394,
+    731.2832079635614,
+    1207.2991214508688,
+    11.259609732524533,
+    6.132069921186363,
+    564.3361968307069],
+   &#39;perr&#39;: array([ 0.39143117,  0.38340436, 48.01302965,  4.21324354,  1.56887422,
+           1.62351806,  0.52390598])},
+  &#39;all&#39;: {1: {&#39;popt&#39;: [24.975849003327195,
+     6.166294966919394,
+     731.2832079635614,
+     1207.2991214508688,
+     11.259609732524533,
+     6.132069921186363,
+     564.3361968307069],
+    &#39;perr&#39;: array([ 0.39143117,  0.38340436, 48.01302965,  4.21324354,  1.56887422,
+            1.62351806,  0.52390598])}}},
+ &#39;mcmc_params&#39;: {},
+ &#39;profile_bounds&#39;: {1: ([0, 964, 0, 0], [3177.6240234375, 1476, 256, 256])},
+ &#39;spectra_bounds&#39;: {1: ([0, 0], [63, 63])},
+ &#39;sgram_bounds&#39;: {1: [-inf, inf]},
+ &#39;physical_params&#39;: {},
+ &#39;clip_fac&#39;: 6.35010444928825,
+ &#39;nt&#39;: 2440,
+ &#39;nf&#39;: 64,
+ &#39;i0&#39;: 1202,
+ &#39;profile_param_names&#39;: [&#39;S&#39;, &#39;mu_t&#39;, &#39;sigma_t&#39;, &#39;tau&#39;],
+ &#39;spectra_param_names&#39;: [&#39;mu_f&#39;, &#39;sigma_f&#39;],
+ &#39;param_names&#39;: [&#39;mu_f&#39;, &#39;sigma_f&#39;, &#39;S&#39;, &#39;mu_t&#39;, &#39;sigma_t&#39;, &#39;tau&#39;, &#39;DM&#39;],
+ &#39;reduced_chi_sq&#39;: 0.9957156205218006,
+ &#39;mcmcfit&#39;: False}</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="fitted-parameters-for-all-components-are-saved-in-sgram_paramsall">Fitted parameters for all components are saved in sgram_params['all']<a class="anchor-link" href="#Fitted-parameters-for-all-components-are-saved-in-sgram_params['all']">&#182;</a></h4>
+<p>Fitted parameters for all components are saved in <code>sgram_params['all']</code></p>
+
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15452,15 +15539,47 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>{1: {&#39;popt&#39;: [24.975849003327195,
+   6.166294966919394,
+   731.2832079635614,
+   1207.2991214508688,
+   11.259609732524533,
+   6.132069921186363,
+   564.3361968307069],
+  &#39;perr&#39;: array([ 0.39143117,  0.38340436, 48.01302965,  4.21324354,  1.56887422,
+          1.62351806,  0.52390598])}}</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="burstio-class-can-also-be-used-to-read-the-json-file-with-fitting-results-and-reproduce-the-sgram-model">BurstIO class can also be used to read the json file with fitting results and reproduce the sgram model<a class="anchor-link" href="#BurstIO-class-can-also-be-used-to-read-the-json-file-with-fitting-results-and-reproduce-the-sgram-model">&#182;</a></h3>
+<h2 id="read-json">Read JSON<a class="anchor-link" href="#Read-JSON">&#182;</a></h2><p>BurstIO class can also be used to read the json file with fitting results and reproduce the sgram model</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15478,12 +15597,13 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="this-reads-the-json-file-and-sets-up-relevant-functions-and-metadata">This reads the json file and sets up relevant functions and metadata<a class="anchor-link" href="#This-reads-the-json-file-and-sets-up-relevant-functions-and-metadata">&#182;</a></h4>
+<p>The following reads the json file and sets up relevant functions and metadata.</p>
+
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15497,10 +15617,34 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>2021-03-18 19:54:17,077 - read_json_and_precalc -burstfit.io - INFO - Reading JSON: ../tests/data/cand_tstart_57645.411052962729_tcand_2.0000000_dm_565.30000_snr_11.90000.json
+2021-03-18 19:54:17,087 - read_json_and_precalc -burstfit.io - INFO - Setting I/O class attributes.
+2021-03-18 19:54:17,088 - read_json_and_precalc -burstfit.io - INFO - Setting models (pulse, spectra and spectrogram).
+2021-03-18 19:54:17,088 - read_json_and_precalc -burstfit.io - INFO - BurstIO class is ready with necessary attributes.
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15514,10 +15658,60 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>{&#39;1&#39;: {&#39;popt&#39;: [24.975849003327195,
+   6.166294966919394,
+   731.2832079635614,
+   1207.2991214508688,
+   11.259609732524533,
+   6.132069921186363,
+   564.3361968307069],
+  &#39;perr&#39;: [0.3914311686459791,
+   0.3834043551301487,
+   48.013029647860286,
+   4.213243536228096,
+   1.5688742150501045,
+   1.6235180608220625,
+   0.5239059844852217]},
+ &#39;all&#39;: {&#39;1&#39;: {&#39;popt&#39;: [24.975849003327195,
+    6.166294966919394,
+    731.2832079635614,
+    1207.2991214508688,
+    11.259609732524533,
+    6.132069921186363,
+    564.3361968307069],
+   &#39;perr&#39;: [0.3914311686459791,
+    0.3834043551301487,
+    48.013029647860286,
+    4.213243536228096,
+    1.5688742150501045,
+    1.6235180608220625,
+    0.5239059844852217]}}}</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15532,10 +15726,33 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&#39;sgram_fn_vec&#39;</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15550,15 +15767,44 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>(&#39;pulse_fn_vec&#39;, &#39;gauss_norm&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="similar-to-burstfit-class-we-can-use-biomodel-to-make-the-model-this-uses-the-sgram_params-or-mcmc_params-if-available-to-make-the-model">Similar to BurstFit class, we can use bio.model to make the model. This uses the sgram_params or mcmc_params (if available) to make the model.<a class="anchor-link" href="#Similar-to-BurstFit-class,-we-can-use-bio.model-to-make-the-model.-This-uses-the-sgram_params-or-mcmc_params-(if-available)-to-make-the-model.">&#182;</a></h4>
+<h2 id="reproduce-model">Reproduce Model<a class="anchor-link" href="#Reproduce-Model">&#182;</a></h2>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Similar to BurstFit class, we can use <code>bio.model</code> to make the model. This uses the <code>sgram_params</code> or <code>mcmc_params</code> (if available) to make the model.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
     <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
         
         
@@ -15570,6 +15816,44 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
     </div>
 
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>2021-03-18 19:54:17,347 - model -root - INFO - Making model.
+2021-03-18 19:54:17,348 - model -burstfit.io - INFO - Found 1 components.
+</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedImage jp-OutputArea-output ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -15588,6 +15872,7 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
             </article>
           </div>
         </div>
+        
       </main>
       
         
@@ -15604,7 +15889,7 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
               <span class="md-footer__direction">
                 Previous
               </span>
-              BurstData
+              Preparing Data
             </div>
           </div>
         </a>
@@ -15616,7 +15901,7 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
               <span class="md-footer__direction">
                 Next
               </span>
-              MCMC
+              Fitting using MCMC
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -15645,10 +15930,10 @@ h1:hover .anchor-link, h2:hover .anchor-link, h3:hover .anchor-link {
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["search.highlight"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["search.highlight"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.a1c7c35e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d892486b.min.js"></script>
       
     
   </body>

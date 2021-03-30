@@ -1,7 +1,7 @@
 <a name="burstfit.utils.functions"></a>
 # burstfit.utils.functions
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/functions.py#L1)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/functions.py#L1)
 
 <a name="burstfit.utils.functions.gauss"></a>
 #### gauss
@@ -10,7 +10,7 @@
 def gauss(x, S, mu, sigma)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/functions.py#L10)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/functions.py#L10)
 
 Gaussian function with area S
 
@@ -32,7 +32,7 @@ Gaussian function with area S
 def gauss_norm(x, mu, sig)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/functions.py#L28)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/functions.py#L28)
 
 Gaussian function of unit area
 
@@ -53,7 +53,7 @@ Gaussian function of unit area
 def gauss_norm2(x, mu1, sig1, mu2, sig2, amp1)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/functions.py#L43)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/functions.py#L43)
 
 Two gaussian functions of unit total area
 
@@ -77,7 +77,7 @@ Two gaussian functions of unit total area
 def gauss_norm3(x, mu1, sig1, mu2, sig2, mu3, sig3, amp1, amp2)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/functions.py#L61)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/functions.py#L61)
 
 Three gaussian functions of unit total area
 
@@ -104,7 +104,7 @@ Three gaussian functions of unit total area
 def pulse_fn(t, S, mu, sigma, tau)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/functions.py#L86)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/functions.py#L86)
 
 Function of the pulse profile: Gaussian convolved with an exponential tail
 (see https://arxiv.org/pdf/1404.6593.pdf, equation 4, for more details)
@@ -128,7 +128,7 @@ Function of the pulse profile: Gaussian convolved with an exponential tail
 def pulse_fn_vec(t, S, mu, sigma, tau)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/functions.py#L117)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/functions.py#L117)
 
 Vectorized implementation of pulse profile function: Gaussian convolved with an exponential tail
 (see https://arxiv.org/pdf/1404.6593.pdf, equation 4, for more details)
@@ -153,7 +153,7 @@ Vectorized implementation of pulse profile function: Gaussian convolved with an 
 def sgram_fn(metadata, pulse_function, spectra_function, spectra_params, pulse_params, other_params)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/functions.py#L164)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/functions.py#L164)
 
 Spectrogram function
 
@@ -177,7 +177,7 @@ Spectrogram function
 def sgram_fn_vec(metadata, pulse_function, spectra_function, spectra_params, pulse_params, other_params)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/dc85c0cff44e1449b8d9cf13ea1a6d76604d258f/burstfit/utils/functions.py#L224)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/functions.py#L224)
 
 Vectorized implementation of spectrogram function. Assumes the following input names for pulse_function:
 S, mu, sigma, tau
