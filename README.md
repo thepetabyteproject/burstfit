@@ -5,9 +5,11 @@
 [![GitHub license](https://img.shields.io/github/license/thepetabyteproject/burstfit?style=flat-square)](https://github.com/thepetabyteproject/burstfit/blob/main/LICENSE)
 [![HitCount](http://hits.dwyl.com/thepetabyteproject/burstfit.svg)](http://hits.dwyl.com/thepetabyteproject/burstfit)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/thepetabyteproject/burstfit/Python%20package?style=flat-square)
+
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/burstfit?style=flat-square)
 ![PyPI](https://img.shields.io/pypi/v/burstfit?style=flat-square)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+![Codecov](https://img.shields.io/codecov/c/github/thepetabyteproject/burstfit?style=flat-square)
 
 Spectro-temporal modeling of FRBs
 
