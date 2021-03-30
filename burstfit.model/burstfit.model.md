@@ -1,7 +1,7 @@
 <a name="burstfit.model"></a>
 # burstfit.model
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/model.py#L1)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/model.py#L1)
 
 <a name="burstfit.model.Model"></a>
 ## Model Objects
@@ -10,7 +10,7 @@
 class Model()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/model.py#L8)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/model.py#L8)
 
 Wrapper class for spectra and profile functions.
 
@@ -27,7 +27,7 @@ Wrapper class for spectra and profile functions.
  | def evaluate(x, *params)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/model.py#L33)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/model.py#L33)
 
 Evaluate the function at input parameters
 
@@ -47,7 +47,7 @@ Evaluate the function at input parameters
  | def get_param_dict(*params, *, keys="params")
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/model.py#L46)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/model.py#L46)
 
 Convert input param list to a dictionary with param_names
 
@@ -67,7 +67,7 @@ Convert input param list to a dictionary with param_names
  | def nparams()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/model.py#L71)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/model.py#L71)
 
 **Returns**:
 
@@ -80,7 +80,7 @@ Convert input param list to a dictionary with param_names
 class SgramModel()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/model.py#L81)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/model.py#L81)
 
 Wrapper class for spectrogram model
 
@@ -101,7 +101,7 @@ Wrapper class for spectrogram model
  | def nparams()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/model.py#L122)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/model.py#L122)
 
 **Returns**:
 
@@ -114,7 +114,7 @@ Wrapper class for spectrogram model
  | def evaluate(x, *params)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/model.py#L131)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/model.py#L131)
 
 Function to evaluate sgram_function at input parameters
 

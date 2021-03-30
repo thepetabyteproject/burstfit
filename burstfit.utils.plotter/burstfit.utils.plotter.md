@@ -1,7 +1,7 @@
 <a name="burstfit.utils.plotter"></a>
 # burstfit.utils.plotter
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/plotter.py#L1)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/plotter.py#L1)
 
 <a name="burstfit.utils.plotter.plot_1d_fit"></a>
 #### plot\_1d\_fit
@@ -10,7 +10,7 @@
 def plot_1d_fit(xdata, ydata, function, popt, xlabel=None, ylabel=None, title=None, param_names=[], show=True, save=False, outname="1d_fit_res")
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/plotter.py#L12)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/plotter.py#L12)
 
 Plot the results of 1D fits
 
@@ -36,7 +36,7 @@ Plot the results of 1D fits
 def plot_2d_fit(sgram, function, popt, tsamp, title=None, show=True, save=False, outname="2d_fit_res", outdir=None)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/plotter.py#L73)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/plotter.py#L73)
 
 Plot the result of spectrogram fit
 
@@ -59,7 +59,7 @@ Plot the result of spectrogram fit
 def plot_fit_results(sgram, function, popt, tsamp, fstart, foff, mask=None, outsize=None, title=None, show=True, save=False, outname="2d_fit_res", outdir=None, vmin=None, vmax=None)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/plotter.py#L143)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/plotter.py#L143)
 
 **Arguments**:
 
@@ -90,7 +90,7 @@ def plot_fit_results(sgram, function, popt, tsamp, fstart, foff, mask=None, outs
 def plot_me(datar, xlabel=None, ylabel=None, title=None)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/plotter.py#L269)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/plotter.py#L269)
 
 Generic function to plot 1D or 2D array.
 Requires SciencePlots.
@@ -113,7 +113,7 @@ Requires SciencePlots.
 def plot_mcmc_results(samples, name, param_starts, labels, save=False)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/plotter.py#L301)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/plotter.py#L301)
 
 Save corner plot of MCMC results
 
@@ -136,7 +136,7 @@ Save corner plot of MCMC results
 def autocorr_plot(n, y, name, save)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/plotter.py#L342)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/plotter.py#L342)
 
 Make the autocorrelation plot to visualize convergence of MCMC.
 

@@ -1,7 +1,7 @@
 <a name="burstfit.utils.astro"></a>
 # burstfit.utils.astro
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/astro.py#L1)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/astro.py#L1)
 
 <a name="burstfit.utils.astro.dedisperse"></a>
 #### dedisperse
@@ -10,7 +10,7 @@
 def dedisperse(data, dm, tsamp, freqs)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/astro.py#L4)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/astro.py#L4)
 
 Function to dedisperse the data
 
@@ -35,7 +35,7 @@ Function to dedisperse the data
 def finer_dispersion_correction(dedispersed_model, delay_time, delay_bins, tsamp)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/astro.py#L35)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/astro.py#L35)
 
 Function to correct for dispersion within a time sample.
 
@@ -58,7 +58,7 @@ Function to correct for dispersion within a time sample.
 def radiometer(tsys, gain, bw, w)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/utils/astro.py#L63)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/astro.py#L63)
 
 Calculates the radiometer noise
 

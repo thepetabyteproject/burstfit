@@ -1,7 +1,7 @@
 <a name="burstfit.curvefit"></a>
 # burstfit.curvefit
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/curvefit.py#L3)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/curvefit.py#L3)
 
 <a name="burstfit.curvefit.CurveFit"></a>
 ## CurveFit Objects
@@ -10,7 +10,7 @@
 class CurveFit()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/curvefit.py#L11)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/curvefit.py#L11)
 
 Simple wrapper class to handle curve fitting. It can also retry
 the fitting with modified bounds if errors are encountered
@@ -36,7 +36,7 @@ for details of inputs.
  | def run_fit()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/curvefit.py#L50)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/curvefit.py#L50)
 
 Runs the fitting function and checks for errors and retries.
 
@@ -52,7 +52,7 @@ Runs the fitting function and checks for errors and retries.
  | def cf()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/a40a655954316c842352e8fe5db91d9fb90fb38f/burstfit/curvefit.py#L94)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/curvefit.py#L94)
 
 Do the actual curve fitting using curve_fit
 
