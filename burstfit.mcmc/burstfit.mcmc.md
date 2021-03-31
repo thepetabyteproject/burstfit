@@ -1,7 +1,7 @@
 <a name="burstfit.mcmc"></a>
 # burstfit.mcmc
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L3)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L3)
 
 <a name="burstfit.mcmc.MCMC"></a>
 ## MCMC Objects
@@ -10,7 +10,7 @@
 class MCMC()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L15)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L15)
 
 Class to run MCMC on the burst model.
 
@@ -37,7 +37,7 @@ Class to run MCMC on the burst model.
  | def ndim()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L87)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L87)
 
 Returns the number of dimensions.
 
@@ -52,7 +52,7 @@ Returns the number of dimensions.
  | def lnprior(params)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L97)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L97)
 
 Prior function. Priors are uniform from (1-prior_range)*initial_guess to (1+prior_range)*initial_guess.
 Minimum prior for tau is set to 0.
@@ -72,7 +72,7 @@ Minimum prior for tau is set to 0.
  | def lnprob(params)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L116)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L116)
 
 Log probability function.
 
@@ -92,7 +92,7 @@ Log probability function.
  | def lnlk(inps)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L132)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L132)
 
 Log likelihood function. Uses the model_function to generate the model.
 
@@ -112,7 +112,7 @@ Log likelihood function. Uses the model_function to generate the model.
  | def set_initial_pos()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L146)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L146)
 
 Function to set the initial values of walkers and prior ranges.
 Minimum prior for tau is set to 0.
@@ -127,7 +127,7 @@ Minimum prior for tau is set to 0.
  | def set_priors()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L173)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L173)
 
 Set priors for MCMC
 
@@ -141,7 +141,7 @@ Set priors for MCMC
  | def run_mcmc()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L243)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L243)
 
 Runs the MCMC.
 
@@ -156,7 +156,7 @@ Runs the MCMC.
  | def get_chain(skip=None)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L305)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L305)
 
 Returns the chanins from sampler object after removing some samples for burn-in.
 
@@ -176,7 +176,7 @@ Returns the chanins from sampler object after removing some samples for burn-in.
  | def print_results()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L340)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L340)
 
 Prints the results of MCMC analysis. It uses median values with 1-sigma errors based on MCMC posteriors.
 
@@ -190,7 +190,7 @@ Prints the results of MCMC analysis. It uses median values with 1-sigma errors b
  | def plot(save=False)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L357)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L357)
 
 Plot the samples and corner plot of MCMC posteriors.
 
@@ -209,7 +209,7 @@ Plot the samples and corner plot of MCMC posteriors.
  | def make_autocorr_plot(save=False)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/mcmc.py#L372)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/mcmc.py#L372)
 
 Make autocorrelation plot for MCMC (i.e autocorrelation  time scale vs iteration)
 see https://emcee.readthedocs.io/en/stable/tutorials/autocorr/

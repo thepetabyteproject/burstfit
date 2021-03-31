@@ -1,7 +1,7 @@
 <a name="burstfit.io"></a>
 # burstfit.io
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/io.py#L1)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/io.py#L1)
 
 <a name="burstfit.io.BurstIO"></a>
 ## BurstIO Objects
@@ -10,7 +10,7 @@
 class BurstIO()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/io.py#L23)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/io.py#L23)
 
 I/O class to save the fitting results and read results to reproduce model.
 
@@ -30,7 +30,7 @@ I/O class to save the fitting results and read results to reproduce model.
  | def set_attributes_to_save()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/io.py#L68)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/io.py#L68)
 
 Sets required attributes to be saved
 
@@ -44,7 +44,7 @@ Sets required attributes to be saved
  | def save_results(outname=None, outdir=None)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/io.py#L117)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/io.py#L117)
 
 Saves results of parameter fitting
 
@@ -63,7 +63,7 @@ Saves results of parameter fitting
  | def read_json_and_precalc(file=None)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/io.py#L162)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/io.py#L162)
 
 Read the result json file and calculate required parameters.
 
@@ -82,7 +82,7 @@ Read the result json file and calculate required parameters.
  | def set_metadata()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/io.py#L190)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/io.py#L190)
 
 Sets the metadata tuple
 
@@ -96,7 +96,7 @@ Sets the metadata tuple
  | def set_classes_from_dict()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/io.py#L206)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/io.py#L206)
 
 Sets models and required classes
 
@@ -111,7 +111,7 @@ Sets models and required classes
  | def model()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/io.py#L251)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/io.py#L251)
 
 Function to make the model
 

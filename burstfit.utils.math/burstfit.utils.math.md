@@ -1,7 +1,7 @@
 <a name="burstfit.utils.math"></a>
 # burstfit.utils.math
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/math.py#L1)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/utils/math.py#L1)
 
 <a name="burstfit.utils.math.f_test"></a>
 #### f\_test
@@ -10,7 +10,7 @@
 def f_test(x, y)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/math.py#L9)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/utils/math.py#L9)
 
 F-Test
 
@@ -30,7 +30,7 @@ F-Test
 def tests(off_pulse, on_pulse_res, pth=0.05, ntest=1)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/math.py#L28)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/utils/math.py#L28)
 
 Run statistical tests to compare the two inputs
 
@@ -52,7 +52,7 @@ Run statistical tests to compare the two inputs
 def fmae(param, m, a, param_err=0, m_err=0, a_err=0)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/math.py#L59)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/utils/math.py#L59)
 
 **Arguments**:
 
@@ -74,7 +74,7 @@ def fmae(param, m, a, param_err=0, m_err=0, a_err=0)
 def transform_parameters(params, mapping, param_names)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/utils/math.py#L80)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/utils/math.py#L80)
 
 Transform parameters and their errors using mapping
 

@@ -1,7 +1,7 @@
 <a name="burstfit.data"></a>
 # burstfit.data
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/data.py#L3)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/data.py#L3)
 
 <a name="burstfit.data.BurstData"></a>
 ## BurstData Objects
@@ -10,7 +10,7 @@
 class BurstData(Candidate)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/data.py#L11)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/data.py#L11)
 
 Class to handle burst data
 
@@ -35,7 +35,7 @@ Class to handle burst data
  | def prepare_data(mask_chans=[], time_window=200e-3, normalise=True)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/data.py#L66)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/data.py#L66)
 
 Prepares data for burst fitting
 
@@ -57,7 +57,7 @@ Prepares data for burst fitting
  | def nstart()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/data.py#L103)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/data.py#L103)
 
 Returns: start sample number of the spectrogram
 
@@ -69,7 +69,7 @@ Returns: start sample number of the spectrogram
  | def mask()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/data.py#L113)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/data.py#L113)
 
 Returns: Channel mask array using all the available masks
 
@@ -80,7 +80,7 @@ Returns: Channel mask array using all the available masks
  | def prepare_input_mask(mask_chans=[])
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/data.py#L126)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/data.py#L126)
 
 Function to mask some frequency channels using input_mask, kill_mask and rfi_mask
 
@@ -99,7 +99,7 @@ Function to mask some frequency channels using input_mask, kill_mask and rfi_mas
  | def mask_channels()
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/data.py#L152)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/data.py#L152)
 
 Apply channel  mask to the dedispersed data
 
@@ -113,7 +113,7 @@ Apply channel  mask to the dedispersed data
  | def normalise_data(on_pulse_data, off_pulse_data, return_clip_fac=True)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/data.py#L163)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/data.py#L163)
 
 Function to normalise data
 
@@ -134,7 +134,7 @@ Function to normalise data
  | def crop_dedispersed_data(time_window)
 ```
 
-[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/779f2e5a427208ec6a7c1b8fc49d361116c50dcc/burstfit/data.py#L188)
+[[view_source]](https://github.com/thepetabyteproject/burstfit/blob/d2a59b6cca4f8d56113504e79416bde1ab64ffea/burstfit/data.py#L188)
 
 To get a cutout of data from only around the burst
 
