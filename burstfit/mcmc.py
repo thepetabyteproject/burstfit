@@ -315,12 +315,14 @@ class MCMC:
         """
         if not skip:
             skip = self.skip
+        logger.info("Using autocorrelation time to estimate burnin and thin values.")
         tau = self.sampler.get_autocorr_time(tol=0)
         if np.isnan(tau).sum() == 0:
             burnin = int(2 * np.max(tau))
             thin = int(0.5 * np.min(tau))
             if burnin < skip:
                 skip = burnin
+            logger.info(f"Burnin is: {burnin}, thin is: {thin}")
         else:
             thin = 0
             logger.warning(
