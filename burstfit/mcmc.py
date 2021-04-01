@@ -381,6 +381,11 @@ class MCMC:
 
         """
         index = (self.autocorr > 0).sum()
-        n = 100 * np.arange(1, index + 1)
-        y = self.autocorr[:index]
-        autocorr_plot(n, y, self.outname, save)
+        if index > 2:
+            n = 100 * np.arange(1, index + 1)
+            y = self.autocorr[:index]
+            autocorr_plot(n, y, self.outname, save)
+        else:
+            logger.warning(
+                f"Not enough valid autocorrelation values to plot. Not making autocorrelation plot."
+            )
