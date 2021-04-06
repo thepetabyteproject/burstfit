@@ -190,7 +190,7 @@ class BurstFit:
             end = self.nt
         end += int(tau_width)
         logger.debug(f"Generating spectra from sample {start} to {end}")
-        self.spectra = self.residual[:, start:end].mean(-1)
+        self.spectra = self.residual[:, start : end + 1].mean(-1)
 
         logger.debug(f"Normalising spectra to unit area.")
         self.spectra = self.spectra / np.trapz(self.spectra)
