@@ -84,7 +84,7 @@ class BurstIO:
 
         logger.info("Reading attributes from BurstFit object.")
         for k in self.burstfit.__dict__.keys():
-            if ("sgram" == k) or ("residual" in k) or ("ts" in k) or ("spectra" == k):
+            if ("sgram" == k) or ("residual" == k) or ("ts" == k) or ("spectra" == k):
                 continue
             elif "model" in k:
                 sgram_model_class = getattr(self.burstfit, k)
