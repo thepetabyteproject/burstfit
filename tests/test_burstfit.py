@@ -108,7 +108,7 @@ def test_initial_spectra_fit(bf):
         bounds=([50, 5, 200, 5, 0], [150, 50, 300, 50, 1]), plot=False
     )
     assert list(bf.spectra_params.keys()) == [1]
-    assert pytest.approx(bf.spectra_params[1]["popt"][0], abs=1) == 87
+    assert pytest.approx(bf.spectra_params[1]["popt"][0], abs=1) == 77
     assert pytest.approx(bf.spectra_params[1]["popt"][2], abs=1) == 284
 
 
