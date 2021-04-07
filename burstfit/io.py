@@ -73,14 +73,20 @@ class BurstIO:
 
         """
         logger.info("Setting attributes to be saved.")
-        logger.info("Reading attributes from BurstData object.")
-        self.fileheader = vars(self.burstdata.your_header)
-        if not isinstance(self.fileheader["dtype"], str):
-            self.fileheader["dtype"] = self.fileheader["dtype"].__name__
-        self.nstart = self.burstdata.nstart
-        self.tcand = self.burstdata.tcand
-        self.mask = self.burstdata.mask
-        self.id = self.burstdata.id
+        if self.burstdata:
+            logger.info("Reading attributes from BurstData object.")
+            self.fileheader = vars(self.burstdata.your_header)
+            if not isinstance(self.fileheader["dtype"], str):
+                self.fileheader["dtype"] = self.fileheader["dtype"].__name__
+            self.nstart = self.burstdata.nstart
+            self.tcand = self.burstdata.tcand
+            self.mask = self.burstdata.mask
+            self.id = self.burstdata.id
+        else:
+            logger.warning(
+                "BurstData object not found. Make sure that the values of following parameters have been "
+                "set already: fileheader, nstart, tcand, mask, id."
+            )
 
         logger.info("Reading attributes from BurstFit object.")
         for k in self.burstfit.__dict__.keys():
