@@ -701,6 +701,7 @@ class BurstFit:
         logger.info(f"Found {self.ncomponents} components.")
 
         model = np.zeros(shape=(self.nf, self.nt))
+        model = np.ma.masked_array(model)
         if self.sgram_model.forfit:
             model = model.ravel()
         for i in range(1, self.ncomponents + 1):
