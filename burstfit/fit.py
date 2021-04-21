@@ -690,14 +690,14 @@ class BurstFit:
         """
         logger.info(f"Making model.")
         if self.mcmc_params:
-            dict = self.mcmc_params
+            param_dict = self.mcmc_params
         else:
             if "all" in self.sgram_params.keys():
-                dict = self.sgram_params["all"]
+                param_dict = self.sgram_params["all"]
             else:
-                dict = self.sgram_params
+                param_dict = self.sgram_params
 
-        assert len(dict) == self.ncomponents
+        assert len(param_dict) == self.ncomponents
         logger.info(f"Found {self.ncomponents} components.")
 
         model = np.zeros(shape=(self.nf, self.nt))
@@ -705,7 +705,7 @@ class BurstFit:
         if self.sgram_model.forfit:
             model = model.ravel()
         for i in range(1, self.ncomponents + 1):
-            popt = dict[i]["popt"]
+            popt = param_dict[i]["popt"]
             model += self.sgram_model.evaluate([0], *popt)
         if self.sgram_model.forfit and self.clip_fac != 0:
             model = np.clip(model, 0, self.clip_fac)
