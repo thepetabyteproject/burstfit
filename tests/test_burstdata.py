@@ -34,10 +34,12 @@ def test_prepare_data(bd):
 
 
 def test_input_mask_chans(bd):
-    bd.prepare_data(mask_chans=[10, 12])
+    bd.prepare_data(mask_chans=[10, 12, [14, 16]], normalise=False)
     assert np.ma.is_masked(bd.sgram[12, :])
     assert np.ma.is_masked(bd.sgram[10, :])
+    assert np.ma.is_masked(bd.sgram[15, :])
     assert not np.ma.is_masked(bd.sgram[9, :])
+    assert not np.ma.is_masked(bd.sgram[17, :])
 
     bd.prepare_data(mask_chans=[(1, 4)])
     assert np.ma.is_masked(bd.sgram[1, :])

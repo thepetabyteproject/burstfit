@@ -37,3 +37,11 @@ def test_sgram_model():
     sm = Model(gauss_norm)
     sgmodel = SgramModel(pm, sm, sgram_fn)
     assert sgmodel.nparams == 7
+
+    sgmodel = SgramModel(
+        pm,
+        sm,
+        sgram_fn,
+        param_names=["mu_f", "sig_f", "S", "mu_t", "sig_t", "tau", "dm"],
+    )
+    assert sgmodel.nparams == 7
