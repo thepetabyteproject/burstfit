@@ -165,12 +165,17 @@ class BurstIO:
             json.dump(out, fp, cls=MyEncoder, indent=4)
         return out
 
-    def read_json_and_precalc(self, file=None):
+    def read_json_and_precalc(
+        self, file=None, pulse_function=None, spectra_function=None, sgram_function=None
+    ):
         """
         Read the result json file and calculate required parameters.
 
         Args:
             file: results file to read
+            pulse_function: Pulse function used for modeling
+            spectra_function: Spectra function used for modeling
+            sgram_function: Sgram function used for modeling
 
         Returns:
 
@@ -188,7 +193,11 @@ class BurstIO:
             setattr(self, k, self.dictionary[k])
 
         logger.info(f"Setting models (pulse, spectra and spectrogram).")
-        self.set_classes_from_dict()
+        self.set_classes_from_dict(
+            pulse_function=pulse_function,
+            spectra_function=spectra_function,
+            sgram_function=sgram_function,
+        )
 
         self.set_metadata()
         logger.info(f"BurstIO class is ready with necessary attributes.")
@@ -209,43 +218,75 @@ class BurstIO:
             self.foff,
         )
 
-    def set_classes_from_dict(self):
+    def set_classes_from_dict(
+        self, pulse_function=None, spectra_function=None, sgram_function=None
+    ):
         """
         Sets models and required classes
+
+        Args:
+            pulse_function: Pulse function used for modeling
+            spectra_function: Spectra function used for modeling
+            sgram_function: Sgram function used for modeling
 
         Returns:
 
         """
-        if self.dictionary["pulse_function"] == "pulse_fn":
-            pulseModel = Model(pulse_fn)
-        elif self.dictionary["pulse_function"] == "gauss":
-            pulseModel = Model(gauss)
-        elif self.dictionary["pulse_function"] == "pulse_fn_vec":
-            pulseModel = Model(pulse_fn_vec)
-        else:
-            raise ValueError(
-                f"Function: {self.dictionary['pulse_function']} not supported."
-            )
 
-        if self.dictionary["spectra_function"] == "gauss_norm":
-            spectraModel = Model(gauss_norm)
-        elif self.dictionary["spectra_function"] == "gauss_norm2":
-            spectraModel = Model(gauss_norm2)
-        elif self.dictionary["spectra_function"] == "gauss_norm3":
-            spectraModel = Model(gauss_norm3)
-        else:
-            raise ValueError(
-                f"Function: {self.dictionary['spectra_function']} not supported."
+        if pulse_function:
+            assert self.dictionary["pulse_function"] == pulse_function.__name__, (
+                f"pulse_function ({pulse_function.__name__}) should have the same name as that in "
+                f"the JSON file ({self.dictionary['pulse_function']})"
             )
+            pulseModel = Model(pulse_function)
+        else:
+            if self.dictionary["pulse_function"] == "pulse_fn":
+                pulseModel = Model(pulse_fn)
+            elif self.dictionary["pulse_function"] == "gauss":
+                pulseModel = Model(gauss)
+            elif self.dictionary["pulse_function"] == "pulse_fn_vec":
+                pulseModel = Model(pulse_fn_vec)
+            else:
+                raise ValueError(
+                    f"Function: {self.dictionary['pulse_function']} not supported. If it is not one of the functions "
+                    f"available in BurstFit, then provide it as input (pulse_function)."
+                )
 
-        if self.dictionary["sgram_function"] == "sgram_fn":
-            sgram_function = sgram_fn
-        elif self.dictionary["sgram_function"] == "sgram_fn_vec":
-            sgram_function = sgram_fn_vec
-        else:
-            raise ValueError(
-                f"Function: {self.dictionary['sgram_function']} not supported."
+        if spectra_function:
+            assert self.dictionary["spectra_function"] == spectra_function.__name__, (
+                f"spectra_function ({spectra_function.__name__}) should have the same name as that in "
+                f"the JSON file ({self.dictionary['spectra_function']})"
             )
+            spectraModel = Model(spectra_function)
+        else:
+            if self.dictionary["spectra_function"] == "gauss_norm":
+                spectraModel = Model(gauss_norm)
+            elif self.dictionary["spectra_function"] == "gauss_norm2":
+                spectraModel = Model(gauss_norm2)
+            elif self.dictionary["spectra_function"] == "gauss_norm3":
+                spectraModel = Model(gauss_norm3)
+            else:
+                raise ValueError(
+                    f"Function: {self.dictionary['spectra_function']} not supported. If it is not one of the functions "
+                    f"available in BurstFit, then provide it as input (spectra_function)."
+                )
+
+        if sgram_function:
+            assert self.dictionary["sgram_function"] == sgram_function.__name__, (
+                f"sgram_function ({sgram_function.__name__}) should have the same name as that in "
+                f"the JSON file ({self.dictionary['sgram_function']})"
+            )
+        else:
+            if self.dictionary["sgram_function"] == "sgram_fn":
+                sgram_function = sgram_fn
+            elif self.dictionary["sgram_function"] == "sgram_fn_vec":
+                sgram_function = sgram_fn_vec
+            else:
+                raise ValueError(
+                    f"Function: {self.dictionary['sgram_function']} not supported. If it is not one of the functions "
+                    f"available in BurstFit, then provide it as input (sgram_function)."
+                )
+
         self.sgram_model = SgramModel(
             pulse_model=pulseModel,
             spectra_model=spectraModel,

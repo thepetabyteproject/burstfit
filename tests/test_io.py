@@ -172,6 +172,35 @@ def test_read_json_and_precalc(bf, bd, bio):
     assert bio.i0 == bf.i0
 
 
+def test_read_json_with_input_fns():
+    ref_json = os.path.join(_install_dir, "data/test.json")
+    bio = BurstIO(jsonfile=ref_json)
+    pf = pulse_fn
+    sf = gauss_norm2
+    sgramf = sgram_fn
+    bio.read_json_and_precalc(
+        pulse_function=pf, spectra_function=sf, sgram_function=sgramf
+    )
+
+    with pytest.raises(AssertionError):
+        # incorrect pulse function
+        bio.read_json_and_precalc(
+            pulse_function=sf, spectra_function=pf, sgram_function=sgramf
+        )
+
+    with pytest.raises(AssertionError):
+        # incorrect spectra function
+        bio.read_json_and_precalc(
+            pulse_function=pf, spectra_function=pf, sgram_function=sgramf
+        )
+
+    with pytest.raises(AssertionError):
+        # incorrect sgram function
+        bio.read_json_and_precalc(
+            pulse_function=pf, spectra_function=sf, sgram_function=sf
+        )
+
+
 def test_model(bf, bio):
     bf.sgram_model.forfit = False
     assert (
