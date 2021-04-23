@@ -94,7 +94,7 @@ class BurstData(Candidate):
 
         if normalise:
             off_pulse_data = self.dedispersed[
-                :, : self.i0 - int(2 * time_window // self.tsamp)
+                :, : self.i0 - int(2 * time_window // self.your_header.tsamp)
             ]
             self.sgram, self.clip_fac = self.normalise_data(self.sgram, off_pulse_data)
         return self
@@ -107,7 +107,7 @@ class BurstData(Candidate):
 
         """
         nt, nf = self.sgram.shape
-        return self.tcand // self.tsamp - (nt // 2)
+        return self.tcand // self.your_header.tsamp - (nt // 2)
 
     @property
     def mask(self):
@@ -197,7 +197,7 @@ class BurstData(Candidate):
 
         """
         logger.info(f"Cropping data with time_window: {time_window}s.")
-        time_around_burst = int(time_window // self.tsamp // 2)
+        time_around_burst = int(time_window // self.your_header.tsamp // 2)
         return self.dedispersed[
             self.i0 - time_around_burst : self.i0 + time_around_burst, :
         ].T
