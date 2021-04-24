@@ -61,16 +61,24 @@ class BurstData(Candidate):
         self.i0 = None
         self.clip_fac = None
         self.sgram = None
-        self.input_mask = np.zeros(self.nchans, dtype="bool")
+        self.input_mask = np.zeros(self.your_header.nchans, dtype="bool")
+        self.bandpass = np.zeros(self.your_header.nchans)
 
-    def prepare_data(self, mask_chans=[], time_window=200e-3, normalise=True):
+    def prepare_data(
+        self,
+        mask_chans=[],
+        time_window=200e-3,
+        normalise=True,
+        normalise_bandpass=False,
+    ):
         """
         Prepares data for burst fitting
 
         Args:
             mask_chans: list with tuples (start_freq, end_freq) and channel numbers to mask
             time_window: time window (s) around the burst to use for burst fitting
-            normalise: To normalise the mean and std of the data using an off pulse region
+            normalise: To normalise the data to zero mean and unit std using an off pulse region
+            normalise_bandpass: Normalise the data using the bandpass
 
         Returns:
 
@@ -88,6 +96,9 @@ class BurstData(Candidate):
             self.prepare_input_mask(mask_chans)
 
         self.mask_channels()
+
+        if normalise_bandpass:
+            self.norm_bandpass()
 
         self.dispersed_at_dm = self.dm
         self.sgram = self.crop_dedispersed_data(time_window)
@@ -184,6 +195,36 @@ class BurstData(Candidate):
             return on_pulse_data, clip_fac
         else:
             return on_pulse_data
+
+    def norm_bandpass(self):
+        """
+        Normalise the bandpass of the data.
+
+        Returns:
+
+        """
+        if not np.any(self.bandpass):
+            logger.warning(
+                f"Input bandpass not found. Making bandpass to use for normalisation."
+            )
+            data = self.dedispersed[
+                : self.i0 // 2 - 2 * self.width, :
+            ].copy()  # shape: (nt, nf)
+            self.bandpass = np.ma.mean(data, axis=0)
+
+        assert len(self.bandpass) == self.your_header.nchans, (
+            f"Length of bandpass ({len(self.bandpass)}) should be equal to number of "
+            f"frequency channels ({self.your_header.nchans}) in the data."
+        )
+
+        bp_native_dtype = self.bandpass.astype(self.your_header.dtype)
+        if bp_native_dtype.min() == 0:
+            min_mask = bp_native_dtype == bp_native_dtype.min()
+            self.dedispersed[:, ~min_mask] /= self.bandpass[None, ~min_mask]
+            self.dedispersed[:, min_mask] = 1
+        else:
+            self.dedispersed[:, :] /= self.bandpass[None, :]
+        return self
 
     def crop_dedispersed_data(self, time_window):
         """

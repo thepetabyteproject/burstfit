@@ -56,3 +56,15 @@ def test_all_masks(bd):
     mask_list = [172, 173, 174, 175, 176, 177, 182, 10, 30, 100, 1, 2, 3]
 
     assert np.ma.is_masked(bd.sgram[mask_list, :])
+
+
+def test_bandpass(bd):
+    bd.bandpass = np.array([1, 2, 3, 4, 5, 6])
+
+    with pytest.raises(AssertionError):
+        bd.prepare_data(normalise_bandpass=True)
+
+    bd.bandpass = np.zeros(bd.your_header.nchans)
+    bd.prepare_data(normalise_bandpass=True)
+    assert np.any(bd.bandpass)
+    assert pytest.approx(bd.bandpass.mean(), abs=1) == 127
