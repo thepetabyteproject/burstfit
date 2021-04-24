@@ -59,12 +59,10 @@ def test_all_masks(bd):
 
 
 def test_bandpass(bd):
-    bd.bandpass = np.array([1, 2, 3, 4, 5, 6])
+    bd.prepare_data(normalise_bandpass=True, time_window=0.2)
+    assert np.any(bd.bandpass)
+    assert pytest.approx(bd.bandpass.mean(), abs=2) == 127
 
+    bd.bandpass = np.array([1, 2, 3, 4, 5, 6])
     with pytest.raises(AssertionError):
         bd.prepare_data(normalise_bandpass=True)
-
-    bd.bandpass = np.zeros(bd.your_header.nchans)
-    bd.prepare_data(normalise_bandpass=True)
-    assert np.any(bd.bandpass)
-    assert pytest.approx(bd.bandpass.mean(), abs=1) == 127
