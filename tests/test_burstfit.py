@@ -77,6 +77,23 @@ def test_precalc(bf, bd):
     assert bf.metadata[2] == bd.dm
     assert pytest.approx(np.argmax(bf.ts), rel=1) == 79
 
+    pm = Model(pulse_fn, param_names=["S", "mu_t", "sigma_t", "tau"])
+    sm = Model(gauss_norm2, param_names=["mu1", "sig1", "mu2", "sig2", "amp1"])
+    sgmodel = SgramModel(pm, sm, sgram_fn)
+    bf2 = BurstFit(
+        sgram_model=sgmodel,
+        sgram=bd.sgram,
+        dm=bd.dm,
+        width=bd.width,
+        foff=bd.foff,
+        fch1=bd.fch1,
+        tsamp=bd.tsamp,
+        clip_fac=bd.clip_fac,
+        other_params=[2],
+    )
+    with pytest.raises(ValueError):
+        bf2.precalc()
+
 
 def test_profile_fit(bf):
     bf.precalc()

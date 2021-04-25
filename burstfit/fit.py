@@ -43,6 +43,7 @@ class BurstFit:
         outname=None,
         mask=np.array([False]),
         mcmcfit=False,
+        other_params=np.array([]),
     ):
         self.sgram_model = sgram_model
         self.sgram = sgram
@@ -54,6 +55,7 @@ class BurstFit:
         self.comp_num = 1
         self.profile_params = {}
         self.spectra_params = {}
+        self.other_params = other_params
         self.sgram_params = {}
         self.mcmc_params = {}
         self.profile_bounds = {}
@@ -128,6 +130,16 @@ class BurstFit:
         self.profile_param_names = self.sgram_model.pulse_model.param_names
         self.spectra_param_names = self.sgram_model.spectra_model.param_names
         self.param_names = self.sgram_model.param_names
+        nparams = len(self.profile_param_names) + len(self.spectra_param_names) + 1
+        if np.any(self.other_params):
+            nparams += len(self.other_params)
+        if len(self.param_names) != nparams:
+            raise ValueError(
+                f"param_names (len={len(self.param_names)}) in sgram_model should be of same length "
+                f"as total number of parameters: profile params ({len(self.profile_param_names)}) + "
+                f" spectra params ({len(self.spectra_param_names)}) + DM (1) + other_params "
+                f"({len(self.other_params)})."
+            )
         self.metadata = (
             self.nt,
             self.nf,
@@ -343,8 +355,10 @@ class BurstFit:
         p0 = (
             self.spectra_params[self.comp_num]["popt"]
             + self.profile_params[self.comp_num]["popt"]
-            + [self.dm]  # , 4]
+            + [self.dm]
         )
+        if np.any(self.other_params):
+            p0 += self.other_params
         self.sgram_model.forfit = True
         logger.info(f"initial estimate for parameters: {p0}")
         cf = CurveFit(
