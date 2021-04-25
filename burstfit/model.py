@@ -89,6 +89,7 @@ class SgramModel:
         metadata: Metadata for sgram function
         param_names: names of sgram parameters
         clip_fac: clipping factor
+        other_param_names: names of other parameters not in spectra and pulse functions
 
     """
 
@@ -101,6 +102,7 @@ class SgramModel:
         param_names=None,
         mask=np.array([False]),
         clip_fac=None,
+        other_param_names=["DM"],
     ):
         self.pulse_model = pulse_model
         self.spectra_model = spectra_model
@@ -109,10 +111,10 @@ class SgramModel:
         self.forfit = True
         if not param_names:
             self.param_names = (
-                self.spectra_model.param_names
-                + self.pulse_model.param_names
-                + ["DM"]  # , "tau_idx"]
+                self.spectra_model.param_names + self.pulse_model.param_names
             )
+            if other_param_names:
+                self.param_names += other_param_names  # + ["DM"]  # , "tau_idx"]
         else:
             self.param_names = param_names
         self.mask = mask
@@ -141,15 +143,15 @@ class SgramModel:
 
         """
         ns = self.spectra_model.nparams
-        nparam = self.pulse_model.nparams
+        n_pulse_param = self.pulse_model.nparams
         assert len(params) == len(self.param_names)
         spectra_params = self.spectra_model.get_param_dict(
             *params[0:ns], keys="function"
         )
         pulse_params = self.pulse_model.get_param_dict(
-            *params[ns : ns + nparam], keys="function"
+            *params[ns : ns + n_pulse_param], keys="function"
         )
-        other_params = params[ns + nparam :]
+        other_params = params[ns + n_pulse_param :]
         model = self.sgram_function(
             self.metadata,
             self.pulse_model.function,

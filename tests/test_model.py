@@ -45,3 +45,7 @@ def test_sgram_model():
         param_names=["mu_f", "sig_f", "S", "mu_t", "sig_t", "tau", "dm"],
     )
     assert sgmodel.nparams == 7
+
+    sgmodel = SgramModel(pm, sm, sgram_fn, other_param_names=["dm"])
+    assert sgmodel.nparams == 7
+    assert sgmodel.param_names[-1] == "dm"
