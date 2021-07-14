@@ -38,3 +38,24 @@ Here are some [tutorial notebooks](https://github.com/thepetabyteproject/burstfi
 To run the tutorial notebooks you would need to install `jupyter`.
 
 # Citation
+
+Please cite the following paper if you use `burstfit`: 
+
+```bash
+@ARTICLE{2021arXiv210705658A,
+       author = {{Aggarwal}, Kshitij and {Agarwal}, Devansh and {Lewis}, Evan F. and {Anna-Thomas}, Reshma and {Cardinal Tremblay}, Jacob and {Burke-Spolaor}, Sarah and {McLaughlin}, Maura A. and {Lorimer}, Duncan R.},
+        title = "{Comprehensive analysis of a dense sample of FRB 121102 bursts}",
+      journal = {arXiv e-prints},
+     keywords = {Astrophysics - High Energy Astrophysical Phenomena, Astrophysics - Instrumentation and Methods for Astrophysics},
+         year = 2021,
+        month = jul,
+          eid = {arXiv:2107.05658},
+        pages = {arXiv:2107.05658},
+archivePrefix = {arXiv},
+       eprint = {2107.05658},
+ primaryClass = {astro-ph.HE},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/2021arXiv210705658A},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+```
+
